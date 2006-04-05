@@ -30,7 +30,7 @@ class GUIApplication(QVBox):
 
         # create widget instances
         self.owFile = OWFile(signalManager = self.signalManager)
-        self.owScatterplot = OWScatterPlot1(signalManager = self.signalManager)
+        self.owScatterplot = OWScatterPlot(signalManager = self.signalManager)
         self.owRadviz = OWRadviz(signalManager = self.signalManager)
         self.owParallel_coordinates = OWParallelCoordinates(signalManager = self.signalManager)
         self.owSurvey_Plot = OWSurveyPlot(signalManager = self.signalManager)
