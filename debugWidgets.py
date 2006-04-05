@@ -4,20 +4,21 @@ import orange
 import orngSignalManager
 
 # options and settings
-guiAppPath = r"E:\Development\Python23\Lib\site-packages\Orange\GUIApplications\debugging"
 nrOfThingsToChange = 300    # how many random clicks do we want to simulate
 changeDatasetClicks = 100   # after how many random clicks do we want to change the dataset file
+
 
 widgetDir = os.path.join(os.path.split(orange.__file__)[0], "OrangeWidgets")
 sys.path.append(os.path.join(widgetDir, "Data"))
 import OWFile       # we need to know the file widget so that we can remove it from the instance.widgets list
 
 # get gui applications to try
+guiAppPath = os.path.split(sys.argv[0])[0]
 sys.path.append(guiAppPath)
 os.chdir(guiAppPath)
 guiApps = []
 for name in os.listdir(guiAppPath):
-    if os.path.isfile(os.path.join(guiAppPath, name)) and os.path.splitext(name)[1] == ".py":
+    if os.path.isfile(os.path.join(guiAppPath, name)) and os.path.splitext(name)[1] in [".py", ".pyw"]:
         guiApps.append(name)
 
 if "debugWidgets.py" in guiApps:
