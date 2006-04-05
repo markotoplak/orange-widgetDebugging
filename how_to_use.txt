@@ -1,0 +1,10 @@
+
+1. Create a schema in canvas that contains a group of widgets that you want to test. Save the schema as gui application (either with tabs or buttons). 
+
+2. Create a snapshot of the canvas schema (File / Print Schema / Save image) with the same name as the gui application. 
+
+3. Open the schema in editor and add a on top a comment like this: # contact: email_address1, email_address2
+where you specify all email addresses that will receive a mail in case testing of this schema fails (usually only one email address). Schema fails when one or more exceptions happen during the testing. The mail you will receive will contain the log of execution - including all the exceptions that happened.
+
+4. Commit files to cvs (.py (schema), .sav (settings of the widgets in schema) and .png (schema screenshot)).
+
