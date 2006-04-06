@@ -7,4 +7,4 @@ cd orange
 cvs update -d -C
 cd ..\widgetDebugging
 cvs update -d -C
-c:\python23\python debugWidgets.py
+debugWidgets.py

@@ -33,7 +33,7 @@ for name in os.listdir(datapath):
 
 datasets.append("") # we add a blank dataset. this will never be selected and replaces the "Browse documentation data sets..."
 
-server = smtplib.SMTP('localhost', 6720)
+server = smtplib.SMTP('postar.fri.uni-lj.si', 25)
 server.set_debuglevel(1)
 
 widgetStatus = ""; nrOfFailed = 0
