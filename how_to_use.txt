@@ -4,7 +4,17 @@
 2. Create a snapshot of the canvas schema (File / Print Schema / Save image) with the same name as the gui application. 
 
 3. Open the schema in editor and add a on top a comment like this: # contact: email_address1, email_address2
-where you specify all email addresses that will receive a mail in case testing of this schema fails (usually only one email address). Schema fails when one or more exceptions happen during the testing. The mail you will receive will contain the log of execution - including all the exceptions that happened.
+where you specify all email addresses that will receive a mail in case testing of this schema fails (usually only one email address). 
 
 4. Commit files to cvs (.py (schema), .sav (settings of the widgets in schema) and .png (schema screenshot)).
+
+The script that you will put to cvs will be automatically executed by debugWidgets.py script. In case your script fails (one or more exceptions happen during the testing) a mail will be sent to the contact authors. The mail you will receive will contain the log of execution - including all the exceptions that happened.
+
+The debugWidgets.py script will randomly select different datasets from the Datasets folder. It will also randomly change gui components in your schema. The only GUI components that will be randomly changed are those that were created using the OWGUI module. When a component is created using this module, a tuple containing all the necessary information is added to the widgets list called _guiElements. If you create a component using the OWGUI module and specifically don't want it to be used in debugging add debuggingEnabled = 0 as one of the parameters, e.g.:
+
+self.optimizationDlgButton = OWGUI.button(self.optimizationButtons, self, "VizRank", callback = self.optimizationDlg.reshow, debuggingEnabled = 0)
+
+NOTE:
+
+There are some cases when you HAVE TO set debbugingEnabled = 0. One example are components where the call of the callback function would disrupt normal message processing by opening a MessageBox dialog or something similar. Another example are time expensive callback functions - for example VizRank's button would call a function that could possibly take hours (or days to compute) to compute all possible projections. We will not be able to debug such functions.
 
