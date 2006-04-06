@@ -9,4 +9,4 @@ cd ..\widgetDebugging
 cvs update -d -C
 debugWidgets.py
 
-shutdown -r
+shutdown -s
