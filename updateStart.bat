@@ -8,3 +8,5 @@ cvs update -d -C
 cd ..\widgetDebugging
 cvs update -d -C
 debugWidgets.py
+
+shutdown -r
