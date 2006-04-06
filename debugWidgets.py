@@ -4,7 +4,7 @@ import orange
 import orngSignalManager
 
 # options and settings
-nrOfThingsToChange = 300    # how many random clicks do we want to simulate
+nrOfThingsToChange = 2000    # how many random clicks do we want to simulate
 changeDatasetClicks = 100   # after how many random clicks do we want to change the dataset file
 
 
@@ -16,10 +16,14 @@ import OWFile       # we need to know the file widget so that we can remove it f
 guiAppPath = os.path.split(sys.argv[0])[0]
 sys.path.append(guiAppPath)
 os.chdir(guiAppPath)
+
 guiApps = []
-for name in os.listdir(guiAppPath):
-    if os.path.isfile(os.path.join(guiAppPath, name)) and os.path.splitext(name)[1] in [".py", ".pyw"]:
-        guiApps.append(name)
+if len(sys.argv) > 1:
+    guiApps = sys.argv[1:]
+else:
+    for name in os.listdir(guiAppPath):
+        if os.path.isfile(os.path.join(guiAppPath, name)) and os.path.splitext(name)[1] in [".py", ".pyw"]:
+            guiApps.append(name)
 
 if "debugWidgets.py" in guiApps:
     guiApps.remove("debugWidgets.py")       # ignore this file if in the same directory
