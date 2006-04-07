@@ -37,9 +37,6 @@ for name in os.listdir(datapath):
 
 datasets.append("") # we add a blank dataset. this will never be selected and replaces the "Browse documentation data sets..."
 
-server = smtplib.SMTP('postar.fri.uni-lj.si', 25)
-server.set_debuglevel(1)
-
 widgetStatus = ""; nrOfFailed = 0
 
 application = QApplication(sys.argv)        
@@ -120,15 +117,18 @@ for guiApp in guiApps:
             fromaddr = "orange@fri.uni-lj.si"
             toaddrs = search.group("imena").split(",")
             msg = "From: %s\r\nTo: %s\r\nSubject: Exception in widgets - %s script\r\n\r\n" % (fromaddr, ", ".join(toaddrs), guiApp) + content
+            server = smtplib.SMTP('postar.fri.uni-lj.si', 25)
+            #server.set_debuglevel(0)
             server.sendmail(fromaddr, toaddrs, msg)
-            
+            server.quit()
     else:
         widgetStatus += " OK\n"
 
 fromaddr = "orange@fri.uni-lj.si"
 toaddrs = ["tomaz.curk@fri.uni-lj.si", "gregor.leban@fri.uni-lj.si"]
 msg = "From: %s\r\nTo: %s\r\nSubject: Widget test status. Number of failed: %d \r\n\r\n" % (fromaddr, ", ".join(toaddrs), nrOfFailed) + widgetStatus
-server.sendmail(fromaddr, toaddrs, msg)
 
+server = smtplib.SMTP('postar.fri.uni-lj.si', 25)
+server.sendmail(fromaddr, toaddrs, msg)
 server.quit()
 application.setMainWidget(None)
