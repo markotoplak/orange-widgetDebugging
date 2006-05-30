@@ -167,12 +167,12 @@ class GUIApplication(QVBox):
         self.signalManager.addLink( self.owFile, self.owSurvey_Plot, 'Examples', 'Examples', 1)
         self.signalManager.addLink( self.owFile, self.owSieve_Diagram, 'Examples', 'Examples', 1)
         self.signalManager.addLink( self.owFile, self.owMosaic_Display, 'Examples', 'Examples', 1)
-        self.signalManager.addLink( self.owData_Sampler, self.owScatterplot, 'Sampled Data', 'Example Subset', 1)
-        self.signalManager.addLink( self.owData_Sampler, self.owLinear_Projection, 'Sampled Data', 'Example Subset', 1)
-        self.signalManager.addLink( self.owData_Sampler, self.owRadviz, 'Sampled Data', 'Example Subset', 1)
+        self.signalManager.addLink( self.owData_Sampler, self.owScatterplot, 'Classified Examples', 'Example Subset', 1)
+        self.signalManager.addLink( self.owData_Sampler, self.owLinear_Projection, 'Classified Examples', 'Example Subset', 1)
+        self.signalManager.addLink( self.owData_Sampler, self.owRadviz, 'Classified Examples', 'Example Subset', 1)
         self.signalManager.addLink( self.owFile, self.owPolyviz, 'Classified Examples', 'Classified Examples', 1)
-        self.signalManager.addLink( self.owData_Sampler, self.owParallel_coordinates, 'Sampled Data', 'Example Subset', 1)
-        self.signalManager.addLink( self.owData_Sampler, self.owMosaic_Display, 'Sampled Data', 'Example Subset', 1)
+        self.signalManager.addLink( self.owData_Sampler, self.owParallel_coordinates, 'Classified Examples', 'Example Subset', 1)
+        self.signalManager.addLink( self.owData_Sampler, self.owMosaic_Display, 'Classified Examples', 'Example Subset', 1)
         self.signalManager.setFreeze(0)
         
 
@@ -225,6 +225,8 @@ class GUIApplication(QVBox):
         
         
     def saveSettings(self):
+        return
+        """
         if DEBUG_MODE: return
         self.owMosaic_Display.synchronizeContexts()
         self.owSieve_Diagram.synchronizeContexts()
@@ -254,6 +256,7 @@ class GUIApplication(QVBox):
         file = open("visualizations.sav", "w")
         cPickle.dump(strSettings, file)
         file.close()
+        """
         
 
 

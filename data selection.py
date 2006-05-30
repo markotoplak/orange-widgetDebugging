@@ -16,7 +16,7 @@ from OWFile import *
 from OWDataDomain import *
 from OWDataSampler import *
 from OWSelectData import *
-from OWCategorize import *
+from OWDiscretize import *
 from OWContinuize import *
 
 
@@ -33,7 +33,7 @@ class GUIApplication(QVBox):
         self.owSelect_Attributes = OWDataDomain (self.tabs, signalManager = self.signalManager)
         self.owData_Sampler = OWDataSampler (self.tabs, signalManager = self.signalManager)
         self.owSelect_Data = OWSelectData (self.tabs, signalManager = self.signalManager)
-        self.owDiscretize = OWCategorize (self.tabs, signalManager = self.signalManager)
+        self.owDiscretize = OWDiscretize (self.tabs, signalManager = self.signalManager)
         self.owContinuize = OWContinuize (self.tabs, signalManager = self.signalManager)
         
         # create instances of hidden widgets
@@ -101,8 +101,8 @@ class GUIApplication(QVBox):
         self.signalManager.addLink( self.owFile, self.owSelect_Attributes, 'Examples', 'Examples', 1)
         self.signalManager.addLink( self.owFile, self.owData_Sampler, 'Examples', 'Data', 1)
         self.signalManager.addLink( self.owFile, self.owSelect_Data, 'Examples', 'Examples', 1)
-        self.signalManager.addLink( self.owData_Sampler, self.owContinuize, 'Classified Sampled Data', 'Classified Examples', 1)
-        self.signalManager.addLink( self.owData_Sampler, self.owDiscretize, 'Classified Remaining Data', 'Classified Examples', 1)
+        self.signalManager.addLink( self.owData_Sampler, self.owContinuize, 'Classified Examples', 'Classified Examples', 1)
+        self.signalManager.addLink( self.owData_Sampler, self.owDiscretize, 'Remaining Classified Examples', 'Examples', 1)
         self.signalManager.setFreeze(0)
         
 
@@ -144,6 +144,8 @@ class GUIApplication(QVBox):
         
         
     def saveSettings(self):
+        return
+        """
         if DEBUG_MODE: return
         self.owContinuize.synchronizeContexts()
         self.owDiscretize.synchronizeContexts()
@@ -163,6 +165,8 @@ class GUIApplication(QVBox):
         file = open("data selection.sav", "w")
         cPickle.dump(strSettings, file)
         file.close()
+        """
+        
         
 
 
