@@ -4,7 +4,7 @@ import orange
 import orngSignalManager
 
 # options and settings
-nrOfThingsToChange = 2000    # how many random clicks do we want to simulate
+nrOfThingsToChange = 1    # how many random clicks do we want to simulate
 changeDatasetClicks = 100   # after how many random clicks do we want to change the dataset file
 
 
@@ -117,7 +117,7 @@ for guiApp in guiApps:
             fromaddr = "orange@fri.uni-lj.si"
             toaddrs = search.group("imena").split(",")
             msg = "From: %s\r\nTo: %s\r\nSubject: Exception in widgets - %s script\r\n\r\n" % (fromaddr, ", ".join(toaddrs), guiApp) + content
-            server = smtplib.SMTP('postar.fri.uni-lj.si', 25)
+            server = smtplib.SMTP('212.235.188.18', 25)
             #server.set_debuglevel(0)
             server.sendmail(fromaddr, toaddrs, msg)
             server.quit()
