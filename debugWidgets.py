@@ -128,7 +128,7 @@ fromaddr = "orange@fri.uni-lj.si"
 toaddrs = ["tomaz.curk@fri.uni-lj.si", "gregor.leban@fri.uni-lj.si"]
 msg = "From: %s\r\nTo: %s\r\nSubject: Widget test status. Number of failed: %d \r\n\r\n" % (fromaddr, ", ".join(toaddrs), nrOfFailed) + widgetStatus
 
-server = smtplib.SMTP('postar.fri.uni-lj.si', 25)
+server = smtplib.SMTP('212.235.188.18', 25)
 server.sendmail(fromaddr, toaddrs, msg)
 server.quit()
 application.setMainWidget(None)
