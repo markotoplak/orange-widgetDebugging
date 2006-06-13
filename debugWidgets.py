@@ -4,7 +4,7 @@ import orange
 import orngSignalManager
 
 # options and settings
-nrOfThingsToChange = 1    # how many random clicks do we want to simulate
+nrOfThingsToChange = 2000   # how many random clicks do we want to simulate
 changeDatasetClicks = 100   # after how many random clicks do we want to change the dataset file
 
 
@@ -17,10 +17,14 @@ guiAppPath = os.path.split(sys.argv[0])[0]
 sys.path.append(guiAppPath)
 os.chdir(guiAppPath)
 
-guiApps = []
-if len(sys.argv) > 1:
-    guiApps = sys.argv[1:]
-else:
+sendMailText = "sendmail"
+sendMail = sendMailText in sys.argv[1:]     # do we want to send status mail or not
+
+guiApps = sys.argv[1:]
+if sendMailText in guiApps:
+    guiApps.remove(sendMailText)
+
+if len(guiApps) == 0:
     for name in os.listdir(guiAppPath):
         if os.path.isfile(os.path.join(guiAppPath, name)) and os.path.splitext(name)[1] in [".py", ".pyw"]:
             guiApps.append(name)
@@ -113,7 +117,7 @@ for guiApp in guiApps:
 
         # if we found somebody to bug then send him an email
         search = re.search("contact:(?P<imena>.*)\n", script)
-        if (search):
+        if (search) and sendMail == 1:
             fromaddr = "orange@fri.uni-lj.si"
             toaddrs = search.group("imena").split(",")
             msg = "From: %s\r\nTo: %s\r\nSubject: Exception in widgets - %s script\r\n\r\n" % (fromaddr, ", ".join(toaddrs), guiApp) + content
@@ -124,11 +128,13 @@ for guiApp in guiApps:
     else:
         widgetStatus += " OK\n"
 
-fromaddr = "orange@fri.uni-lj.si"
-toaddrs = ["tomaz.curk@fri.uni-lj.si", "gregor.leban@fri.uni-lj.si"]
-msg = "From: %s\r\nTo: %s\r\nSubject: Widget test status. Number of failed: %d \r\n\r\n" % (fromaddr, ", ".join(toaddrs), nrOfFailed) + widgetStatus
+if sendMail == 1:
+    fromaddr = "orange@fri.uni-lj.si"
+    toaddrs = ["tomaz.curk@fri.uni-lj.si", "gregor.leban@fri.uni-lj.si"]
+    msg = "From: %s\r\nTo: %s\r\nSubject: Widget test status. Number of failed: %d \r\n\r\n" % (fromaddr, ", ".join(toaddrs), nrOfFailed) + widgetStatus
 
-server = smtplib.SMTP('212.235.188.18', 25)
-server.sendmail(fromaddr, toaddrs, msg)
-server.quit()
+    server = smtplib.SMTP('212.235.188.18', 25)
+    server.sendmail(fromaddr, toaddrs, msg)
+    server.quit()
+
 application.setMainWidget(None)
