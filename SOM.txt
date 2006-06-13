@@ -1,0 +1,7 @@
+added widget File
+added widget SOM
+added widget SOMVisualizer
+add link from File to SOM
+add link from SOM to SOMVisualizer
+Setting data set: titanic.tab
+Test finished

@@ -1,0 +1,14 @@
+(dp1
+S'SOM'
+p2
+S"(dp1\nS'radius1'\np2\nI10\nsS'alpha2'\np3\nF0.01\nsS'radius2'\np4\nI3\nsS'neighborhood'\np5\nI0\nsS'ydim'\np6\nI15\nsS'iterations2'\np7\nI60000\nsS'iterations1'\np8\nI5000\nsS'alpha1'\np9\nF0.050000000000000003\nsS'xdim'\np10\nI10\nsS'alphaType'\np11\nI0\nsS'topology'\np12\nI0\ns."
+p3
+sS'SOMVisualizer'
+p4
+S"(dp1\nS'canvas.objSize'\np2\nI10\nsS'backgroundCheck'\np3\nI1\nsS'backgroundMode'\np4\nI0\nsS'commitOnChange'\np5\nI1\nsS'canvas.drawMode'\np6\nI2\ns."
+p5
+sS'File'
+p6
+S"(dp1\nS'recentFiles'\np2\n(lp3\nS'D:/orange/doc/datasets/iris.tab'\np4\naS'D:/orange/doc/datasets/breast-cancer-wisconsin-cont.tab'\np5\naS'D:/orange/doc/datasets/echocardiogram.tab'\np6\naS'D:/orange/doc/datasets/lung-cancer.tab'\np7\naS'D:/distAX.tab'\np8\naS'D:/brown-selected.tab'\np9\naS'D:/orange/doc/datasets/housing.tab'\np10\naS'D:/orange/doc/datasets/lenses.tab'\np11\naS'D:/orange/doc/datasets/car.tab'\np12\naS'D:/orange/doc/datasets/housing.htm'\np13\naS'D:/orange/doc/datasets/tic_tac_toe.tab'\np14\naS'D:/orange/doc/datasets/o-ring-erosion.tab'\np15\naS'D:/orange/doc/datasets/servo.tab'\np16\naS'D:/orange/doc/datasets/monks-1.tab'\np17\naS'D:/acaA1.2.whole1.tab'\np18\naS'D:/acaA1.2.whole.tab'\np19\naS'D:/data_and_TAs.txt'\np20\naS'D:/Comp_matr_migr_2.tab'\np21\nas."
+p7
+s.
