@@ -7,6 +7,6 @@ cd orange
 cvs update -d -C
 cd ..\widgetDebugging
 cvs update -d -C
-debugWidgets.py
+debugWidgets.py sendmail
 
 shutdown -s
