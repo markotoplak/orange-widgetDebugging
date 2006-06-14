@@ -3,8 +3,8 @@ cd \Python23\Lib\site-packages
 rem cvs -d :sspi:cvs@estelle.fri.uni-lj.si:/CVS checkout -A -- orange
 rem cvs -d :sspi:cvs@estelle.fri.uni-lj.si:/CVS checkout -A -- WidgetDebugging
 
-cvs -d :sspi:cvs@estelle.fri.uni-lj.si:/CVS checkout -P -d -C orange
-cvs -d :sspi:cvs@estelle.fri.uni-lj.si:/CVS checkout -P -d -C WidgetDebugging
+cvs -d :sspi:cvs@estelle.fri.uni-lj.si:/CVS update -P -d -C orange
+cvs -d :sspi:cvs@estelle.fri.uni-lj.si:/CVS update -P -d -C WidgetDebugging
 
 cd orange
 cvs update -d -C
