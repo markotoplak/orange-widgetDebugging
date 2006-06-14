@@ -1,7 +1,10 @@
 c:
 cd \Python23\Lib\site-packages
-cvs -d :sspi:cvs@estelle.fri.uni-lj.si:/CVS checkout -A -- orange
-cvs -d :sspi:cvs@estelle.fri.uni-lj.si:/CVS checkout -A -- WidgetDebugging
+rem cvs -d :sspi:cvs@estelle.fri.uni-lj.si:/CVS checkout -A -- orange
+rem cvs -d :sspi:cvs@estelle.fri.uni-lj.si:/CVS checkout -A -- WidgetDebugging
+
+cvs -d :sspi:cvs@estelle.fri.uni-lj.si:/CVS checkout -P -d -C orange
+cvs -d :sspi:cvs@estelle.fri.uni-lj.si:/CVS checkout -P -d -C WidgetDebugging
 
 cd orange
 cvs update -d -C
