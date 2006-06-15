@@ -70,7 +70,20 @@ class GUIApplication(QVBox):
         
 
         #list of widget instances
-        self.widgets = [self.owFile, self.owData_Sampler, self.owAttribute_Statistics, self.owScatterplot, self.owLinear_Projection, self.owRadviz, self.owPolyviz, self.owParallel_coordinates, self.owSurvey_Plot, self.owSieve_Diagram, self.owMosaic_Display, ]
+        self.widgets = [self.owFile, self.owData_Sampler,
+                        self.owAttribute_Statistics, self.owScatterplot, self.owLinear_Projection, self.owRadviz, self.owPolyviz,
+                        self.owParallel_coordinates, self.owSurvey_Plot, self.owSieve_Diagram, self.owMosaic_Display]
+        
+        vizranks = [self.owScatterplot.vizrank, self.owLinear_Projection.vizrank, self.owRadviz.vizrank]        # don't add polyviz's vizrank, because it doesn't use time limit!!
+        for w in vizranks:
+            w.useTimeLimit = 1
+            w.useProjectionLimit = 1
+            w.timeLimit = 1
+            w.projectionLimit = 100
+            w.attributeCount = 8
+        
+        self.widgets += vizranks
+        
         # set widget captions
         self.owFile.setCaptionTitle('Qt File')
         self.owData_Sampler.setCaptionTitle('Qt Data Sampler')
