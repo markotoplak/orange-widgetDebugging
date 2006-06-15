@@ -1,4 +1,4 @@
-import os, sys, random, smtplib, re
+import os, sys, random, smtplib, re, time
 from qt import *
 import orange
 import orngSignalManager
@@ -6,7 +6,8 @@ import orngSignalManager
 # options and settings
 nrOfThingsToChange = 2000   # how many random clicks do we want to simulate
 changeDatasetClicks = 100   # after how many random clicks do we want to change the dataset file
-
+sendMailText = "sendmail"
+timeLimit = 30              # 30 minutes is the maximum time that we will spend in testing one schema
 
 widgetDir = os.path.join(os.path.split(orange.__file__)[0], "OrangeWidgets")
 sys.path.append(os.path.join(widgetDir, "Data"))
@@ -17,12 +18,13 @@ guiAppPath = os.path.split(sys.argv[0])[0]
 sys.path.append(guiAppPath)
 os.chdir(guiAppPath)
 
-sendMailText = "sendmail"
 sendMail = sendMailText in sys.argv[1:]     # do we want to send status mail or not
 
 guiApps = sys.argv[1:]
 if sendMailText in guiApps:
     guiApps.remove(sendMailText)
+
+printExtraOutput = (len(guiApps) != 0)      # in case that we are calling debugWidgets only to debug a specific gui application then we want extra output
 
 if len(guiApps) == 0:
     for name in os.listdir(guiAppPath):
@@ -76,10 +78,14 @@ for guiApp in guiApps:
                 widget.selectFile(0)
         
         random.seed(0)      # for each gui application reset the random generator
+        startTime = time.time()
 
         # randomly change gui elements in widgets
         for i in range(nrOfThingsToChange):
             application.processEvents()
+                
+            if time.time() - startTime >= timeLimit * 60:
+                break
             
             if i%changeDatasetClicks == 0:
                 datasetIndex = random.randint(0, len(datasets)-2)
@@ -87,16 +93,9 @@ for guiApp in guiApps:
                 fileWidgets[random.randint(0, len(fileWidgets)-1)].selectFile(datasetIndex)
                 instance.signalManager.addEvent("Setting data set: %s" % (str(os.path.split(datasetName)[1])))
             else:
-                try:
-                    widget = instance.widgets[random.randint(0, len(instance.widgets)-1)]
-                    widget.randomlyChangeSettings()
-                    application.processEvents()
-                except:
-                    instance.signalManager.addEvent("-----------------------------------")
-                    type, val, traceback = sys.exc_info()
-                    sys.excepthook(type, val, traceback)
-                    instance.signalManager.addEvent("State of widget %s: %s" % (widget.__class__.__name__, widget.getSettings()))
-                    instance.signalManager.addEvent("-----------------------------------")
+                widget = instance.widgets[random.randint(0, len(instance.widgets)-1)]
+                widget.randomlyChangeSettings(extraOutput = printExtraOutput)
+                application.processEvents()
 
         instance.signalManager.addEvent("Test finished")
         instance.hide()
@@ -125,6 +124,8 @@ for guiApp in guiApps:
             #server.set_debuglevel(0)
             server.sendmail(fromaddr, toaddrs, msg)
             server.quit()
+    elif time.time() - startTime >= timeLimit * 60:
+        widgetStatus += " Time limit %d minutes exceeded. No exceptions were reported up to then.\n" % (timeLimit)
     else:
         widgetStatus += " OK\n"
 
