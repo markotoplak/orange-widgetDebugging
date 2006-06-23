@@ -6,11 +6,7 @@ rem cvs -d :pserver:cvs@estelle.fri.uni-lj.si:/CVS checkout -A -- WidgetDebuggin
 cvs -d :pserver:cvs@estelle.fri.uni-lj.si:/CVS update -P -d -C orange
 cvs -d :pserver:cvs@estelle.fri.uni-lj.si:/CVS update -P -d -C WidgetDebugging
 
-cd orange
-cvs update -d -C
-cd ..\widgetDebugging
-cvs update -d -C
-
+cd widgetDebugging
 debugWidgets.py sendmail
 
 shutdown -s
