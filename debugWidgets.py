@@ -24,8 +24,6 @@ guiApps = sys.argv[1:]
 if sendMailText in guiApps:
     guiApps.remove(sendMailText)
 
-printExtraOutput = (len(guiApps) != 0)      # in case that we are calling debugWidgets only to debug a specific gui application then we want extra output
-
 if len(guiApps) == 0:
     for name in os.listdir(guiAppPath):
         if os.path.isfile(os.path.join(guiAppPath, name)) and os.path.splitext(name)[1] in [".py", ".pyw"]:
@@ -94,7 +92,7 @@ for guiApp in guiApps:
                 instance.signalManager.addEvent("Setting data set: %s" % (str(os.path.split(datasetName)[1])))
             else:
                 widget = instance.widgets[random.randint(0, len(instance.widgets)-1)]
-                widget.randomlyChangeSettings(extraOutput = printExtraOutput)
+                widget.randomlyChangeSettings()
                 application.processEvents()
 
         instance.signalManager.addEvent("Test finished")
