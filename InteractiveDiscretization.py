@@ -1,4 +1,4 @@
-# contact: ales.erjavec324@email.si
+# contact: ales.erjavec@fri.uni-lj.si
 import sys, os, cPickle, orange
 import orngSignalManager
 
