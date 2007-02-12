@@ -78,9 +78,9 @@ class GUIApplication(QVBox):
         for w in vizranks:
             w.useTimeLimit = 1
             w.useProjectionLimit = 1
-            w.timeLimit = 1
-            w.projectionLimit = 100
-            w.attributeCount = 8
+            w.timeLimit = 0.3
+            w.projectionLimit = 20
+            w.attributeCount = 6
         
         self.widgets += vizranks
         
