@@ -1,3 +1,4 @@
+# contact: gregor.leban@fri.uni-lj.si
 import sys, os, cPickle, orange
 import orngSignalManager
 
