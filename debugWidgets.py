@@ -21,6 +21,7 @@ os.chdir(guiAppPath)
 sendMail = sendMailText in sys.argv[1:]     # do we want to send status mail or not
 
 guiApps = sys.argv[1:]
+
 if sendMailText in guiApps:
     guiApps.remove(sendMailText)
 
@@ -47,7 +48,8 @@ application = QApplication(sys.argv)
 for guiApp in guiApps:
     guiName, guiExt = os.path.splitext(guiApp)
     debugFileName = guiName + ".txt"
-    f = open(debugFileName, "wt"); f.close()
+    f = open(debugFileName, "wt")
+    f.close()
 
     widgetStatus += guiApp + " "
 
@@ -84,16 +86,19 @@ for guiApp in guiApps:
                 
             if time.time() - startTime >= timeLimit * 60:
                 break
-            
-            if i%changeDatasetClicks == 0:
-                datasetIndex = random.randint(0, len(datasets)-2)
-                datasetName =  datasets[datasetIndex]
-                fileWidgets[random.randint(0, len(fileWidgets)-1)].selectFile(datasetIndex)
-                instance.signalManager.addEvent("Setting data set: %s" % (str(os.path.split(datasetName)[1])))
-            else:
-                widget = instance.widgets[random.randint(0, len(instance.widgets)-1)]
-                widget.randomlyChangeSettings()
-                application.processEvents()
+            try:
+                if i%changeDatasetClicks == 0:
+                    datasetIndex = random.randint(0, len(datasets)-2)
+                    datasetName =  datasets[datasetIndex]
+                    fileWidgets[random.randint(0, len(fileWidgets)-1)].selectFile(datasetIndex)
+                    instance.signalManager.addEvent("Setting data set: %s" % (str(os.path.split(datasetName)[1])))
+                else:
+                    widget = instance.widgets[random.randint(0, len(instance.widgets)-1)]
+                    widget.randomlyChangeSettings()
+                    application.processEvents()
+            except:
+                type, val, traceback = sys.exc_info()
+                sys.excepthook(type, val, traceback)  # print the exception 
 
         instance.signalManager.addEvent("Test finished")
         instance.hide()
