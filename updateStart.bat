@@ -7,6 +7,6 @@ cvs -d :pserver:cvs@estelle.fri.uni-lj.si:/CVS update -P -d -C orange
 cvs -d :pserver:cvs@estelle.fri.uni-lj.si:/CVS update -P -d -C WidgetDebugging
 
 cd WidgetDebugging
-debugWidgets.py sendmail
+debugWidgets.py -sendmail
 
 shutdown -s
