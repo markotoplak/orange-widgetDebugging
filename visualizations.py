@@ -1,4 +1,7 @@
 # contact: gregor.leban@fri.uni-lj.si
+# datasets: class, noclass
+# ignore: titanic.tab
+
 import sys, os, cPickle, orange
 import orngSignalManager
 
@@ -29,6 +32,7 @@ class GUIApplication(QVBox):
         QVBox.__init__(self,parent)
         self.setCaption("Qt visualizations")
         self.signalManager = orngSignalManager.SignalManager(debugMode, debugFileName, verbosity)
+        self.verbosity = verbosity
 
         # create widget instances
         self.owFile = OWFile(signalManager = self.signalManager)
@@ -80,8 +84,11 @@ class GUIApplication(QVBox):
             w.useTimeLimit = 1
             w.useProjectionLimit = 1
             w.timeLimit = 0.3
+            w.optimizeTimeLimit = 0.3
             w.projectionLimit = 20
+            w.optimizeProjectionLimit = 20
             w.attributeCount = 6
+            w.setEventHandler(self.eventHandler)
         
         self.widgets += vizranks
         
@@ -144,14 +151,12 @@ class GUIApplication(QVBox):
         
 
         statusBar = QStatusBar(self)
-        self.caption = QLabel('', statusBar)
-        self.caption.setMaximumWidth(230)
         self.progress = QProgressBar(100, statusBar)
-        self.progress.setMaximumWidth(100)
+        self.progress.setMaximumWidth(80)
+        self.progress.setMinimumWidth(80)
         self.progress.setCenterIndicator(1)
         self.status = QLabel("", statusBar)
         self.status.setSizePolicy(QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Preferred))
-        statusBar.addWidget(self.caption, 1)
         statusBar.addWidget(self.progress, 1)
         statusBar.addWidget(self.status, 1)
         #connect GUI buttons to show widgets
@@ -175,8 +180,8 @@ class GUIApplication(QVBox):
         self.signalManager.addLink( self.owFile, self.owData_Sampler, 'Examples', 'Data', 1)
         self.signalManager.addLink( self.owFile, self.owAttribute_Statistics, 'Examples', 'Examples', 1)
         self.signalManager.addLink( self.owFile, self.owScatterplot, 'Examples', 'Examples', 1)
-        self.signalManager.addLink( self.owFile, self.owLinear_Projection, 'Classified Examples', 'Classified Examples', 1)
-        self.signalManager.addLink( self.owFile, self.owRadviz, 'Classified Examples', 'Classified Examples', 1)
+        self.signalManager.addLink( self.owFile, self.owLinear_Projection, 'Classified Examples', 'Examples', 1)
+        self.signalManager.addLink( self.owFile, self.owRadviz, 'Classified Examples', 'Examples', 1)
         self.signalManager.addLink( self.owFile, self.owParallel_coordinates, 'Examples', 'Examples', 1)
         self.signalManager.addLink( self.owFile, self.owSurvey_Plot, 'Examples', 'Examples', 1)
         self.signalManager.addLink( self.owFile, self.owSieve_Diagram, 'Examples', 'Examples', 1)
@@ -184,27 +189,26 @@ class GUIApplication(QVBox):
         self.signalManager.addLink( self.owData_Sampler, self.owScatterplot, 'Classified Examples', 'Example Subset', 1)
         self.signalManager.addLink( self.owData_Sampler, self.owLinear_Projection, 'Classified Examples', 'Example Subset', 1)
         self.signalManager.addLink( self.owData_Sampler, self.owRadviz, 'Classified Examples', 'Example Subset', 1)
-        self.signalManager.addLink( self.owFile, self.owPolyviz, 'Classified Examples', 'Classified Examples', 1)
+        self.signalManager.addLink( self.owFile, self.owPolyviz, 'Classified Examples', 'Examples', 1)
         self.signalManager.addLink( self.owData_Sampler, self.owParallel_coordinates, 'Classified Examples', 'Example Subset', 1)
         self.signalManager.addLink( self.owData_Sampler, self.owMosaic_Display, 'Classified Examples', 'Example Subset', 1)
         self.signalManager.setFreeze(0)
         
 
-
-    def eventHandler(self, text):
-        self.status.setText(text)
+    def eventHandler(self, text, eventVerbosity = 1):
+        if self.verbosity >= eventVerbosity:
+            self.status.setText(text)
         
     def progressHandler(self, widget, val):
         if val < 0:
-            self.caption.setText("<nobr>Processing: <b>" + str(widget.captionTitle) + "</b></nobr>")
+            self.status.setText("<nobr>Processing: <b>" + str(widget.captionTitle) + "</b></nobr>")
             self.progress.setProgress(0)
         elif val >100:
-            self.caption.setText("")
+            self.status.setText("")
             self.progress.reset()
         else:
             self.progress.setProgress(val)
             self.update()
-
 
         
     def loadSettings(self):
@@ -282,4 +286,4 @@ if __name__ == "__main__":
 
     # comment the next line if in debugging mode and are interested only in output text in 'signalManagerOutput.txt' file
     application.exec_loop()
-    ow.saveSettings()
+    #ow.saveSettings()
