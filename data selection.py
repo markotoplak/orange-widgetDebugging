@@ -27,6 +27,7 @@ class GUIApplication(QVBox):
         self.signalManager = orngSignalManager.SignalManager(debugMode, debugFileName, verbosity)
         self.tabs = QTabWidget(self, 'tabWidget')
         self.resize(800,600)
+        self.verbosity = verbosity
 
         # create widget instances
         self.owFile = OWFile (self.tabs, signalManager = self.signalManager)
@@ -56,14 +57,12 @@ class GUIApplication(QVBox):
         self.widgets = [self.owFile, self.owSelect_Attributes, self.owData_Sampler, self.owSelect_Data, self.owDiscretize, self.owContinuize, ]
         
         statusBar = QStatusBar(self)
-        self.caption = QLabel('', statusBar)
-        self.caption.setMaximumWidth(230)
         self.progress = QProgressBar(100, statusBar)
-        self.progress.setMaximumWidth(100)
+        self.progress.setMaximumWidth(80)
+        self.progress.setMinimumWidth(80)
         self.progress.setCenterIndicator(1)
         self.status = QLabel("", statusBar)
         self.status.setSizePolicy(QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Preferred))
-        statusBar.addWidget(self.caption, 1)
         statusBar.addWidget(self.progress, 1)
         statusBar.addWidget(self.status, 1)
         self.signalManager.addWidget(self.owFile)
@@ -104,23 +103,22 @@ class GUIApplication(QVBox):
         self.signalManager.addLink( self.owData_Sampler, self.owContinuize, 'Classified Examples', 'Classified Examples', 1)
         self.signalManager.addLink( self.owData_Sampler, self.owDiscretize, 'Remaining Classified Examples', 'Examples', 1)
         self.signalManager.setFreeze(0)
-        
 
-    def eventHandler(self, text):
-        self.status.setText(text)
+    def eventHandler(self, text, eventVerbosity = 1):
+        if self.verbosity >= eventVerbosity:
+            self.status.setText(text)
         
     def progressHandler(self, widget, val):
         if val < 0:
-            self.caption.setText("<nobr>Processing: <b>" + str(widget.captionTitle) + "</b></nobr>")
+            self.status.setText("<nobr>Processing: <b>" + str(widget.captionTitle) + "</b></nobr>")
             self.progress.setProgress(0)
         elif val >100:
-            self.caption.setText("")
+            self.status.setText("")
             self.progress.reset()
         else:
             self.progress.setProgress(val)
             self.update()
-
-
+        
         
     def loadSettings(self):
         try:

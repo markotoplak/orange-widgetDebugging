@@ -1,10 +1,21 @@
+This is a step-by-step guide on how to create a script that will be tested automatically using this module.
 
-1. Create a schema in canvas that contains a group of widgets that you want to test. Save the schema as gui application (either with tabs or buttons). 
+1. Create a schema in Orange Canvas that contains a group of widgets that you want to test. Save the schema as gui application (either with tabs or buttons). 
 
 2. Create a snapshot of the canvas schema (File / Print Schema / Save image) with the same name as the gui application. 
 
-3. Open the schema in editor and add a on top a comment like this: # contact: email_address1, email_address2
-where you specify all email addresses that will receive a mail in case testing of this schema fails (usually only one email address). 
+3. Following are changes that you can add on top of the schema to modify its execution:
+
+- add a comment like this: # contact: email_address1, email_address2
+to specify email addresses that will receive am email in case testing of this schema fails (usually only one email address). 
+
+- add a comment like: # datasets: class, noclass
+to specify if your schema should be tested only on datasets with class variable (class), on datasets without class variable (noclass) or on both (class, noclass). If you don't specify this, only datasets with a class will be used in testing the schema
+
+- add a comment like: # ignore: titanic.tab, iris.tab
+to specify exact names of datasets in Datasets folder that should not be used in the test (for instance because they take up too much time).
+
+For an example of this possible comments see "visualizations.py"
 
 4. Commit files to cvs (.py (schema), .sav (settings of the widgets in schema) and .png (schema screenshot)).
 

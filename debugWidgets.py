@@ -6,8 +6,13 @@ import orngSignalManager
 # options and settings
 nrOfThingsToChange = 2000   # how many random clicks do we want to simulate
 changeDatasetClicks = 100   # after how many random clicks do we want to change the dataset file
-sendMailText = "sendmail"
 timeLimit = 30              # 30 minutes is the maximum time that we will spend in testing one schema
+
+# possible command line parameters
+sendMailText = "-sendmail"      # do we want to send an email to authors after finishing
+verbosity1Text = "-verbose"     # do we want to see a bit more output from widgets - prints a line for every change in the widget (checkboxes, buttons, comboboxes, ...)
+verbosity2Text = "-Verbose"     # do we want to see a lot of output from widgets - prints also passing and processing of signals
+
 
 widgetDir = os.path.join(os.path.split(orange.__file__)[0], "OrangeWidgets")
 sys.path.append(os.path.join(widgetDir, "Data"))
@@ -19,19 +24,23 @@ sys.path.append(guiAppPath)
 os.chdir(guiAppPath)
 
 sendMail = sendMailText in sys.argv[1:]     # do we want to send status mail or not
+verbosity = 0
+if verbosity1Text in sys.argv[1:]: verbosity = 1
+if verbosity2Text in sys.argv[1:]: verbosity = 2
 
 guiApps = sys.argv[1:]
 
-if sendMailText in guiApps:
-    guiApps.remove(sendMailText)
+##guiApps = ["visualizations.py"]
+##verbosity = 2
+
+for text in [sendMailText, verbosity1Text, verbosity2Text]:
+    if text in guiApps:
+        guiApps.remove(text)
 
 if len(guiApps) == 0:
     for name in os.listdir(guiAppPath):
-        if os.path.isfile(os.path.join(guiAppPath, name)) and os.path.splitext(name)[1] in [".py", ".pyw"]:
+        if os.path.isfile(os.path.join(guiAppPath, name)) and os.path.splitext(name)[1] in [".py", ".pyw"] and name.lower() != "debugwidgets.py":
             guiApps.append(name)
-
-if "debugWidgets.py" in guiApps:
-    guiApps.remove("debugWidgets.py")       # ignore this file if in the same directory
 
 # set datasets to try
 datasets = []
@@ -47,17 +56,38 @@ widgetStatus = ""; nrOfFailed = 0
 application = QApplication(sys.argv)        
 for guiApp in guiApps:
     guiName, guiExt = os.path.splitext(guiApp)
+    if guiExt.lower() not in [".py", ".pyw"]:
+        print "invalid file type for file", guiApp
+        continue
+    
     debugFileName = guiName + ".txt"
     f = open(debugFileName, "wt")
     f.close()
 
     widgetStatus += guiApp + " "
-
+    startTime = time.time()
     initializationOK = 0
+
+    f = open(guiApp)
+    script = f.read()
+    f.close()
+    search = re.search("datasets:(?P<types>.*)\n", script)      # which datasets are valid for this test - those with class, those without, or both
+    if search:
+        validDatasets = [val.strip().lower() for val in search.group("types").split(",")]
+    else:
+        validDatasets = ["class"]
+    
+    search = re.search("ignore:(?P<types>.*)\n", script)      # which datasets should be ignored
+    if search:
+        ignoreDatasets = [val.strip().lower() for val in search.group("types").split(",")]
+    else:
+        ignoreDatasets = []
+   
+    print guiApp,
     try:
         module = __import__(guiName,  globals(), locals())
         module.application = application
-        instance = module.GUIApplication(debugMode = 1, debugFileName = debugFileName, verbosity = 0)
+        instance = module.GUIApplication(debugMode = 1, debugFileName = debugFileName, verbosity = verbosity)
         application.setMainWidget(instance)
         instance.show()
         initializationOK = 1
@@ -76,35 +106,45 @@ for guiApp in guiApps:
                 fileWidgets.append(widget)
                 widget.recentFiles = datasets
                 widget.selectFile(0)
-        
         random.seed(0)      # for each gui application reset the random generator
-        startTime = time.time()
-
+        
         # randomly change gui elements in widgets
         for i in range(nrOfThingsToChange):
             application.processEvents()
                 
             if time.time() - startTime >= timeLimit * 60:
+                instance.signalManager.addEvent("Time limit (%d min) exceeded" % (timeLimit), eventVerbosity = 0)
                 break
             try:
-                if i%changeDatasetClicks == 0:
-                    datasetIndex = random.randint(0, len(datasets)-2)
-                    datasetName =  datasets[datasetIndex]
+                if i % changeDatasetClicks == 0:
+                    validChange = 0
+                    while validChange == 0:
+                        datasetIndex = random.randint(0, len(datasets)-2)
+                        datasetName =  datasets[datasetIndex]
+                        data = orange.ExampleTable(datasetName)
+                        if "class" in validDatasets and "noclass" in validDatasets: validChange = 1
+                        elif "class" in validDatasets and data.domain.classVar: validChange = 1
+                        elif "noclass" in validDatasets and data.domain.classVar == None: validChange = 1
+                        if os.path.split(datasetName)[1].lower() in ignoreDatasets: validChange = 0
+                        
+                    instance.signalManager.addEvent("---- Setting data set: %s ----" % (str(os.path.split(datasetName)[1])), eventVerbosity = 0)
                     fileWidgets[random.randint(0, len(fileWidgets)-1)].selectFile(datasetIndex)
-                    instance.signalManager.addEvent("Setting data set: %s" % (str(os.path.split(datasetName)[1])))
                 else:
                     widget = instance.widgets[random.randint(0, len(instance.widgets)-1)]
-                    widget.randomlyChangeSettings()
+                    widget.randomlyChangeSettings(verbosity)
                     application.processEvents()
             except:
                 type, val, traceback = sys.exc_info()
                 sys.excepthook(type, val, traceback)  # print the exception 
 
-        instance.signalManager.addEvent("Test finished")
+        instance.signalManager.addEvent("Test finished", eventVerbosity = 0)
         instance.hide()
         for widget in instance.widgets:
             widget.destroy()
         instance.destroy()
+        print "finished..."
+    else:
+        print "initialization failed, therefore skipping... "
 
     # check output for exceptions
     f = open(debugFileName, "rt")
@@ -113,9 +153,7 @@ for guiApp in guiApps:
     if content.find("Unhandled exception") != -1:
         widgetStatus += " FAILED\n"
         nrOfFailed += 1
-        file = open(guiApp)
-        script = file.read()
-        file.close()
+        
 
         # if we found somebody to bug then send him an email
         search = re.search("contact:(?P<imena>.*)\n", script)
