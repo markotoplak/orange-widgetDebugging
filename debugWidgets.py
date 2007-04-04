@@ -30,8 +30,8 @@ if verbosity2Text in sys.argv[1:]: verbosity = 2
 
 guiApps = sys.argv[1:]
 
-##guiApps = ["visualizations.py"]
-##verbosity = 2
+#guiApps = ["visualizations.py"]
+#verbosity = 2
 
 for text in [sendMailText, verbosity1Text, verbosity2Text]:
     if text in guiApps:
@@ -51,15 +51,16 @@ for name in os.listdir(datapath):
 
 datasets.append("") # we add a blank dataset. this will never be selected and replaces the "Browse documentation data sets..."
 
-widgetStatus = ""; nrOfFailed = 0
+widgetStatus = ""
+nrOfFailed = 0
 
-application = QApplication(sys.argv)        
+application = QApplication(sys.argv)
 for guiApp in guiApps:
     guiName, guiExt = os.path.splitext(guiApp)
     if guiExt.lower() not in [".py", ".pyw"]:
         print "invalid file type for file", guiApp
         continue
-    
+
     debugFileName = guiName + ".txt"
     f = open(debugFileName, "wt")
     f.close()
@@ -75,15 +76,15 @@ for guiApp in guiApps:
     if search:
         validDatasets = [val.strip().lower() for val in search.group("types").split(",")]
     else:
-        validDatasets = ["class"]
-    
+        validDatasets = ["class", "noclass"]
+
     search = re.search("ignore:(?P<types>.*)\n", script)      # which datasets should be ignored
     if search:
         ignoreDatasets = [val.strip().lower() for val in search.group("types").split(",")]
     else:
         ignoreDatasets = []
-   
-    print guiApp,
+
+    print guiApp
     try:
         module = __import__(guiName,  globals(), locals())
         module.application = application
@@ -105,13 +106,13 @@ for guiApp in guiApps:
                 instance.widgets.remove(widget)
                 fileWidgets.append(widget)
                 widget.recentFiles = datasets
-                widget.selectFile(0)
+                #widget.selectFile(0)
         random.seed(0)      # for each gui application reset the random generator
-        
+
         # randomly change gui elements in widgets
         for i in range(nrOfThingsToChange):
             application.processEvents()
-                
+
             if time.time() - startTime >= timeLimit * 60:
                 instance.signalManager.addEvent("Time limit (%d min) exceeded" % (timeLimit), eventVerbosity = 0)
                 break
@@ -126,7 +127,7 @@ for guiApp in guiApps:
                         elif "class" in validDatasets and data.domain.classVar: validChange = 1
                         elif "noclass" in validDatasets and data.domain.classVar == None: validChange = 1
                         if os.path.split(datasetName)[1].lower() in ignoreDatasets: validChange = 0
-                        
+
                     instance.signalManager.addEvent("---- Setting data set: %s ----" % (str(os.path.split(datasetName)[1])), eventVerbosity = 0)
                     fileWidgets[random.randint(0, len(fileWidgets)-1)].selectFile(datasetIndex)
                 else:
@@ -135,16 +136,17 @@ for guiApp in guiApps:
                     application.processEvents()
             except:
                 type, val, traceback = sys.exc_info()
-                sys.excepthook(type, val, traceback)  # print the exception 
+                sys.excepthook(type, val, traceback)  # print the exception
 
         instance.signalManager.addEvent("Test finished", eventVerbosity = 0)
+
         instance.hide()
         for widget in instance.widgets:
             widget.destroy()
         instance.destroy()
-        print "finished..."
+        print "finished...\n----------"
     else:
-        print "initialization failed, therefore skipping... "
+        print "initialization failed, therefore skipping...\n----------"
 
     # check output for exceptions
     f = open(debugFileName, "rt")
@@ -153,14 +155,15 @@ for guiApp in guiApps:
     if content.find("Unhandled exception") != -1:
         widgetStatus += " FAILED\n"
         nrOfFailed += 1
-        
+
 
         # if we found somebody to bug then send him an email
         search = re.search("contact:(?P<imena>.*)\n", script)
         if (search) and sendMail == 1:
             fromaddr = "orange@fri.uni-lj.si"
-            toaddrs = search.group("imena").split(",")
-            msg = "From: %s\r\nTo: %s\r\nSubject: Exception in widgets - %s script\r\n\r\n" % (fromaddr, ", ".join(toaddrs), guiApp) + content
+            toaddrs = search.group("imena")
+            toaddrs.replace(" ", ",")
+            msg = "From: %s\r\nTo: %s\r\nSubject: Exception in widgets - %s script\r\n\r\n" % (fromaddr, toaddrs, guiApp) + content
             server = smtplib.SMTP('212.235.188.18', 25)
             #server.set_debuglevel(0)
             server.sendmail(fromaddr, toaddrs, msg)
@@ -172,8 +175,8 @@ for guiApp in guiApps:
 
 if sendMail == 1:
     fromaddr = "orange@fri.uni-lj.si"
-    toaddrs = ["tomaz.curk@fri.uni-lj.si", "gregor.leban@fri.uni-lj.si"]
-    msg = "From: %s\r\nTo: %s\r\nSubject: Widget test status. Number of failed: %d \r\n\r\n" % (fromaddr, ", ".join(toaddrs), nrOfFailed) + widgetStatus
+    toaddrs = "tomaz.curk@fri.uni-lj.si, gregor.leban@fri.uni-lj.si"
+    msg = "From: %s\r\nTo: %s\r\nSubject: Widget test status. Number of failed: %d \r\n\r\n" % (fromaddr, toaddrs, nrOfFailed) + widgetStatus
 
     server = smtplib.SMTP('212.235.188.18', 25)
     server.sendmail(fromaddr, toaddrs, msg)

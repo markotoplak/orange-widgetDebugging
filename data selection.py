@@ -36,7 +36,7 @@ class GUIApplication(QVBox):
         self.owSelect_Data = OWSelectData (self.tabs, signalManager = self.signalManager)
         self.owDiscretize = OWDiscretize (self.tabs, signalManager = self.signalManager)
         self.owContinuize = OWContinuize (self.tabs, signalManager = self.signalManager)
-        
+
         # create instances of hidden widgets
 
         #set event and progress handler
@@ -52,10 +52,10 @@ class GUIApplication(QVBox):
         self.owDiscretize.setProgressBarHandler(self.progressHandler)
         self.owContinuize.setEventHandler(self.eventHandler)
         self.owContinuize.setProgressBarHandler(self.progressHandler)
-        
+
         #list of widget instances
         self.widgets = [self.owFile, self.owSelect_Attributes, self.owData_Sampler, self.owSelect_Data, self.owDiscretize, self.owContinuize, ]
-        
+
         statusBar = QStatusBar(self)
         self.progress = QProgressBar(100, statusBar)
         self.progress.setMaximumWidth(80)
@@ -71,7 +71,7 @@ class GUIApplication(QVBox):
         self.signalManager.addWidget(self.owSelect_Data)
         self.signalManager.addWidget(self.owDiscretize)
         self.signalManager.addWidget(self.owContinuize)
-        
+
         # add tabs
         self.tabs.insertTab (self.owFile, "File")
         self.owFile.captionTitle = 'File'
@@ -91,7 +91,7 @@ class GUIApplication(QVBox):
         self.tabs.insertTab (self.owContinuize, "Continuize")
         self.owContinuize.captionTitle = 'Continuize'
         self.owContinuize.setCaption(self.owContinuize.captionTitle)
-        
+
         #load settings before we connect widgets
         self.loadSettings()
 
@@ -100,14 +100,14 @@ class GUIApplication(QVBox):
         self.signalManager.addLink( self.owFile, self.owSelect_Attributes, 'Examples', 'Examples', 1)
         self.signalManager.addLink( self.owFile, self.owData_Sampler, 'Examples', 'Data', 1)
         self.signalManager.addLink( self.owFile, self.owSelect_Data, 'Examples', 'Examples', 1)
-        self.signalManager.addLink( self.owData_Sampler, self.owContinuize, 'Classified Examples', 'Classified Examples', 1)
-        self.signalManager.addLink( self.owData_Sampler, self.owDiscretize, 'Remaining Classified Examples', 'Examples', 1)
+        self.signalManager.addLink( self.owData_Sampler, self.owContinuize, 'Examples', 'Examples', 1)
+        self.signalManager.addLink( self.owData_Sampler, self.owDiscretize, 'Remaining Examples', 'Examples', 1)
         self.signalManager.setFreeze(0)
 
     def eventHandler(self, text, eventVerbosity = 1):
         if self.verbosity >= eventVerbosity:
             self.status.setText(text)
-        
+
     def progressHandler(self, widget, val):
         if val < 0:
             self.status.setText("<nobr>Processing: <b>" + str(widget.captionTitle) + "</b></nobr>")
@@ -118,8 +118,8 @@ class GUIApplication(QVBox):
         else:
             self.progress.setProgress(val)
             self.update()
-        
-        
+
+
     def loadSettings(self):
         try:
             file = open("data selection.sav", "r")
@@ -139,8 +139,8 @@ class GUIApplication(QVBox):
         self.owDiscretize.activateLoadedSettings()
         self.owContinuize.loadSettingsStr(strSettings["Continuize"])
         self.owContinuize.activateLoadedSettings()
-        
-        
+
+
     def saveSettings(self):
         return
         """
@@ -151,7 +151,7 @@ class GUIApplication(QVBox):
         self.owData_Sampler.synchronizeContexts()
         self.owSelect_Attributes.synchronizeContexts()
         self.owFile.synchronizeContexts()
-        
+
         strSettings = {}
         strSettings["File"] = self.owFile.saveSettingsStr()
         strSettings["Select Attributes"] = self.owSelect_Attributes.saveSettingsStr()
@@ -159,16 +159,16 @@ class GUIApplication(QVBox):
         strSettings["Select Data"] = self.owSelect_Data.saveSettingsStr()
         strSettings["Discretize"] = self.owDiscretize.saveSettingsStr()
         strSettings["Continuize"] = self.owContinuize.saveSettingsStr()
-        
+
         file = open("data selection.sav", "w")
         cPickle.dump(strSettings, file)
         file.close()
         """
-        
-        
 
 
-if __name__ == "__main__": 
+
+
+if __name__ == "__main__":
     application = QApplication(sys.argv)
     ow = GUIApplication()
     application.setMainWidget(ow)
