@@ -1,5 +1,3 @@
-# contact: tomaz.curk@fri.uni-lj.si blaz.zupan@fri.uni-lj.si
-
 import sys, os, cPickle, orange, orngSignalManager, orngRegistry
 DEBUG_MODE = 0   #set to 1 to output debugging info to file 'signalManagerOutput.txt'
 orngRegistry.addWidgetDirectories()
@@ -23,7 +21,7 @@ from OWResultTable import *
 class GUIApplication(QVBox):
     def __init__(self,parent=None, debugMode = DEBUG_MODE, debugFileName = "signalManagerOutput.txt", verbosity = 1):
         QVBox.__init__(self,parent)
-        self.setCaption("Qt evaluate")
+        self.setCaption("Qt Evaluate")
         self.signalManager = orngSignalManager.SignalManager(debugMode, debugFileName, verbosity)
         self.verbosity = verbosity
 
@@ -36,7 +34,7 @@ class GUIApplication(QVBox):
         self.owMajority = OWMajority(signalManager = self.signalManager)
         self.owk_Nearest_Neighbours = OWKNN(signalManager = self.signalManager)
         self.owClassification_Tree = OWClassificationTree(signalManager = self.signalManager)
-        self.owC4.5 = OWC45Tree(signalManager = self.signalManager)
+        self.owC45 = OWC45Tree(signalManager = self.signalManager)
         self.owSVM = OWSVM(signalManager = self.signalManager)
         self.owCN2 = OWCN2(signalManager = self.signalManager)
         self.owTest_Learners = OWTestLearners(signalManager = self.signalManager)
@@ -63,8 +61,8 @@ class GUIApplication(QVBox):
         self.owk_Nearest_Neighbours.setProgressBarHandler(self.progressHandler)
         self.owClassification_Tree.setEventHandler(self.eventHandler)
         self.owClassification_Tree.setProgressBarHandler(self.progressHandler)
-        self.owC4.5.setEventHandler(self.eventHandler)
-        self.owC4.5.setProgressBarHandler(self.progressHandler)
+        self.owC45.setEventHandler(self.eventHandler)
+        self.owC45.setProgressBarHandler(self.progressHandler)
         self.owSVM.setEventHandler(self.eventHandler)
         self.owSVM.setProgressBarHandler(self.progressHandler)
         self.owCN2.setEventHandler(self.eventHandler)
@@ -80,7 +78,7 @@ class GUIApplication(QVBox):
         
 
         #list of widget instances
-        self.widgets = [self.owFile, self.owSelect_Attributes, self.owData_Sampler, self.owNaive_Bayes, self.owLogistic_Regression, self.owMajority, self.owk_Nearest_Neighbours, self.owClassification_Tree, self.owC4.5, self.owSVM, self.owCN2, self.owTest_Learners, self.owROC_Analysis, self.owLift_Curve, self.owResult_Table, ]
+        self.widgets = [self.owFile, self.owSelect_Attributes, self.owData_Sampler, self.owNaive_Bayes, self.owLogistic_Regression, self.owMajority, self.owk_Nearest_Neighbours, self.owClassification_Tree, self.owC45, self.owSVM, self.owCN2, self.owTest_Learners, self.owROC_Analysis, self.owLift_Curve, self.owResult_Table, ]
         # set widget captions
         self.owFile.setCaptionTitle('Qt File')
         self.owSelect_Attributes.setCaptionTitle('Qt Select Attributes')
@@ -90,7 +88,7 @@ class GUIApplication(QVBox):
         self.owMajority.setCaptionTitle('Qt Majority')
         self.owk_Nearest_Neighbours.setCaptionTitle('Qt k Nearest Neighbours')
         self.owClassification_Tree.setCaptionTitle('Qt Classification Tree')
-        self.owC4.5.setCaptionTitle('Qt C4.5')
+        self.owC45.setCaptionTitle('Qt C4.5')
         self.owSVM.setCaptionTitle('Qt SVM')
         self.owCN2.setCaptionTitle('Qt CN2')
         self.owTest_Learners.setCaptionTitle('Qt Test Learners')
@@ -107,7 +105,7 @@ class GUIApplication(QVBox):
         self.owMajority.setWidgetIcon('icons/Majority.png')
         self.owk_Nearest_Neighbours.setWidgetIcon('icons/kNearestNeighbours.png')
         self.owClassification_Tree.setWidgetIcon('icons/ClassificationTree.png')
-        self.owC4.5.setWidgetIcon('icons/C45.png')
+        self.owC45.setWidgetIcon('icons/C45.png')
         self.owSVM.setWidgetIcon('icons/BasicSVM.png')
         self.owCN2.setWidgetIcon('CN2.png')
         self.owTest_Learners.setWidgetIcon('icons/TestLearners.png')
@@ -123,7 +121,7 @@ class GUIApplication(QVBox):
         self.signalManager.addWidget(self.owMajority)
         self.signalManager.addWidget(self.owk_Nearest_Neighbours)
         self.signalManager.addWidget(self.owClassification_Tree)
-        self.signalManager.addWidget(self.owC4.5)
+        self.signalManager.addWidget(self.owC45)
         self.signalManager.addWidget(self.owSVM)
         self.signalManager.addWidget(self.owCN2)
         self.signalManager.addWidget(self.owTest_Learners)
@@ -140,7 +138,7 @@ class GUIApplication(QVBox):
         owButtonMajority = QPushButton("Majority", self)
         owButtonk_Nearest_Neighbours = QPushButton("k Nearest Neighbours", self)
         owButtonClassification_Tree = QPushButton("Classification Tree", self)
-        owButtonC4.5 = QPushButton("C4.5", self)
+        owButtonC45 = QPushButton("C4.5", self)
         owButtonSVM = QPushButton("SVM", self)
         owButtonCN2 = QPushButton("CN2", self)
         owButtonTest_Learners = QPushButton("Test Learners", self)
@@ -169,7 +167,7 @@ class GUIApplication(QVBox):
         self.connect(owButtonMajority ,SIGNAL("clicked()"), self.owMajority.reshow)
         self.connect(owButtonk_Nearest_Neighbours ,SIGNAL("clicked()"), self.owk_Nearest_Neighbours.reshow)
         self.connect(owButtonClassification_Tree ,SIGNAL("clicked()"), self.owClassification_Tree.reshow)
-        self.connect(owButtonC4.5 ,SIGNAL("clicked()"), self.owC4.5.reshow)
+        self.connect(owButtonC45 ,SIGNAL("clicked()"), self.owC45.reshow)
         self.connect(owButtonSVM ,SIGNAL("clicked()"), self.owSVM.reshow)
         self.connect(owButtonCN2 ,SIGNAL("clicked()"), self.owCN2.reshow)
         self.connect(owButtonTest_Learners ,SIGNAL("clicked()"), self.owTest_Learners.reshow)
@@ -189,7 +187,7 @@ class GUIApplication(QVBox):
         self.signalManager.addLink( self.owData_Sampler, self.owMajority, 'Examples', 'Examples', 1)
         self.signalManager.addLink( self.owData_Sampler, self.owk_Nearest_Neighbours, 'Examples', 'Examples', 1)
         self.signalManager.addLink( self.owData_Sampler, self.owClassification_Tree, 'Examples', 'Examples', 1)
-        self.signalManager.addLink( self.owData_Sampler, self.owC4.5, 'Examples', 'Examples', 1)
+        self.signalManager.addLink( self.owData_Sampler, self.owC45, 'Examples', 'Examples', 1)
         self.signalManager.addLink( self.owData_Sampler, self.owCN2, 'Examples', 'Example Table', 1)
         self.signalManager.addLink( self.owData_Sampler, self.owSVM, 'Examples', 'Example Table', 1)
         self.signalManager.addLink( self.owNaive_Bayes, self.owTest_Learners, 'Learner', 'Learner', 1)
@@ -199,7 +197,7 @@ class GUIApplication(QVBox):
         self.signalManager.addLink( self.owSVM, self.owTest_Learners, 'Learner', 'Learner', 1)
         self.signalManager.addLink( self.owk_Nearest_Neighbours, self.owTest_Learners, 'Learner', 'Learner', 1)
         self.signalManager.addLink( self.owClassification_Tree, self.owTest_Learners, 'Learner', 'Learner', 1)
-        self.signalManager.addLink( self.owC4.5, self.owTest_Learners, 'Learner', 'Learner', 1)
+        self.signalManager.addLink( self.owC45, self.owTest_Learners, 'Learner', 'Learner', 1)
         self.signalManager.addLink( self.owCN2, self.owTest_Learners, 'Learner', 'Learner', 1)
         self.signalManager.addLink( self.owTest_Learners, self.owROC_Analysis, 'Evaluation Results', 'Evaluation Results', 1)
         self.signalManager.addLink( self.owTest_Learners, self.owLift_Curve, 'Evaluation Results', 'Evaluation Results', 1)
@@ -227,7 +225,7 @@ class GUIApplication(QVBox):
 
     def loadSettings(self):
         try:
-            file = open("evaluate.sav", "r")
+            file = open("Evaluate.sav", "r")
         except:
             return
         strSettings = cPickle.load(file)
@@ -248,8 +246,8 @@ class GUIApplication(QVBox):
         self.owk_Nearest_Neighbours.activateLoadedSettings()
         self.owClassification_Tree.loadSettingsStr(strSettings["Classification Tree"])
         self.owClassification_Tree.activateLoadedSettings()
-        self.owC4.5.loadSettingsStr(strSettings["C4.5"])
-        self.owC4.5.activateLoadedSettings()
+        self.owC45.loadSettingsStr(strSettings["C4.5"])
+        self.owC45.activateLoadedSettings()
         self.owSVM.loadSettingsStr(strSettings["SVM"])
         self.owSVM.activateLoadedSettings()
         self.owCN2.loadSettingsStr(strSettings["CN2"])
@@ -272,7 +270,7 @@ class GUIApplication(QVBox):
         self.owTest_Learners.synchronizeContexts()
         self.owCN2.synchronizeContexts()
         self.owSVM.synchronizeContexts()
-        self.owC4.5.synchronizeContexts()
+        self.owC45.synchronizeContexts()
         self.owClassification_Tree.synchronizeContexts()
         self.owk_Nearest_Neighbours.synchronizeContexts()
         self.owMajority.synchronizeContexts()
@@ -291,7 +289,7 @@ class GUIApplication(QVBox):
         strSettings["Majority"] = self.owMajority.saveSettingsStr()
         strSettings["k Nearest Neighbours"] = self.owk_Nearest_Neighbours.saveSettingsStr()
         strSettings["Classification Tree"] = self.owClassification_Tree.saveSettingsStr()
-        strSettings["C4.5"] = self.owC4.5.saveSettingsStr()
+        strSettings["C4.5"] = self.owC45.saveSettingsStr()
         strSettings["SVM"] = self.owSVM.saveSettingsStr()
         strSettings["CN2"] = self.owCN2.saveSettingsStr()
         strSettings["Test Learners"] = self.owTest_Learners.saveSettingsStr()
@@ -299,7 +297,7 @@ class GUIApplication(QVBox):
         strSettings["Lift Curve"] = self.owLift_Curve.saveSettingsStr()
         strSettings["Result Table"] = self.owResult_Table.saveSettingsStr()
         
-        file = open("evaluate.sav", "w")
+        file = open("Evaluate.sav", "w")
         cPickle.dump(strSettings, file)
         file.close()
         
