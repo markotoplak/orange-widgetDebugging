@@ -12,7 +12,7 @@ timeLimit = 30              # 30 minutes is the maximum time that we will spend 
 sendMailText = "-sendmail"      # do we want to send an email to authors after finishing
 verbosity1Text = "-verbose"     # do we want to see a bit more output from widgets - prints a line for every change in the widget (checkboxes, buttons, comboboxes, ...)
 verbosity2Text = "-Verbose"     # do we want to see a lot of output from widgets - prints also passing and processing of signals
-
+changesText = "-changes="
 
 widgetDir = os.path.join(os.path.split(orange.__file__)[0], "OrangeWidgets")
 sys.path.append(os.path.join(widgetDir, "Data"))
@@ -29,6 +29,13 @@ if verbosity1Text in sys.argv[1:]: verbosity = 1
 if verbosity2Text in sys.argv[1:]: verbosity = 2
 
 guiApps = sys.argv[1:]
+
+# do we have a specific number of things to change
+for flag in guiApps:
+    if changesText.lower() in flag.lower():
+        guiApps.remove(flag)
+        nrOfThingsToChange = int(flag[flag.index("=") + 1 :])
+
 
 #guiApps = ["visualizations.py"]
 #verbosity = 2
