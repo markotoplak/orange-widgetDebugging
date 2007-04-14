@@ -146,6 +146,7 @@ for guiApp in guiApps:
                 sys.excepthook(type, val, traceback)  # print the exception
 
         instance.signalManager.addEvent("Test finished", eventVerbosity = 0)
+        del instance.signalManager      # do this to set sys.stderr back to normal so that exceptions that happen in following lines are not written to the output file
 
         instance.hide()
         for widget in instance.widgets:
