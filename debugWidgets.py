@@ -146,10 +146,10 @@ for guiApp in guiApps:
                 sys.excepthook(type, val, traceback)  # print the exception
 
         instance.signalManager.addEvent("Test finished", eventVerbosity = 0)
-        del instance.signalManager      # do this to set sys.stderr back to normal so that exceptions that happen in following lines are not written to the output file
+        instance.signalManager.closeDebugFile()      # do this to set sys.stderr back to normal so that exceptions that happen in following lines are not written to the output file
 
         instance.hide()
-        for widget in instance.widgets:
+        for widget in instance.widgets[::-1]:
             widget.destroy()
         instance.destroy()
         print "finished...\n----------"
@@ -160,10 +160,9 @@ for guiApp in guiApps:
     f = open(debugFileName, "rt")
     content = f.read()
     f.close()
-    if content.find("Unhandled exception") != -1:
+    if content.find("Unhandled exception") != -1 or content.find("Time limit (%d min) exceeded" % (timeLimit)) != -1:
         widgetStatus += " FAILED\n"
         nrOfFailed += 1
-
 
         # if we found somebody to bug then send him an email
         search = re.search("contact:(?P<imena>.*)\n", script)
@@ -176,8 +175,8 @@ for guiApp in guiApps:
             #server.set_debuglevel(0)
             server.sendmail(fromaddr, toaddrs, msg)
             server.quit()
-    elif time.time() - startTime >= timeLimit * 60:
-        widgetStatus += " Time limit %d minutes exceeded. No exceptions were reported up to then.\n" % (timeLimit)
+#    elif time.time() - startTime >= timeLimit * 60:
+#        widgetStatus += " Time limit %d minutes exceeded. No exceptions were reported up to then.\n" % (timeLimit)
     else:
         widgetStatus += " OK\n"
 
