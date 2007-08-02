@@ -1,5 +1,5 @@
 # contact: ales.erjavec@fri.uni-lj.si janez.demsar@fri.uni-lj.si blaz.zupan@fri.uni-lj.si
-
+#
 import sys, os, cPickle, orange, orngSignalManager, orngRegistry
 DEBUG_MODE = 0   #set to 1 to output debugging info to file 'signalManagerOutput.txt'
 orngRegistry.addWidgetDirectories()
