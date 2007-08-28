@@ -52,7 +52,7 @@ else:
 
 try:
     application = QApplication(sys.argv[1:])
-    module = __import__(os.path.splitext(guiName)[0])
+    module = __import__(os.path.splitext(os.path.basename(guiName))[0])
     module.application = application
     instance = module.GUIApplication(debugMode = 1, debugFileName = debugFileName, verbosity = verbosity)
     application.setMainWidget(instance)
