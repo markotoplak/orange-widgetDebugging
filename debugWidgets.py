@@ -1,22 +1,17 @@
+import orngOrangeFoldersQt4
 import os, sys, random, smtplib, re, time
-from qt import *
-import orange
-import orngSignalManager
+import orange, subprocess
 
 # options and settings
 nrOfThingsToChange = 2000   # how many random clicks do we want to simulate
-changeDatasetClicks = 100   # after how many random clicks do we want to change the dataset file
 timeLimit = 30              # 30 minutes is the maximum time that we will spend in testing one schema
 
 # possible command line parameters
 sendMailText = "-sendmail"      # do we want to send an email to authors after finishing
 verbosity1Text = "-verbose"     # do we want to see a bit more output from widgets - prints a line for every change in the widget (checkboxes, buttons, comboboxes, ...)
 verbosity2Text = "-Verbose"     # do we want to see a lot of output from widgets - prints also passing and processing of signals
-changesText = "-changes="
-
-widgetDir = os.path.join(os.path.split(orange.__file__)[0], "OrangeWidgets")
-sys.path.append(os.path.join(widgetDir, "Data"))
-import OWFile       # we need to know the file widget so that we can remove it from the instance.widgets list
+changesText = "-changes="       # specify the number of random changes that you would like to do in each tested schema
+debugOneText = "debugOne.py"
 
 # get gui applications to try
 guiAppPath = os.path.split(sys.argv[0])[0]
@@ -36,133 +31,62 @@ for flag in guiApps:
         guiApps.remove(flag)
         nrOfThingsToChange = int(flag[flag.index("=") + 1 :])
 
-
 #guiApps = ["visualizations.py"]
 #verbosity = 2
 
-for text in [sendMailText, verbosity1Text, verbosity2Text]:
+for text in [sendMailText, verbosity1Text, verbosity2Text, debugOneText]:
     if text in guiApps:
         guiApps.remove(text)
 
 if len(guiApps) == 0:
     for name in os.listdir(guiAppPath):
-        if os.path.isfile(os.path.join(guiAppPath, name)) and os.path.splitext(name)[1] in [".py", ".pyw"] and name.lower() != "debugwidgets.py":
+        if os.path.isfile(os.path.join(guiAppPath, name)) and os.path.splitext(name)[1].lower() in [".py", ".pyw"] and name.lower() not in ["debugwidgets.py", "debugone.py"]:
             guiApps.append(name)
-
-# set datasets to try
-datasets = []
-datapath = os.path.join(guiAppPath, "datasets")
-for name in os.listdir(datapath):
-    if os.path.isfile(os.path.join(datapath, name)):
-        datasets.append(os.path.join(datapath, name))
-
-datasets.append("") # we add a blank dataset. this will never be selected and replaces the "Browse documentation data sets..."
 
 widgetStatus = ""
 nrOfFailed = 0
 
-application = QApplication(sys.argv)
 for guiApp in guiApps:
     guiName, guiExt = os.path.splitext(guiApp)
     if guiExt.lower() not in [".py", ".pyw"]:
-        print "invalid file type for file", guiApp
-        continue
-
-    debugFileName = guiName + ".txt"
-    f = open(debugFileName, "wt")
-    f.close()
-
-    widgetStatus += guiApp + " "
-    startTime = time.time()
-    initializationOK = 0
-
-    f = open(guiApp)
-    script = f.read()
-    f.close()
-    search = re.search("datasets:(?P<types>.*)\n", script)      # which datasets are valid for this test - those with class, those without, or both
-    if search:
-        validDatasets = [val.strip().lower() for val in search.group("types").split(",")]
-    else:
-        validDatasets = ["class", "noclass"]
-
-    search = re.search("ignore:(?P<types>.*)\n", script)      # which datasets should be ignored
-    if search:
-        ignoreDatasets = [val.strip().lower() for val in search.group("types").split(",")]
-    else:
-        ignoreDatasets = []
+        if os.path.exists(guiName + ".py"):
+            guiApp = guiName + ".py"
+        else:
+            print "invalid file type for file", guiApp
+            continue
 
     print guiApp
-    try:
-        module = __import__(guiName,  globals(), locals())
-        module.application = application
-        instance = module.GUIApplication(debugMode = 1, debugFileName = debugFileName, verbosity = verbosity)
-        application.setMainWidget(instance)
-        instance.show()
-        initializationOK = 1
-    except:
-        type, val, traceback = sys.exc_info()
-        sys.excepthook(type, val, traceback)
-        #widgetStatus += " FAILED\n"
-        #nrOfFailed += 1
+    startTime = time.time()
+    process = subprocess.Popen(sys.executable + " debugOne.py %s %s %s %s" % (guiApp, str(nrOfThingsToChange), str(verbosity), str(timeLimit)))
 
-    if initializationOK:
-        # remove the file widgets
-        fileWidgets = []
-        for widget in instance.widgets[::-1]:
-            if isinstance(widget, OWFile.OWSubFile):
-                instance.widgets.remove(widget)
-                fileWidgets.append(widget)
-                widget.recentFiles = datasets
-                #widget.selectFile(0)
-        random.seed(0)      # for each gui application reset the random generator
+    while process.poll() == None and time.time() - startTime < timeLimit * 60 + 10:
+         time.sleep(3)
 
-        # randomly change gui elements in widgets
-        for i in range(nrOfThingsToChange):
-            application.processEvents()
+    successful = 1
+    if process.poll() == None and sys.platform == "win32":
+        import win32api
+        win32api.TerminateProcess(process.pid,0)
+        successful = 0
 
-            if time.time() - startTime >= timeLimit * 60:
-                instance.signalManager.addEvent("Time limit (%d min) exceeded" % (timeLimit), eventVerbosity = 0)
-                break
-            try:
-                if i % changeDatasetClicks == 0:
-                    validChange = 0
-                    while validChange == 0:
-                        datasetIndex = random.randint(0, len(datasets)-2)
-                        datasetName =  datasets[datasetIndex]
-                        data = orange.ExampleTable(datasetName)
-                        if "class" in validDatasets and "noclass" in validDatasets: validChange = 1
-                        elif "class" in validDatasets and data.domain.classVar: validChange = 1
-                        elif "noclass" in validDatasets and data.domain.classVar == None: validChange = 1
-                        if os.path.split(datasetName)[1].lower() in ignoreDatasets: validChange = 0
 
-                    instance.signalManager.addEvent("---- Setting data set: %s ----" % (str(os.path.split(datasetName)[1])), eventVerbosity = 0)
-                    fileWidgets[random.randint(0, len(fileWidgets)-1)].selectFile(datasetIndex)
-                else:
-                    widget = instance.widgets[random.randint(0, len(instance.widgets)-1)]
-                    widget.randomlyChangeSettings(verbosity)
-                    application.processEvents()
-            except:
-                type, val, traceback = sys.exc_info()
-                sys.excepthook(type, val, traceback)  # print the exception
-
-        instance.signalManager.addEvent("Test finished", eventVerbosity = 0)
-        instance.signalManager.closeDebugFile()      # do this to set sys.stderr back to normal so that exceptions that happen in following lines are not written to the output file
-
-        instance.hide()
-        for widget in instance.widgets[::-1]:
-            widget.destroy()
-        instance.destroy()
-        print "finished...\n----------"
-    else:
-        print "initialization failed, therefore skipping...\n----------"
+    print "Finished. Status:",
 
     # check output for exceptions
-    f = open(debugFileName, "rt")
+    f = open(guiName + ".txt", "rt")
     content = f.read()
     f.close()
-    if content.find("Unhandled exception") != -1 or content.find("Time limit (%d min) exceeded" % (timeLimit)) != -1:
-        widgetStatus += " FAILED\n"
+    if content.find("Unhandled exception") != -1 or content.find("Time limit (%d min) exceeded" % (timeLimit)) != -1 or not successful:
+        if not successful:
+            widgetStatus += " TIMEOUT\n"
+            print "TIMEOUT"
+        else:
+            widgetStatus += " FAILED\n"
+            print "FAILED"
         nrOfFailed += 1
+
+        f = open(guiApp)
+        script = f.read()
+        f.close()
 
         # if we found somebody to bug then send him an email
         search = re.search("contact:(?P<imena>.*)\n", script)
@@ -175,10 +99,9 @@ for guiApp in guiApps:
             #server.set_debuglevel(0)
             server.sendmail(fromaddr, toaddrs, msg)
             server.quit()
-#    elif time.time() - startTime >= timeLimit * 60:
-#        widgetStatus += " Time limit %d minutes exceeded. No exceptions were reported up to then.\n" % (timeLimit)
     else:
         widgetStatus += " OK\n"
+        print "OK"
 
 if sendMail == 1:
     fromaddr = "orange@fri.uni-lj.si"
@@ -188,5 +111,3 @@ if sendMail == 1:
     server = smtplib.SMTP('212.235.188.18', 25)
     server.sendmail(fromaddr, toaddrs, msg)
     server.quit()
-
-application.setMainWidget(None)
