@@ -69,17 +69,17 @@ e.g. "debugWidgets.py name1.py name2.py name3.py".
 
 Additional flags that can be used in debugWidgets.py:
 
--sendmail: specify this flag if you want to notify the authors
- (specified in the schemas using "contact: name1 name2) in case
- exceptions happen while testing the script
+- sendmail: specify this flag if you want to notify the authors
+  (specified in the schemas using "contact: name1 name2) in case
+  exceptions happen while testing the script
 
--verbose: specify this if you want to see in the output file
- ("schema_name.txt") a detailed information on what was clicked,
- changed, selected while performing the test
+- verbose: specify this if you want to see in the output file
+  ("schema_name.txt") a detailed information on what was clicked,
+  changed, selected while performing the test
 
--Verbose: speficy this if you want to see even more details on what is
- going on while testing - writes also passing and processing of
- signals between widgets
+- Verbose: speficy this if you want to see even more details on what
+  is going on while testing - writes also passing and processing of
+  signals between widgets
 
--changes=X : you can specify a custom number of changes (X) that will
- be tested while runing the schema
+- changes=X : you can specify a custom number of changes (X) that will
+  be tested while runing the schema (default: 2000)
