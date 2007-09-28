@@ -1,3 +1,5 @@
+WIDGET TESTING
+
 This is a step-by-step guide on how to create a script that will be
 tested automatically using this module.
 
@@ -33,7 +35,7 @@ For an example of this possible comments see "visualizations.py"
 
 The script that you will put to cvs will be automatically executed by
 debugWidgets.py script. In case your script fails (one or more
-exceptions happen during the testing) a mail will be sent to the
+exceptions happen during the testing) an email will be sent to the
 contact authors. The mail you will receive will contain the log of
 execution - including all the exceptions that happened.
 
@@ -49,7 +51,7 @@ parameters, e.g.:
 
 self.optimizationDlgButton = OWGUI.button(self.optimizationButtons, self, "VizRank", callback = self.optimizationDlg.reshow, debuggingEnabled = 0)
 
-NOTE:
+NOTES
 
 There are some cases when you HAVE TO set debbugingEnabled = 0. One
 example are components where the call of the callback function would
@@ -57,7 +59,8 @@ disrupt normal message processing by opening a MessageBox dialog or
 something similar. Another example are time expensive callback
 functions - for example VizRank's button would call a function that
 could possibly take hours (or days to compute) to compute all possible
-projections. We will not be able to debug such functions.
+projections. The widget testing program, due to time constraints,
+should not attempt to debug such functions.
 
 Calling debugWidgets.py on a custom schema:
 
