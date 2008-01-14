@@ -1,72 +1,46 @@
+#This is automatically created file containing an Orange schema
 # contact: ales.erjavec@fri.uni-lj.si
-import sys, os, cPickle, orange
-import orngSignalManager
-
-#set value in next line to 1 if want to output debugging info to file 'signalManagerOutput.txt'
-DEBUG_MODE = 0
-
-widgetDir = os.path.join(os.path.split(orange.__file__)[0], "OrangeWidgets")
-if os.path.exists(widgetDir):
-        for name in os.listdir(widgetDir):
-            fullName = os.path.join(widgetDir, name)
-            if os.path.isdir(fullName): sys.path.append(fullName)
+        
+import sys, os, cPickle, orange, orngSignalManager, orngRegistry, OWGUI
+import orngDebugging
+orngRegistry.addWidgetDirectories()
 
 from OWFile import *
 from OWSOM import *
 from OWSOMVisualizer import *
 
 
+
 class GUIApplication(QVBox):
-    def __init__(self,parent=None, debugMode = DEBUG_MODE, debugFileName = "signalManagerOutput.txt", verbosity = 1):
+    def __init__(self,parent=None):
         QVBox.__init__(self,parent)
         self.setCaption("Qt SOM")
-        self.signalManager = orngSignalManager.SignalManager(debugMode, debugFileName, verbosity)
-        self.tabs = QTabWidget(self, 'tabWidget')
-        self.resize(800,600)
-        self.verbosity = verbosity
+        self.signalManager = orngSignalManager.SignalManager()
+        self.widgets = []
+        
 
         # create widget instances
-        self.owFile = OWFile (self.tabs, signalManager = self.signalManager)
-        self.owSOM = OWSOM (self.tabs, signalManager = self.signalManager)
-        self.owSOMVisualizer = OWSOMVisualizer (self.tabs, signalManager = self.signalManager)
+        self.owFile = OWFile(signalManager = self.signalManager)
+        self.owSOM = OWSOM(signalManager = self.signalManager)
+        self.owSOMVisualizer = OWSOMVisualizer(signalManager = self.signalManager)
         
-        # create instances of hidden widgets
-
-        #set event and progress handler
-        self.owFile.setEventHandler(self.eventHandler)
-        self.owFile.setProgressBarHandler(self.progressHandler)
-        self.owSOM.setEventHandler(self.eventHandler)
-        self.owSOM.setProgressBarHandler(self.progressHandler)
-        self.owSOMVisualizer.setEventHandler(self.eventHandler)
-        self.owSOMVisualizer.setProgressBarHandler(self.progressHandler)
+        self.setWidgetParameters(self.owFile, 'icons/File.png', 'File', 1)
+        self.setWidgetParameters(self.owSOM, 'SOM.png', 'SOM', 1)
+        self.setWidgetParameters(self.owSOMVisualizer, 'SOMVisualizer.png', 'SOMVisualizer', 1)
         
-        #list of widget instances
-        self.widgets = [self.owFile, self.owSOM, self.owSOMVisualizer, ]
+        frameSpace = QFrame(self);  frameSpace.setMinimumHeight(20); frameSpace.setMaximumHeight(20)
+        exitButton = QPushButton("E&xit",self)
+        self.connect(exitButton,SIGNAL("clicked()"), application, SLOT("quit()"))
+        
         
         statusBar = QStatusBar(self)
         self.progress = QProgressBar(100, statusBar)
-        self.progress.setMaximumWidth(80)
-        self.progress.setMinimumWidth(80)
+        self.progress.setMaximumWidth(100)
         self.progress.setCenterIndicator(1)
         self.status = QLabel("", statusBar)
         self.status.setSizePolicy(QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Preferred))
         statusBar.addWidget(self.progress, 1)
         statusBar.addWidget(self.status, 1)
-        self.signalManager.addWidget(self.owFile)
-        self.signalManager.addWidget(self.owSOM)
-        self.signalManager.addWidget(self.owSOMVisualizer)
-        
-        # add tabs
-        self.tabs.insertTab (self.owFile, "File")
-        self.owFile.captionTitle = 'File'
-        self.owFile.setCaption(self.owFile.captionTitle)
-        self.tabs.insertTab (self.owSOM, "SOM")
-        self.owSOM.captionTitle = 'SOM'
-        self.owSOM.setCaption(self.owSOM.captionTitle)
-        self.tabs.insertTab (self.owSOMVisualizer, "SOMVisualizer")
-        self.owSOMVisualizer.captionTitle = 'SOMVisualizer'
-        self.owSOMVisualizer.setCaption(self.owSOMVisualizer.captionTitle)
-        
         #load settings before we connect widgets
         self.loadSettings()
 
@@ -77,10 +51,23 @@ class GUIApplication(QVBox):
         self.signalManager.setFreeze(0)
         
 
-    def eventHandler(self, text, eventVerbosity = 1):
-        if self.verbosity >= eventVerbosity:
-            self.status.setText(text)
+    def setWidgetParameters(self, widget, iconName, caption, shown):
+        self.signalManager.addWidget(widget)
+        self.widgets.append(widget)
+        widget.setEventHandler(self.eventHandler)
+        widget.setProgressBarHandler(self.progressHandler)
+        widget.setWidgetIcon(iconName)
+        widget.setCaption(caption)
+        if shown: OWGUI.button(self, self, caption, callback = widget.reshow)
+        for dlg in getattr(widget, "wdChildDialogs", []):
+            self.widgets.append(dlg)
+            dlg.setEventHandler(self.eventHandler)
+            dlg.setProgressBarHandler(self.progressHandler)
         
+    def eventHandler(self, text, eventVerbosity = 1):
+        if orngDebugging.orngVerbosity >= eventVerbosity:
+            self.status.setText(text)
+
     def progressHandler(self, widget, val):
         if val < 0:
             self.status.setText("<nobr>Processing: <b>" + str(widget.captionTitle) + "</b></nobr>")
@@ -92,28 +79,25 @@ class GUIApplication(QVBox):
             self.progress.setProgress(val)
             self.update()
 
-        
     def loadSettings(self):
         try:
             file = open("SOM.sav", "r")
+            strSettings = cPickle.load(file)
+            file.close()
+
+            self.owFile.loadSettingsStr(strSettings["File"]); self.owFile.activateLoadedSettings()
+            self.owSOM.loadSettingsStr(strSettings["SOM"]); self.owSOM.activateLoadedSettings()
+            self.owSOMVisualizer.loadSettingsStr(strSettings["SOMVisualizer"]); self.owSOMVisualizer.activateLoadedSettings()
+            
         except:
-            return
-        strSettings = cPickle.load(file)
-        file.close()
-        self.owFile.loadSettingsStr(strSettings["File"])
-        self.owFile.activateLoadedSettings()
-        self.owSOM.loadSettingsStr(strSettings["SOM"])
-        self.owSOM.activateLoadedSettings()
-        self.owSOMVisualizer.loadSettingsStr(strSettings["SOMVisualizer"])
-        self.owSOMVisualizer.activateLoadedSettings()
-        
-        
+            print "unable to load settings" 
+            pass
+
     def saveSettings(self):
-        if DEBUG_MODE: return
-        self.owSOMVisualizer.synchronizeContexts()
-        self.owSOM.synchronizeContexts()
-        self.owFile.synchronizeContexts()
-        
+        if orngDebugging.orngDebuggingEnabled: return
+        for widget in self.widgets[::-1]:
+            widget.synchronizeContexts()
+            widget.close()
         strSettings = {}
         strSettings["File"] = self.owFile.saveSettingsStr()
         strSettings["SOM"] = self.owSOM.saveSettingsStr()
@@ -123,9 +107,7 @@ class GUIApplication(QVBox):
         cPickle.dump(strSettings, file)
         file.close()
         
-
-
-if __name__ == "__main__": 
+if __name__ == "__main__":
     application = QApplication(sys.argv)
     ow = GUIApplication()
     application.setMainWidget(ow)
@@ -134,3 +116,4 @@ if __name__ == "__main__":
     # comment the next line if in debugging mode and are interested only in output text in 'signalManagerOutput.txt' file
     application.exec_loop()
     ow.saveSettings()
+        

@@ -1,111 +1,83 @@
+#This is automatically created file containing an Orange schema
 # contact: gregor.leban@fri.uni-lj.si
-
-import sys, os, cPickle, orange
-import orngSignalManager
-
-#set value in next line to 1 if want to output debugging info to file 'signalManagerOutput.txt'
-DEBUG_MODE = 0
-
-widgetDir = os.path.join(os.path.split(orange.__file__)[0], "OrangeWidgets")
-if os.path.exists(widgetDir):
-        for name in os.listdir(widgetDir):
-            fullName = os.path.join(widgetDir, name)
-            if os.path.isdir(fullName): sys.path.append(fullName)
+        
+import sys, os, cPickle, orange, orngSignalManager, orngRegistry, OWGUI
+import orngDebugging
+orngRegistry.addWidgetDirectories()
 
 from OWFile import *
-from OWDataDomain import *
 from OWDataSampler import *
-from OWSelectData import *
+from OWDataDomain import *
 from OWDiscretize import *
 from OWContinuize import *
+from OWSelectData import *
+
 
 
 class GUIApplication(QVBox):
-    def __init__(self,parent=None, debugMode = DEBUG_MODE, debugFileName = "signalManagerOutput.txt", verbosity = 1):
+    def __init__(self,parent=None):
         QVBox.__init__(self,parent)
         self.setCaption("Qt data selection")
-        self.signalManager = orngSignalManager.SignalManager(debugMode, debugFileName, verbosity)
-        self.tabs = QTabWidget(self, 'tabWidget')
-        self.resize(800,600)
-        self.verbosity = verbosity
+        self.signalManager = orngSignalManager.SignalManager()
+        self.widgets = []
+        
 
         # create widget instances
-        self.owFile = OWFile (self.tabs, signalManager = self.signalManager)
-        self.owSelect_Attributes = OWDataDomain (self.tabs, signalManager = self.signalManager)
-        self.owData_Sampler = OWDataSampler (self.tabs, signalManager = self.signalManager)
-        self.owSelect_Data = OWSelectData (self.tabs, signalManager = self.signalManager)
-        self.owDiscretize = OWDiscretize (self.tabs, signalManager = self.signalManager)
-        self.owContinuize = OWContinuize (self.tabs, signalManager = self.signalManager)
-
-        # create instances of hidden widgets
-
-        #set event and progress handler
-        self.owFile.setEventHandler(self.eventHandler)
-        self.owFile.setProgressBarHandler(self.progressHandler)
-        self.owSelect_Attributes.setEventHandler(self.eventHandler)
-        self.owSelect_Attributes.setProgressBarHandler(self.progressHandler)
-        self.owData_Sampler.setEventHandler(self.eventHandler)
-        self.owData_Sampler.setProgressBarHandler(self.progressHandler)
-        self.owSelect_Data.setEventHandler(self.eventHandler)
-        self.owSelect_Data.setProgressBarHandler(self.progressHandler)
-        self.owDiscretize.setEventHandler(self.eventHandler)
-        self.owDiscretize.setProgressBarHandler(self.progressHandler)
-        self.owContinuize.setEventHandler(self.eventHandler)
-        self.owContinuize.setProgressBarHandler(self.progressHandler)
-
-        #list of widget instances
-        self.widgets = [self.owFile, self.owSelect_Attributes, self.owData_Sampler, self.owSelect_Data, self.owDiscretize, self.owContinuize, ]
-
+        self.owFile = OWFile(signalManager = self.signalManager)
+        self.owData_Sampler = OWDataSampler(signalManager = self.signalManager)
+        self.owSelect_Attributes = OWDataDomain(signalManager = self.signalManager)
+        self.owDiscretize = OWDiscretize(signalManager = self.signalManager)
+        self.owContinuize = OWContinuize(signalManager = self.signalManager)
+        self.owSelect_Data = OWSelectData(signalManager = self.signalManager)
+        
+        self.setWidgetParameters(self.owFile, 'icons/File.png', 'File', 1)
+        self.setWidgetParameters(self.owData_Sampler, 'icons/DataSampler.png', 'Data Sampler', 1)
+        self.setWidgetParameters(self.owSelect_Attributes, 'icons/SelectAttributes.png', 'Select Attributes', 1)
+        self.setWidgetParameters(self.owDiscretize, 'icons/Discretize.png', 'Discretize', 1)
+        self.setWidgetParameters(self.owContinuize, 'icons/Continuize.png', 'Continuize', 1)
+        self.setWidgetParameters(self.owSelect_Data, 'icons/SelectData.png', 'Select Data', 1)
+        
+        frameSpace = QFrame(self);  frameSpace.setMinimumHeight(20); frameSpace.setMaximumHeight(20)
+        exitButton = QPushButton("E&xit",self)
+        self.connect(exitButton,SIGNAL("clicked()"), application, SLOT("quit()"))
+        
+        
         statusBar = QStatusBar(self)
         self.progress = QProgressBar(100, statusBar)
-        self.progress.setMaximumWidth(80)
-        self.progress.setMinimumWidth(80)
+        self.progress.setMaximumWidth(100)
         self.progress.setCenterIndicator(1)
         self.status = QLabel("", statusBar)
         self.status.setSizePolicy(QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Preferred))
         statusBar.addWidget(self.progress, 1)
         statusBar.addWidget(self.status, 1)
-        self.signalManager.addWidget(self.owFile)
-        self.signalManager.addWidget(self.owSelect_Attributes)
-        self.signalManager.addWidget(self.owData_Sampler)
-        self.signalManager.addWidget(self.owSelect_Data)
-        self.signalManager.addWidget(self.owDiscretize)
-        self.signalManager.addWidget(self.owContinuize)
-
-        # add tabs
-        self.tabs.insertTab (self.owFile, "File")
-        self.owFile.captionTitle = 'File'
-        self.owFile.setCaption(self.owFile.captionTitle)
-        self.tabs.insertTab (self.owSelect_Attributes, "Select Attributes")
-        self.owSelect_Attributes.captionTitle = 'Select Attributes'
-        self.owSelect_Attributes.setCaption(self.owSelect_Attributes.captionTitle)
-        self.tabs.insertTab (self.owData_Sampler, "Data Sampler")
-        self.owData_Sampler.captionTitle = 'Data Sampler'
-        self.owData_Sampler.setCaption(self.owData_Sampler.captionTitle)
-        self.tabs.insertTab (self.owSelect_Data, "Select Data")
-        self.owSelect_Data.captionTitle = 'Select Data'
-        self.owSelect_Data.setCaption(self.owSelect_Data.captionTitle)
-        self.tabs.insertTab (self.owDiscretize, "Discretize")
-        self.owDiscretize.captionTitle = 'Discretize'
-        self.owDiscretize.setCaption(self.owDiscretize.captionTitle)
-        self.tabs.insertTab (self.owContinuize, "Continuize")
-        self.owContinuize.captionTitle = 'Continuize'
-        self.owContinuize.setCaption(self.owContinuize.captionTitle)
-
         #load settings before we connect widgets
         self.loadSettings()
 
         # add widget signals
         self.signalManager.setFreeze(1)
-        self.signalManager.addLink( self.owFile, self.owSelect_Attributes, 'Examples', 'Examples', 1)
         self.signalManager.addLink( self.owFile, self.owData_Sampler, 'Examples', 'Data', 1)
+        self.signalManager.addLink( self.owFile, self.owSelect_Attributes, 'Examples', 'Examples', 1)
+        self.signalManager.addLink( self.owData_Sampler, self.owDiscretize, 'Examples', 'Examples', 1)
+        self.signalManager.addLink( self.owData_Sampler, self.owContinuize, 'Remaining Examples', 'Examples', 1)
         self.signalManager.addLink( self.owFile, self.owSelect_Data, 'Examples', 'Examples', 1)
-        self.signalManager.addLink( self.owData_Sampler, self.owContinuize, 'Examples', 'Examples', 1)
-        self.signalManager.addLink( self.owData_Sampler, self.owDiscretize, 'Remaining Examples', 'Examples', 1)
         self.signalManager.setFreeze(0)
+        
 
+    def setWidgetParameters(self, widget, iconName, caption, shown):
+        self.signalManager.addWidget(widget)
+        self.widgets.append(widget)
+        widget.setEventHandler(self.eventHandler)
+        widget.setProgressBarHandler(self.progressHandler)
+        widget.setWidgetIcon(iconName)
+        widget.setCaption(caption)
+        if shown: OWGUI.button(self, self, caption, callback = widget.reshow)
+        for dlg in getattr(widget, "wdChildDialogs", []):
+            self.widgets.append(dlg)
+            dlg.setEventHandler(self.eventHandler)
+            dlg.setProgressBarHandler(self.progressHandler)
+        
     def eventHandler(self, text, eventVerbosity = 1):
-        if self.verbosity >= eventVerbosity:
+        if orngDebugging.orngVerbosity >= eventVerbosity:
             self.status.setText(text)
 
     def progressHandler(self, widget, val):
@@ -119,55 +91,40 @@ class GUIApplication(QVBox):
             self.progress.setProgress(val)
             self.update()
 
-
     def loadSettings(self):
         try:
             file = open("data selection.sav", "r")
-        except:
-            return
-        strSettings = cPickle.load(file)
-        file.close()
-        self.owFile.loadSettingsStr(strSettings["File"])
-        self.owFile.activateLoadedSettings()
-        self.owSelect_Attributes.loadSettingsStr(strSettings["Select Attributes"])
-        self.owSelect_Attributes.activateLoadedSettings()
-        self.owData_Sampler.loadSettingsStr(strSettings["Data Sampler"])
-        self.owData_Sampler.activateLoadedSettings()
-        self.owSelect_Data.loadSettingsStr(strSettings["Select Data"])
-        self.owSelect_Data.activateLoadedSettings()
-        self.owDiscretize.loadSettingsStr(strSettings["Discretize"])
-        self.owDiscretize.activateLoadedSettings()
-        self.owContinuize.loadSettingsStr(strSettings["Continuize"])
-        self.owContinuize.activateLoadedSettings()
+            strSettings = cPickle.load(file)
+            file.close()
 
+            self.owFile.loadSettingsStr(strSettings["File"]); self.owFile.activateLoadedSettings()
+            self.owData_Sampler.loadSettingsStr(strSettings["Data Sampler"]); self.owData_Sampler.activateLoadedSettings()
+            self.owSelect_Attributes.loadSettingsStr(strSettings["Select Attributes"]); self.owSelect_Attributes.activateLoadedSettings()
+            self.owDiscretize.loadSettingsStr(strSettings["Discretize"]); self.owDiscretize.activateLoadedSettings()
+            self.owContinuize.loadSettingsStr(strSettings["Continuize"]); self.owContinuize.activateLoadedSettings()
+            self.owSelect_Data.loadSettingsStr(strSettings["Select Data"]); self.owSelect_Data.activateLoadedSettings()
+            
+        except:
+            print "unable to load settings" 
+            pass
 
     def saveSettings(self):
-        return
-        """
-        if DEBUG_MODE: return
-        self.owContinuize.synchronizeContexts()
-        self.owDiscretize.synchronizeContexts()
-        self.owSelect_Data.synchronizeContexts()
-        self.owData_Sampler.synchronizeContexts()
-        self.owSelect_Attributes.synchronizeContexts()
-        self.owFile.synchronizeContexts()
-
+        if orngDebugging.orngDebuggingEnabled: return
+        for widget in self.widgets[::-1]:
+            widget.synchronizeContexts()
+            widget.close()
         strSettings = {}
         strSettings["File"] = self.owFile.saveSettingsStr()
-        strSettings["Select Attributes"] = self.owSelect_Attributes.saveSettingsStr()
         strSettings["Data Sampler"] = self.owData_Sampler.saveSettingsStr()
-        strSettings["Select Data"] = self.owSelect_Data.saveSettingsStr()
+        strSettings["Select Attributes"] = self.owSelect_Attributes.saveSettingsStr()
         strSettings["Discretize"] = self.owDiscretize.saveSettingsStr()
         strSettings["Continuize"] = self.owContinuize.saveSettingsStr()
-
+        strSettings["Select Data"] = self.owSelect_Data.saveSettingsStr()
+        
         file = open("data selection.sav", "w")
         cPickle.dump(strSettings, file)
         file.close()
-        """
-
-
-
-
+        
 if __name__ == "__main__":
     application = QApplication(sys.argv)
     ow = GUIApplication()
@@ -177,3 +134,4 @@ if __name__ == "__main__":
     # comment the next line if in debugging mode and are interested only in output text in 'signalManagerOutput.txt' file
     application.exec_loop()
     ow.saveSettings()
+        
