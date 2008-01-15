@@ -1,0 +1,15 @@
+<?xml version="1.0" ?>
+<schema>
+	<widgets>
+		<widget caption="File" widgetName="OWFile" xPos="60" yPos="230"/>
+		<widget caption="Regression Tree" widgetName="OWRegressionTree" xPos="200" yPos="150"/>
+		<widget caption="Regression Tree Graph" widgetName="OWRegressionTreeViewer2D" xPos="370" yPos="150"/>
+		<widget caption="Pade" widgetName="OWPade" xPos="200" yPos="280"/>
+	</widgets>
+	<channels>
+		<channel enabled="1" inWidgetCaption="Regression Tree" outWidgetCaption="File" signals="[('Examples', 'Example Table')]"/>
+		<channel enabled="1" inWidgetCaption="Regression Tree Graph" outWidgetCaption="Regression Tree" signals="[('Regression Tree', 'Classification Tree')]"/>
+		<channel enabled="1" inWidgetCaption="Pade" outWidgetCaption="File" signals="[('Examples', 'Examples')]"/>
+	</channels>
+	<settings settingsDictionary="{'Pade': &quot;(dp1\nS'derivativeAsMeta'\np2\nI0\nsS'widgetHeight'\np3\nI671\nsS'widgetXPosition'\np4\nI88\nsS'widgetYPosition'\np5\nI116\nsS'originalAsMeta'\np6\nI1\nsS'enableThreshold'\np7\nI0\nsS'widgetWidth'\np8\nI238\nsS'savedDerivativeAsMeta'\np9\nI0\nsS'differencesAsMeta'\np10\nI1\nsS'threshold'\np11\nF0\nsS'output'\np12\nI0\nsS'localContextsVersion'\np13\n(I100\nI0\ntp14\nsS'localContexts'\np15\n(lp16\nsS'method'\np17\nI2\ns.&quot;, 'Regression Tree Graph': &quot;(dp1\nS'widgetYPosition'\np2\nI58\nsS'MaxTreeDepthB'\np3\nI0\nsS'ZoomAutoRefresh'\np4\nI0\nsS'NodeInfo'\np5\n(lp6\nI0\naI1\nasS'widgetHeight'\np7\nI480\nsS'widgetXPosition'\np8\nI44\nsS'HSpacing'\np9\nI5\nsS'Zoom'\np10\nI5\nsS'widgetWidth'\np11\nI640\nsS'MaxTreeDepth'\np12\nI5\nsS'LineWidthMethod'\np13\nI0\nsS'TruncateText'\np14\nI1\nsS'NodeColorMethod'\np15\nI0\nsS'NodeBubblesEnabled'\np16\nI1\nsS'LineWidth'\np17\nI5\nsS'AutoArrange'\np18\nI0\nsS'VSpacing'\np19\nI5\nsS'NodeSize'\np20\nI5\ns.&quot;, 'Regression Tree': &quot;(dp1\nS'Bin'\np2\nI1\nsS'PostMaj'\np3\nI1\nsS'PostMPVal'\np4\nI5\nsS'Name'\np5\nS'Regression Tree'\np6\nsS'widgetHeight'\np7\nI264\nsS'widgetXPosition'\np8\nI22\nsS'MinInstVal'\np9\nI5\nsS'MinNodeCheck'\np10\nI1\nsS'widgetYPosition'\np11\nI29\nsS'MinInstCheck'\np12\nI1\nsS'widgetWidth'\np13\nI322\nsS'MaxMajVal'\np14\nI70\nsS'PostMPCheck'\np15\nI1\ns.&quot;, 'File': &quot;(dp1\nS'widgetHeight'\np2\nI409\nsS'widgetXPosition'\np3\nI0\nsS'widgetYPosition'\np4\nI481\nsS'widgetShown'\np5\nI0\nsS'createNewOn'\np6\nI2\nsS'widgetWidth'\np7\nI447\nsS'localContextsVersion'\np8\n(I100\nI0\ntp9\nsS'localContexts'\np10\n(lp11\n(iOWContexts\nContext\np12\n(dp13\nS'symbolDC'\np14\nS''\nsS'symbolDK'\np15\nS''\nsS'filename'\np16\nS'E:/Development/Orange Datasets/UCI/zoo.tab'\np17\nsS'time'\np18\nF1196689968.171\nsba(iOWContexts\nContext\np19\n(dp20\nS'symbolDK'\np21\nS''\nsS'symbolDC'\np22\nS''\nsS'time'\np23\nF1196689758.171\nsS'filename'\np24\nS'E:/Development/Orange Datasets/Blaz/05-cur-w-calc.tab'\np25\nsbasS'recentFiles'\np26\n(lp27\ns.&quot;}"/>
+</schema>
