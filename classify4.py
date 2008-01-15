@@ -89,7 +89,7 @@ class GUIApplication(QVBox):
 
     def loadSettings(self):
         try:
-            file = open("random forest.sav", "r")
+            file = open("classify4.sav", "r")
             strSettings = cPickle.load(file)
             file.close()
 
@@ -115,7 +115,7 @@ class GUIApplication(QVBox):
         strSettings["ROC Analysis"] = self.owROC_Analysis.saveSettingsStr()
         strSettings["Lift Curve"] = self.owLift_Curve.saveSettingsStr()
         
-        file = open("random forest.sav", "w")
+        file = open("classify4.sav", "w")
         cPickle.dump(strSettings, file)
         file.close()
         
