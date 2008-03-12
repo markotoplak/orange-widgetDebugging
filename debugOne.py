@@ -1,17 +1,19 @@
+import orngOrangeFoldersQt4
 import os, sys, random, re, time
-from qt import *
+from PyQt4.QtCore import *
+from PyQt4.QtGui import *
 import orange, orngSignalManager, orngRegistry
 import orngDebugging
 
 changeDatasetClicks = 100   # after how many random clicks do we want to change the dataset file
 debugDir = os.path.split(os.path.abspath(__file__))[0]
-#debugDir = r"E:\Development\Orange\WidgetDebugging"
-#sys.argv = ['debugOne.py', 'visualizations.py', '2000', '0', '30']
-#sys.argv = ['debugOne.py', 'associate.py', '2000', '0', '30']
+#debugDir = r"E:\Development\Orange-Qt4\WidgetDebugging"
+#sys.argv = ['debugOne.py', 'data selection.py', '2000', '0', '30']
 
 os.chdir(debugDir)
 
 guiName = " ".join(sys.argv[1:-3])
+    
 nrOfThingsToChange = int(sys.argv[-3])
 verbosity = int(sys.argv[-2])
 timeLimit = int(sys.argv[-1])
@@ -21,7 +23,6 @@ orngDebugging.orngDebuggingFileName = os.path.splitext(guiName)[0] + ".txt"
 orngDebugging.orngVerbosity = verbosity
 
 
-orngRegistry.addWidgetDirectories()
 import OWFile       # we need to know the file widget so that we can remove it from the instance.widgets list
 
 # set datasets to try
@@ -72,7 +73,6 @@ try:
     module = __import__(os.path.splitext(os.path.basename(guiName))[0])
     module.application = application
     instance = module.GUIApplication()
-    application.setMainWidget(instance)
     instance.show()
     initializationOK = 1
 except:
