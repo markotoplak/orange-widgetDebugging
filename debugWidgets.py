@@ -57,15 +57,18 @@ for guiApp in guiApps:
 
     print guiApp
     startTime = time.time()
-    process = subprocess.Popen(sys.executable + " debugOne.py %s %s %s %s" % (guiApp, str(nrOfThingsToChange), str(verbosity), str(timeLimit)))
+    process = subprocess.Popen([sys.executable, "debugOne.py", guiApp, str(nrOfThingsToChange), str(verbosity), str(timeLimit)])
 
     while process.poll() == None and time.time() - startTime < timeLimit * 60 + 10:
          time.sleep(3)
 
     successful = 1
-    if process.poll() == None and sys.platform == "win32":
-        import win32api
-        win32api.TerminateProcess(process.pid,0)
+    if process.poll() == None:
+        if sys.platform == "win32":
+            import win32api
+            win32api.TerminateProcess(process.pid,0)
+        else:
+            os.kill(process.pid,9)
         successful = 0
 
 
