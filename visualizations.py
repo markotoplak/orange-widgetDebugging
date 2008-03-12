@@ -148,6 +148,7 @@ class GUIApplication(OWBaseWidget):
 
     def closeEvent(self, ev):
         OWBaseWidget.closeEvent(self, ev)
+        print "debugging enabled: ", orngDebugging.orngDebuggingEnabled
         if orngDebugging.orngDebuggingEnabled: return
         for widget in self.widgets[::-1]:
             widget.synchronizeContexts()
