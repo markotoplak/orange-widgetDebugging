@@ -1,19 +1,6 @@
+import orngOrangeFoldersQt4
 import os, sys, random, smtplib, re, time
 import orange, subprocess
-
-debugDir = os.path.split(os.path.abspath(__file__))[0]
-orangeDir = os.path.split(debugDir)[0]
-widgetDir = os.path.join(orangeDir, "OrangeWidgets")
-dirsToAdd = [orangeDir, widgetDir]
-
-if os.path.exists(widgetDir):
-    for name in os.listdir(widgetDir):
-        fullName = os.path.join(widgetDir, name)
-        if os.path.isdir(fullName):
-            dirsToAdd.append(fullName)
-
-for dir in dirsToAdd:
-    sys.path.append(dir)
 
 # options and settings
 nrOfThingsToChange = 2000   # how many random clicks do we want to simulate

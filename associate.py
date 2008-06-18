@@ -1,10 +1,8 @@
 #This is automatically created file containing an Orange schema
-# contact: ales.erjavec@fri.uni-lj.si janez.demsar@fri.uni-lj.si blaz.zupan@fri.uni-lj.si
-#
         
-import sys, os, cPickle, orange, orngSignalManager, orngRegistry, OWGUI
+import orngOrangeFoldersQt4
 import orngDebugging
-orngRegistry.addWidgetDirectories()
+import sys, os, cPickle, orange, orngSignalManager, OWGUI
 
 from OWFile import *
 from OWDataDomain import *
@@ -12,22 +10,20 @@ from OWDataSampler import *
 from OWAssociationRules import *
 from OWExampleDistance import *
 from OWAttributeDistance import *
-from OWDistanceMap import *
-from OWDistanceMap import *
 from OWKMeans import *
 from OWInteractionGraph import *
 from OWMDS import *
-from OWHierarchicalClustering import *
 
 
 
-class GUIApplication(QVBox):
+class GUIApplication(OWBaseWidget):
     def __init__(self,parent=None):
-        QVBox.__init__(self,parent)
-        self.setCaption("Qt associate")
         self.signalManager = orngSignalManager.SignalManager()
+        OWBaseWidget.__init__(self, title = 'associate', signalManager = self.signalManager)
         self.widgets = []
         
+        self.setLayout(QVBoxLayout())
+        self.box = OWGUI.widgetBox(self, 'Widgets')
 
         # create widget instances
         self.owFile = OWFile(signalManager = self.signalManager)
@@ -36,12 +32,9 @@ class GUIApplication(QVBox):
         self.owAssociation_Rules = OWAssociationRules(signalManager = self.signalManager)
         self.owExample_Distance = OWExampleDistance(signalManager = self.signalManager)
         self.owAttribute_Distance = OWAttributeDistance(signalManager = self.signalManager)
-        self.owDistance_Map = OWDistanceMap(signalManager = self.signalManager)
-        self.owDistance_Map_2 = OWDistanceMap(signalManager = self.signalManager)
         self.owKMeans_Clustering = OWKMeans(signalManager = self.signalManager)
         self.owInteraction_Graph = OWInteractionGraph(signalManager = self.signalManager)
         self.owMDS = OWMDS(signalManager = self.signalManager)
-        self.owHierarchical_Clustering = OWHierarchicalClustering(signalManager = self.signalManager)
         
         self.setWidgetParameters(self.owFile, 'icons/File.png', 'File', 1)
         self.setWidgetParameters(self.owSelect_Attributes, 'icons/SelectAttributes.png', 'Select Attributes', 1)
@@ -49,26 +42,25 @@ class GUIApplication(QVBox):
         self.setWidgetParameters(self.owAssociation_Rules, 'icons/AssociationRules.png', 'Association Rules', 1)
         self.setWidgetParameters(self.owExample_Distance, 'icons/ExampleDistance.png', 'Example Distance', 1)
         self.setWidgetParameters(self.owAttribute_Distance, 'icons/AttributeDistance.png', 'Attribute Distance', 1)
-        self.setWidgetParameters(self.owDistance_Map, 'icons/DistanceMap.png', 'Distance Map', 1)
-        self.setWidgetParameters(self.owDistance_Map_2, 'icons/DistanceMap.png', 'Distance Map (2)', 1)
         self.setWidgetParameters(self.owKMeans_Clustering, 'icons/KMeans.png', 'K-Means Clustering', 1)
         self.setWidgetParameters(self.owInteraction_Graph, 'icons/InteractionGraph.png', 'Interaction Graph', 1)
         self.setWidgetParameters(self.owMDS, 'MDS.png', 'MDS', 1)
-        self.setWidgetParameters(self.owHierarchical_Clustering, 'HierarchicalClustering.png', 'Hierarchical Clustering', 1)
         
-        frameSpace = QFrame(self);  frameSpace.setMinimumHeight(20); frameSpace.setMaximumHeight(20)
-        exitButton = QPushButton("E&xit",self)
-        self.connect(exitButton,SIGNAL("clicked()"), application, SLOT("quit()"))
-        
+        box2 = OWGUI.widgetBox(self, 1)
+        exitButton = OWGUI.button(box2, self, "Exit", callback = self.accept)
+        self.layout().addStretch(100)
         
         statusBar = QStatusBar(self)
-        self.progress = QProgressBar(100, statusBar)
+        self.layout().addWidget(statusBar)
+        self.caption = QLabel('', statusBar)
+        self.caption.setMaximumWidth(230)
+        self.progress = QProgressBar(statusBar)
         self.progress.setMaximumWidth(100)
-        self.progress.setCenterIndicator(1)
         self.status = QLabel("", statusBar)
         self.status.setSizePolicy(QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Preferred))
-        statusBar.addWidget(self.progress, 1)
-        statusBar.addWidget(self.status, 1)
+        statusBar.addWidget(self.progress)
+        statusBar.addWidget(self.caption)
+        statusBar.addWidget(self.status)
         #load settings before we connect widgets
         self.loadSettings()
 
@@ -79,23 +71,20 @@ class GUIApplication(QVBox):
         self.signalManager.addLink( self.owData_Sampler, self.owAssociation_Rules, 'Examples', 'Examples', 1)
         self.signalManager.addLink( self.owData_Sampler, self.owExample_Distance, 'Examples', 'Examples', 1)
         self.signalManager.addLink( self.owData_Sampler, self.owAttribute_Distance, 'Examples', 'Examples', 1)
-        self.signalManager.addLink( self.owExample_Distance, self.owDistance_Map, 'Distance Matrix', 'Distance Matrix', 1)
-        self.signalManager.addLink( self.owAttribute_Distance, self.owDistance_Map_2, 'Distance Matrix', 'Distance Matrix', 1)
         self.signalManager.addLink( self.owData_Sampler, self.owKMeans_Clustering, 'Examples', 'Examples', 1)
         self.signalManager.addLink( self.owData_Sampler, self.owInteraction_Graph, 'Examples', 'Examples', 1)
         self.signalManager.addLink( self.owExample_Distance, self.owMDS, 'Distance Matrix', 'Distances', 1)
-        self.signalManager.addLink( self.owExample_Distance, self.owHierarchical_Clustering, 'Distance Matrix', 'Distance matrix', 1)
         self.signalManager.setFreeze(0)
         
 
     def setWidgetParameters(self, widget, iconName, caption, shown):
-        self.signalManager.addWidget(widget)
-        self.widgets.append(widget)
         widget.setEventHandler(self.eventHandler)
         widget.setProgressBarHandler(self.progressHandler)
         widget.setWidgetIcon(iconName)
-        widget.setCaption(caption)
-        if shown: OWGUI.button(self, self, caption, callback = widget.reshow)
+        widget.setWindowTitle(caption)
+        self.signalManager.addWidget(widget)
+        self.widgets.append(widget)
+        if shown: OWGUI.button(self.box, self, caption, callback = widget.reshow)
         for dlg in getattr(widget, "wdChildDialogs", []):
             self.widgets.append(dlg)
             dlg.setEventHandler(self.eventHandler)
@@ -107,13 +96,13 @@ class GUIApplication(QVBox):
 
     def progressHandler(self, widget, val):
         if val < 0:
-            self.status.setText("<nobr>Processing: <b>" + str(widget.captionTitle) + "</b></nobr>")
-            self.progress.setProgress(0)
+            self.caption.setText("<nobr>Processing: <b>" + str(widget.captionTitle) + "</b></nobr>")
+            self.progress.setValue(0)
         elif val >100:
-            self.status.setText("")
+            self.caption.setText("")
             self.progress.reset()
         else:
-            self.progress.setProgress(val)
+            self.progress.setValue(val)
             self.update()
 
     def loadSettings(self):
@@ -128,18 +117,16 @@ class GUIApplication(QVBox):
             self.owAssociation_Rules.loadSettingsStr(strSettings["Association Rules"]); self.owAssociation_Rules.activateLoadedSettings()
             self.owExample_Distance.loadSettingsStr(strSettings["Example Distance"]); self.owExample_Distance.activateLoadedSettings()
             self.owAttribute_Distance.loadSettingsStr(strSettings["Attribute Distance"]); self.owAttribute_Distance.activateLoadedSettings()
-            self.owDistance_Map.loadSettingsStr(strSettings["Distance Map"]); self.owDistance_Map.activateLoadedSettings()
-            self.owDistance_Map_2.loadSettingsStr(strSettings["Distance Map (2)"]); self.owDistance_Map_2.activateLoadedSettings()
             self.owKMeans_Clustering.loadSettingsStr(strSettings["K-Means Clustering"]); self.owKMeans_Clustering.activateLoadedSettings()
             self.owInteraction_Graph.loadSettingsStr(strSettings["Interaction Graph"]); self.owInteraction_Graph.activateLoadedSettings()
             self.owMDS.loadSettingsStr(strSettings["MDS"]); self.owMDS.activateLoadedSettings()
-            self.owHierarchical_Clustering.loadSettingsStr(strSettings["Hierarchical Clustering"]); self.owHierarchical_Clustering.activateLoadedSettings()
             
         except:
             print "unable to load settings" 
             pass
 
-    def saveSettings(self):
+    def closeEvent(self, ev):
+        OWBaseWidget.closeEvent(self, ev)
         if orngDebugging.orngDebuggingEnabled: return
         for widget in self.widgets[::-1]:
             widget.synchronizeContexts()
@@ -151,12 +138,9 @@ class GUIApplication(QVBox):
         strSettings["Association Rules"] = self.owAssociation_Rules.saveSettingsStr()
         strSettings["Example Distance"] = self.owExample_Distance.saveSettingsStr()
         strSettings["Attribute Distance"] = self.owAttribute_Distance.saveSettingsStr()
-        strSettings["Distance Map"] = self.owDistance_Map.saveSettingsStr()
-        strSettings["Distance Map (2)"] = self.owDistance_Map_2.saveSettingsStr()
         strSettings["K-Means Clustering"] = self.owKMeans_Clustering.saveSettingsStr()
         strSettings["Interaction Graph"] = self.owInteraction_Graph.saveSettingsStr()
         strSettings["MDS"] = self.owMDS.saveSettingsStr()
-        strSettings["Hierarchical Clustering"] = self.owHierarchical_Clustering.saveSettingsStr()
         
         file = open("associate.sav", "w")
         cPickle.dump(strSettings, file)
@@ -165,10 +149,7 @@ class GUIApplication(QVBox):
 if __name__ == "__main__":
     application = QApplication(sys.argv)
     ow = GUIApplication()
-    application.setMainWidget(ow)
     ow.show()
-
     # comment the next line if in debugging mode and are interested only in output text in 'signalManagerOutput.txt' file
-    application.exec_loop()
-    ow.saveSettings()
+    application.exec_()
         

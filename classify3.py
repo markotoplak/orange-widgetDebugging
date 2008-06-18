@@ -1,9 +1,8 @@
 #This is automatically created file containing an Orange schema
-# contact: ales.erjavec@fri.uni-lj.si
         
-import sys, os, cPickle, orange, orngSignalManager, orngRegistry, OWGUI
+import orngOrangeFoldersQt4
 import orngDebugging
-orngRegistry.addWidgetDirectories()
+import sys, os, cPickle, orange, orngSignalManager, OWGUI
 
 from OWFile import *
 from OWDataDomain import *
@@ -12,13 +11,14 @@ from OWSVM import *
 
 
 
-class GUIApplication(QVBox):
+class GUIApplication(OWBaseWidget):
     def __init__(self,parent=None):
-        QVBox.__init__(self,parent)
-        self.setCaption("Qt classify3")
         self.signalManager = orngSignalManager.SignalManager()
+        OWBaseWidget.__init__(self, title = 'classify3', signalManager = self.signalManager)
         self.widgets = []
         
+        self.setLayout(QVBoxLayout())
+        self.box = OWGUI.widgetBox(self, 'Widgets')
 
         # create widget instances
         self.owFile = OWFile(signalManager = self.signalManager)
@@ -31,19 +31,21 @@ class GUIApplication(QVBox):
         self.setWidgetParameters(self.owData_Sampler, 'icons/DataSampler.png', 'Data Sampler', 1)
         self.setWidgetParameters(self.owSVM, 'icons/BasicSVM.png', 'SVM', 1)
         
-        frameSpace = QFrame(self);  frameSpace.setMinimumHeight(20); frameSpace.setMaximumHeight(20)
-        exitButton = QPushButton("E&xit",self)
-        self.connect(exitButton,SIGNAL("clicked()"), application, SLOT("quit()"))
-        
+        box2 = OWGUI.widgetBox(self, 1)
+        exitButton = OWGUI.button(box2, self, "Exit", callback = self.accept)
+        self.layout().addStretch(100)
         
         statusBar = QStatusBar(self)
-        self.progress = QProgressBar(100, statusBar)
+        self.layout().addWidget(statusBar)
+        self.caption = QLabel('', statusBar)
+        self.caption.setMaximumWidth(230)
+        self.progress = QProgressBar(statusBar)
         self.progress.setMaximumWidth(100)
-        self.progress.setCenterIndicator(1)
         self.status = QLabel("", statusBar)
         self.status.setSizePolicy(QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Preferred))
-        statusBar.addWidget(self.progress, 1)
-        statusBar.addWidget(self.status, 1)
+        statusBar.addWidget(self.progress)
+        statusBar.addWidget(self.caption)
+        statusBar.addWidget(self.status)
         #load settings before we connect widgets
         self.loadSettings()
 
@@ -56,13 +58,13 @@ class GUIApplication(QVBox):
         
 
     def setWidgetParameters(self, widget, iconName, caption, shown):
-        self.signalManager.addWidget(widget)
-        self.widgets.append(widget)
         widget.setEventHandler(self.eventHandler)
         widget.setProgressBarHandler(self.progressHandler)
         widget.setWidgetIcon(iconName)
-        widget.setCaption(caption)
-        if shown: OWGUI.button(self, self, caption, callback = widget.reshow)
+        widget.setWindowTitle(caption)
+        self.signalManager.addWidget(widget)
+        self.widgets.append(widget)
+        if shown: OWGUI.button(self.box, self, caption, callback = widget.reshow)
         for dlg in getattr(widget, "wdChildDialogs", []):
             self.widgets.append(dlg)
             dlg.setEventHandler(self.eventHandler)
@@ -74,13 +76,13 @@ class GUIApplication(QVBox):
 
     def progressHandler(self, widget, val):
         if val < 0:
-            self.status.setText("<nobr>Processing: <b>" + str(widget.captionTitle) + "</b></nobr>")
-            self.progress.setProgress(0)
+            self.caption.setText("<nobr>Processing: <b>" + str(widget.captionTitle) + "</b></nobr>")
+            self.progress.setValue(0)
         elif val >100:
-            self.status.setText("")
+            self.caption.setText("")
             self.progress.reset()
         else:
-            self.progress.setProgress(val)
+            self.progress.setValue(val)
             self.update()
 
     def loadSettings(self):
@@ -98,7 +100,8 @@ class GUIApplication(QVBox):
             print "unable to load settings" 
             pass
 
-    def saveSettings(self):
+    def closeEvent(self, ev):
+        OWBaseWidget.closeEvent(self, ev)
         if orngDebugging.orngDebuggingEnabled: return
         for widget in self.widgets[::-1]:
             widget.synchronizeContexts()
@@ -116,10 +119,7 @@ class GUIApplication(QVBox):
 if __name__ == "__main__":
     application = QApplication(sys.argv)
     ow = GUIApplication()
-    application.setMainWidget(ow)
     ow.show()
-
     # comment the next line if in debugging mode and are interested only in output text in 'signalManagerOutput.txt' file
-    application.exec_loop()
-    ow.saveSettings()
+    application.exec_()
         

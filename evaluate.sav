@@ -1,30 +1,30 @@
 (dp1
 S'Data Sampler'
 p2
-S"(dp1\nS'CVFolds'\np2\nI10\nsS'widgetXPosition'\np3\nI176\nsS'widgetYPosition'\np4\nI232\nsS'LOO'\np5\nI1\nsS'widgetWidth'\np6\nI248\nsS'selPercentage'\np7\nI30\nsS'Repeat'\np8\nI0\nsS'RandomSeed'\np9\nI1\nsS'pGroups'\np10\n(lp11\nF0.10000000000000001\naF0.25\naF0.5\nasS'widgetHeight'\np12\nI548\nsS'SelectType'\np13\nI0\nsS'nGroups'\np14\nI3\nsS'widgetShown'\np15\nNsS'GroupSeed'\np16\nI1\nsS'Stratified'\np17\nI1\nsS'outFold'\np18\nI1\nsS'useCases'\np19\nI0\nsS'nCases'\np20\nI25\nsS'Folds'\np21\nI1\nsS'UseSpecificSeed'\np22\nI0\nsS'GroupText'\np23\nS'0.1,0.25,0.5'\np24\nsS'CVFoldsInternal'\np25\nI10\ns."
+S"(dp1\nS'CVFolds'\np2\nI10\nsS'widgetXPosition'\np3\nI132\nsS'widgetYPosition'\np4\nI174\nsS'LOO'\np5\nI1\nsS'widgetWidth'\np6\nI248\nsS'selPercentage'\np7\nI30\nsS'Repeat'\np8\nI0\nsS'RandomSeed'\np9\nI1\nsS'pGroups'\np10\n(lp11\nF0.10000000000000001\naF0.25\naF0.5\nasS'widgetHeight'\np12\nI548\nsS'SelectType'\np13\nI0\nsS'nGroups'\np14\nI3\nsS'widgetShown'\np15\nNsS'GroupSeed'\np16\nI1\nsS'Stratified'\np17\nI1\nsS'outFold'\np18\nI1\nsS'useCases'\np19\nI0\nsS'nCases'\np20\nI25\nsS'Folds'\np21\nI1\nsS'UseSpecificSeed'\np22\nI0\nsS'GroupText'\np23\nS'0.1,0.25,0.5'\np24\nsS'CVFoldsInternal'\np25\nI10\ns."
 p3
 sS'Test Learners'
 p4
-S"(dp1\nS'selectedCScores'\np2\nccopy_reg\n_reconstructor\np3\n(c__builtin__\nlist\np4\ng4\n(ttRp5\nI0\naI1\naI2\naI3\naI8\nasS'selectedRScores'\np6\ng3\n(g4\ng4\n(ttRp7\nI1\naI4\naI6\nasS'pLearning'\np8\nI70\nsS'widgetHeight'\np9\nI470\nsS'widgetXPosition'\np10\nI154\nsS'widgetYPosition'\np11\nI203\nsS'precision'\np12\nI4\nsS'widgetShown'\np13\nI0\nsS'pRepeat'\np14\nI20\nsS'widgetWidth'\np15\nI600\nsS'resampling'\np16\nI0\nsS'localContexts'\np17\n(lp18\nsS'localContextsVersion'\np19\n(I100\nI0\ntp20\nsS'nFolds'\np21\nI10\nsS'applyOnAnyChange'\np22\nI01\ns."
+S"(dp1\nS'selectedCScores'\np2\nccopy_reg\n_reconstructor\np3\n(c__builtin__\nlist\np4\ng4\n(ttRp5\nI0\naI1\naI2\naI3\naI8\nasS'selectedRScores'\np6\ng3\n(g4\ng4\n(ttRp7\nI1\naI4\naI6\nasS'pLearning'\np8\nI70\nsS'widgetHeight'\np9\nI470\nsS'widgetXPosition'\np10\nI22\nsS'widgetYPosition'\np11\nI29\nsS'precision'\np12\nI4\nsS'widgetShown'\np13\nI0\nsS'pRepeat'\np14\nI20\nsS'widgetWidth'\np15\nI680\nsS'resampling'\np16\nI0\nsS'localContexts'\np17\n(lp18\nsS'localContextsVersion'\np19\n(I100\nI0\ntp20\nsS'nFolds'\np21\nI10\nsS'applyOnAnyChange'\np22\nI01\ns."
 p5
 sS'Naive Bayes'
 p6
-S"(dp1\nS'adjustThreshold'\np2\nI0\nsS'name'\np3\nS'Naive Bayes'\np4\nsS'probEstimation'\np5\nI0\nsS'm_estimator.m'\np6\nF2\nsS'widgetHeight'\np7\nI392\nsS'condProbEstimation'\np8\nI0\nsS'widgetYPosition'\np9\nI232\nsS'widgetShown'\np10\nI0\nsS'windowProportion'\np11\nF0.5\nsS'widgetWidth'\np12\nI301\nsS'widgetXPosition'\np13\nI176\ns."
+S"(dp1\nS'adjustThreshold'\np2\nI0\nsS'name'\np3\nS'Naive Bayes'\np4\nsS'probEstimation'\np5\nI0\nsS'm_estimator.m'\np6\nF2\nsS'widgetHeight'\np7\nI392\nsS'condProbEstimation'\np8\nI0\nsS'widgetYPosition'\np9\nI203\nsS'widgetShown'\np10\nI0\nsS'windowProportion'\np11\nF0.5\nsS'widgetWidth'\np12\nI301\nsS'widgetXPosition'\np13\nI154\ns."
 p7
 sS'Classification Tree'
 p8
-S"(dp1\nS'bin'\np2\nI01\nsS'subset'\np3\nI0\nsS'preNodeMajP'\np4\nI95\nsS'name'\np5\nS'Classification Tree'\np6\nsS'postMaj'\np7\nI01\nsS'preNodeInst'\np8\nI01\nsS'widgetXPosition'\np9\nI44\nsS'widgetYPosition'\np10\nI58\nsS'postMPruning'\np11\nI0\nsS'relK'\np12\nI5\nsS'widgetShown'\np13\nI0\nsS'postM'\np14\nF2\nsS'estim'\np15\nI0\nsS'widgetWidth'\np16\nI640\nsS'widgetHeight'\np17\nI480\nsS'relM'\np18\nI100\nsS'preNodeInstP'\np19\nI5\nsS'preLeafInstP'\np20\nI5\nsS'preLeafInst'\np21\nI01\nsS'preNodeMaj'\np22\nI01\ns."
+S"(dp1\nS'bin'\np2\nI01\nsS'subset'\np3\nI0\nsS'preNodeMajP'\np4\nI95\nsS'name'\np5\nS'Classification Tree'\np6\nsS'postMaj'\np7\nI01\nsS'preNodeInst'\np8\nI01\nsS'widgetXPosition'\np9\nI198\nsS'widgetYPosition'\np10\nI261\nsS'postMPruning'\np11\nI0\nsS'relK'\np12\nI5\nsS'widgetShown'\np13\nI0\nsS'postM'\np14\nF2\nsS'estim'\np15\nI0\nsS'widgetWidth'\np16\nI333\nsS'widgetHeight'\np17\nI459\nsS'relM'\np18\nI100\nsS'preNodeInstP'\np19\nI5\nsS'preLeafInstP'\np20\nI5\nsS'preLeafInst'\np21\nI01\nsS'preNodeMaj'\np22\nI01\ns."
 p9
 sS'File'
 p10
-S"(dp1\nS'widgetHeight'\np2\nI409\nsS'widgetXPosition'\np3\nI0\nsS'widgetYPosition'\np4\nI481\nsS'widgetShown'\np5\nI0\nsS'createNewOn'\np6\nI2\nsS'widgetWidth'\np7\nI447\nsS'localContextsVersion'\np8\n(I100\nI0\ntp9\nsS'localContexts'\np10\n(lp11\n(iOWContexts\nContext\np12\n(dp13\nS'symbolDC'\np14\nS''\nsS'symbolDK'\np15\nS''\nsS'filename'\np16\nS'E:/Development/Orange Datasets/UCI/zoo.tab'\np17\nsS'time'\np18\nF1196689968.171\nsba(iOWContexts\nContext\np19\n(dp20\nS'symbolDK'\np21\nS''\nsS'symbolDC'\np22\nS''\nsS'time'\np23\nF1196689758.171\nsS'filename'\np24\nS'E:/Development/Orange Datasets/Blaz/05-cur-w-calc.tab'\np25\nsbasS'recentFiles'\np26\n(lp27\ns."
+S"(dp1\nS'widgetHeight'\np2\nI409\nsS'widgetXPosition'\np3\nI88\nsS'widgetYPosition'\np4\nI116\nsS'widgetShown'\np5\nI0\nsS'createNewOn'\np6\nI2\nsS'widgetWidth'\np7\nI363\nsS'localContextsVersion'\np8\n(I100\nI0\ntp9\nsS'localContexts'\np10\n(lp11\n(iOWContexts\nContext\np12\n(dp13\nS'symbolDK'\np14\nS''\nsS'symbolDC'\np15\nS''\nsS'time'\np16\nF1196689968.171\nsS'filename'\np17\nS'E:/Development/Orange Datasets/UCI/zoo.tab'\np18\nsba(iOWContexts\nContext\np19\n(dp20\nS'symbolDC'\np21\nS''\nsS'symbolDK'\np22\nS''\nsS'filename'\np23\nS'E:/Development/Orange Datasets/Blaz/05-cur-w-calc.tab'\np24\nsS'time'\np25\nF1196689758.171\nsbasS'recentFiles'\np26\n(lp27\ns."
 p11
 sS'Select Attributes'
 p12
-S"(dp1\nS'widgetHeight'\np2\nI480\nsS'widgetXPosition'\np3\nI451\nsS'widgetYPosition'\np4\nI31\nsS'widgetShown'\np5\nI0\nsS'widgetWidth'\np6\nI400\nsS'localContextsVersion'\np7\n(I100\nI0\ntp8\nsS'localContexts'\np9\n(lp10\ns."
+S"(dp1\nS'widgetHeight'\np2\nI480\nsS'widgetXPosition'\np3\nI110\nsS'widgetYPosition'\np4\nI145\nsS'widgetShown'\np5\nI0\nsS'widgetWidth'\np6\nI400\nsS'localContextsVersion'\np7\n(I100\nI0\ntp8\nsS'localContexts'\np9\n(lp10\ns."
 p13
 sS'k Nearest Neighbours'
 p14
-S"(dp1\nS'normalize'\np2\nI01\nsS'widgetShown'\np3\nI0\nsS'name'\np4\nS'kNN'\np5\nsS'ranks'\np6\nI0\nsS'widgetHeight'\np7\nI286\nsS'k'\nI5\nsS'widgetYPosition'\np8\nI29\nsS'ignoreUnknowns'\np9\nI0\nsS'metrics'\np10\nI0\nsS'widgetWidth'\np11\nI221\nsS'widgetXPosition'\np12\nI22\ns."
+S"(dp1\nS'normalize'\np2\nI01\nsS'widgetShown'\np3\nI0\nsS'name'\np4\nS'kNN'\np5\nsS'ranks'\np6\nI0\nsS'widgetHeight'\np7\nI286\nsS'k'\nI5\nsS'widgetYPosition'\np8\nI232\nsS'ignoreUnknowns'\np9\nI0\nsS'metrics'\np10\nI0\nsS'widgetWidth'\np11\nI221\nsS'widgetXPosition'\np12\nI176\ns."
 p15
 s.
