@@ -14,16 +14,18 @@ changesText = "-changes="       # specify the number of random changes that you 
 debugOneText = "debugOne.py"
 
 # get gui applications to try
-guiAppPath = os.path.split(sys.argv[0])[0]
+
+#os.chdir(r"E:\Development\Orange-Qt4\WidgetDebugging")
+guiAppPath = os.path.realpath(".")
 sys.path.append(guiAppPath)
-os.chdir(guiAppPath)
 
-sendMail = sendMailText in sys.argv[1:]     # do we want to send status mail or not
+sendMail = sendMailText in sys.argv     # do we want to send status mail or not
 verbosity = 0
-if verbosity1Text in sys.argv[1:]: verbosity = 1
-if verbosity2Text in sys.argv[1:]: verbosity = 2
+if verbosity1Text in sys.argv: verbosity = 1
+if verbosity2Text in sys.argv: verbosity = 2
 
-guiApps = sys.argv[1:]
+guiApps = sys.argv
+if "debugWidgets.py" in guiApps[0]: guiApps.pop(0)
 
 # do we have a specific number of things to change
 for flag in guiApps:
@@ -40,13 +42,15 @@ for text in [sendMailText, verbosity1Text, verbosity2Text, debugOneText]:
 
 if len(guiApps) == 0:
     for name in os.listdir(guiAppPath):
-        if os.path.isfile(os.path.join(guiAppPath, name)) and os.path.splitext(name)[1].lower() in [".py", ".pyw"] and name.lower() not in ["debugwidgets.py", "debugone.py"]:
+        if os.path.isfile(os.path.join(guiAppPath, name)) and os.path.splitext(name)[1].lower() in [".py", ".pyw"]:
             guiApps.append(name)
 
 widgetStatus = ""
 nrOfFailed = 0
 
 for guiApp in guiApps:
+    if guiApp.lower() in ["debugwidgets.py", "debugone.py"]: 
+        continue 
     guiName, guiExt = os.path.splitext(guiApp)
     if guiExt.lower() not in [".py", ".pyw"]:
         if os.path.exists(guiName + ".py"):
