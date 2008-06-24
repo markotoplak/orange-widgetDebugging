@@ -8,7 +8,7 @@ import orngDebugging
 changeDatasetClicks = 100   # after how many random clicks do we want to change the dataset file
 debugDir = os.path.split(os.path.abspath(__file__))[0]
 #debugDir = r"E:\Development\Orange-Qt4\WidgetDebugging"
-#sys.argv = ['debugOne.py', 'data selection.py', '2000', '0', '30']
+#sys.argv = ['debugOne.py', 'visualizations.py', '20000', '0', '30']
 
 os.chdir(debugDir)
 
@@ -115,7 +115,100 @@ if initializationOK:
                 fileWidget.openFile(datasetName, 0, fileWidget.symbolDK, fileWidget.symbolDC)
             else:
                 widget = instance.widgets[random.randint(0, len(instance.widgets)-1)]
-                widget.randomlyChangeSettings(verbosity)
+                
+                if len(widget._guiElements) == 0: continue
+
+                try:
+                    newValue = ""
+                    callback = None
+        
+                    #index = random.randint(0, len(widget._guiElements)-1)
+                    index = random.randint(0, len(widget._guiElements))
+                    if index == len(widget._guiElements):
+                        elementType = "signalChange"
+                        guiElement = None
+                    else:
+                        elementType, guiElement = widget._guiElements[index][0], widget._guiElements[index][1]
+                        if not guiElement.isEnabled(): continue
+        
+                    if elementType == "signalChange":
+                        if len(widget.outputs) > 0:
+                            output = widget.outputs[random.randint(0, len(widget.outputs)-1)][0]
+                            widget.send(output, None)
+                            newValue = "Sending None to output signal " + output
+                    elif elementType == "qwtPlot":
+                        guiElement.randomChange()
+                        newValue = "Random change in qwtPlot"
+                    elif elementType == "checkBox":
+                        elementType, guiElement, value, callback = widget._guiElements[index]
+                        newValue = "Changing checkbox %s to %s" % (value, not widget.getdeepattr(value))
+                        setattr(widget, value, not widget.getdeepattr(value))
+                    elif elementType == "button":
+                        elementType, guiElement, callback = widget._guiElements[index]
+                        if guiElement.isCheckable():
+                            newValue = "Clicking button %s. State is %d" % (str(guiElement.text()).strip(), not guiElement.isChecked())
+                            guiElement.setChecked(not guiElement.isChecked())
+                        else:
+                            newValue = "Pressed button %s" % (str(guiElement.text()).strip())
+                    elif elementType == "listBox":
+                        elementType, guiElement, value, callback = widget._guiElements[index]
+                        if guiElement.count():
+                            itemIndex = random.randint(0, guiElement.count()-1)
+                            newValue = "Listbox %s. Changed selection of item %d to %s" % (value, itemIndex, not guiElement.item(itemIndex).isSelected())
+                            guiElement.item(itemIndex).setSelected(not guiElement.item(itemIndex).isSelected())
+                        else:
+                            callback = None
+                    elif elementType == "radioButtonsInBox":
+                        elementType, guiElement, value, callback = widget._guiElements[index]
+                        radioIndex = random.randint(0, len(guiElement.buttons)-1)
+                        if guiElement.buttons[radioIndex].isEnabled():
+                            newValue = "Set radio button %s to index %d" % (value, radioIndex)
+                            setattr(widget, value, radioIndex)
+                        else:
+                            callback = None
+                    elif elementType == "radioButton":
+                        elementType, guiElement, value, callback = widget._guiElements[index]
+                        newValue = "Set radio button %s to %d" % (value, not widget.getdeepattr(value))
+                        setattr(widget, value, not widget.getdeepattr(value))
+                    elif elementType in ["hSlider", "qwtHSlider", "spin"]:
+                        elementType, guiElement, value, min, max, step, callback = widget._guiElements[index]
+                        currentValue = widget.getdeepattr(value)
+                        if currentValue == min:   setattr(widget, value, currentValue+step)
+                        elif currentValue == max: setattr(widget, value, currentValue-step)
+                        else:                     setattr(widget, value, currentValue + [-step,step][random.randint(0,1)])
+                        newValue = "Changed value of %s to %f" % (value, widget.getdeepattr(value))
+                    elif elementType == "comboBox":
+                        elementType, guiElement, value, sendSelectedValue, valueType, callback = widget._guiElements[index]
+                        if guiElement.count():
+                            pos = random.randint(0, guiElement.count()-1)
+                            newValue = "Changed value of combo %s to %s" % (value, str(guiElement.itemText(pos)))
+                            if sendSelectedValue:
+                                setattr(widget, value, valueType(str(guiElement.itemText(pos))))
+                            else:
+                                setattr(widget, value, pos)
+                        else:
+                            callback = None
+                    if newValue != "":
+                        widget.printEvent("Widget %s. %s" % (str(widget.windowTitle()), newValue), eventVerbosity = 1)
+                    if callback:
+                        if type(callback) == list:
+                            for c in callback:
+                                c()
+                        else:
+                            callback()
+                except:
+                    excType, value, tracebackInfo = sys.exc_info()
+                    if not widget.signalManager.exceptionSeen(type, value, tracebackInfo):
+                        sys.stderr.write("------------------\n")
+                        if newValue != "":
+                            sys.stderr.write("Widget %s. %s\n" % (str(widget.windowTitle()), newValue))
+                        sys.excepthook(excType, value, tracebackInfo)  # print the exception
+                        sys.stderr.write("Widget settings are:\n")
+                        for i, setting in enumerate(getattr(widget, "settingsList", [])):
+                            if setting in ["widgetWidth", "widgetHeight", "widgetXPosition", "widgetYPosition", "widgetShown"]:
+                                continue
+                            sys.stderr.write("%30s: %7s\n" % (setting, str(widget.getdeepattr(setting))))
+                        
                 application.processEvents()
         except:
             type, val, traceback = sys.exc_info()
