@@ -76,7 +76,7 @@ class GUIApplication(OWBaseWidget):
         # add widget signals
         self.signalManager.setFreeze(1)
         self.signalManager.addLink( self.owFile, self.owData_Sampler, 'Examples', 'Data', 1)
-        self.signalManager.addLink( self.owData_Sampler, self.owSelect_Attributes, 'Examples', 'Examples', 1)
+        self.signalManager.addLink( self.owData_Sampler, self.owSelect_Attributes, 'Sample', 'Examples', 1)
         self.signalManager.addLink( self.owSelect_Attributes, self.owAttribute_Statistics, 'Examples', 'Examples', 1)
         self.signalManager.addLink( self.owSelect_Attributes, self.owScatterplot, 'Examples', 'Examples', 1)
         self.signalManager.addLink( self.owSelect_Attributes, self.owLinear_Projection, 'Examples', 'Examples', 1)
@@ -148,7 +148,6 @@ class GUIApplication(OWBaseWidget):
 
     def closeEvent(self, ev):
         OWBaseWidget.closeEvent(self, ev)
-        print "debugging enabled: ", orngDebugging.orngDebuggingEnabled
         if orngDebugging.orngDebuggingEnabled: return
         for widget in self.widgets[::-1]:
             widget.synchronizeContexts()
