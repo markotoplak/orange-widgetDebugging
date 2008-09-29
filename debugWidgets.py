@@ -1,4 +1,4 @@
-import orngOrangeFoldersQt4
+import orngEnviron
 import os, sys, random, smtplib, re, time
 import orange, subprocess
 

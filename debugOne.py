@@ -1,4 +1,4 @@
-import orngOrangeFoldersQt4
+import orngEnviron
 import os, sys, random, re, time
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
