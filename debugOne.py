@@ -82,9 +82,9 @@ except:
 if initializationOK:
     # remove the file widgets
     fileWidgets = []
-    for widget in instance.widgets[::-1]:
+    for (key, widget) in instance.widgets.items():
         if isinstance(widget, OWFile.OWFile):
-            instance.widgets.remove(widget)
+            instance.widgets.pop(key)
             fileWidgets.append(widget)
             widget.recentFiles = datasets
             #widget.selectFile(0)
@@ -114,7 +114,7 @@ if initializationOK:
                 fileWidget = fileWidgets[random.randint(0, len(fileWidgets)-1)]
                 fileWidget.openFile(datasetName, 0, fileWidget.symbolDK, fileWidget.symbolDC)
             else:
-                widget = instance.widgets[random.randint(0, len(instance.widgets)-1)]
+                widget = instance.widgets.values()[random.randint(0, len(instance.widgets.values())-1)]
                 
                 if len(widget._guiElements) == 0: continue
 
