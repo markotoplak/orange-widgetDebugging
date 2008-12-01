@@ -55,6 +55,8 @@ for guiApp in guiApps:
     if guiExt.lower() not in [".py", ".pyw"]:
         if os.path.exists(guiName + ".py"):
             guiApp = guiName + ".py"
+        elif os.path.exists(guiName + ".pyw"):
+            guiApp = guiName + ".pyw"
         else:
             print "invalid file type for file", guiApp
             continue
