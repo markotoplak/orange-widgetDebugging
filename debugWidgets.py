@@ -114,7 +114,7 @@ for guiApp in guiApps:
 
 if sendMail == 1:
     fromaddr = "orange@fri.uni-lj.si"
-    toaddrs = "tomaz.curk@fri.uni-lj.si, gregor.leban@fri.uni-lj.si"
+    toaddrs = "tomaz.curk@fri.uni-lj.si, gregor.leban@fri.uni-lj.si, ales.erjavec@fri.uni-lj.s"
     msg = "From: %s\r\nTo: %s\r\nSubject: Widget test status. Number of failed: %d \r\n\r\n" % (fromaddr, toaddrs, nrOfFailed) + widgetStatus
 
     server = smtplib.SMTP('212.235.188.18', 25)
