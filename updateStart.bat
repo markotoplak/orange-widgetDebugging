@@ -1,10 +1,13 @@
 c:
-cd \Python23\Lib\site-packages
-rem cvs -d :pserver:cvs@estelle.fri.uni-lj.si:/CVS checkout -A -- orange
-rem cvs -d :pserver:cvs@estelle.fri.uni-lj.si:/CVS checkout -A -- WidgetDebugging
+cd \Python25\Lib\site-packages
 
-cvs -d :pserver:cvs@estelle.fri.uni-lj.si:/CVS update -P -d -C orange
-cvs -d :pserver:cvs@estelle.fri.uni-lj.si:/CVS update -P -d -C WidgetDebugging
+rem svn co --force http://www.ailab.si/svn/orange/trunk/orange/ orange
+rem svn co --force http://www.ailab.si/svn/orange/trunk/add-ons/Bioinformatics/ orange\add-ons\Bioinformatics
+rem svn co --force http://www.ailab.si/svn/orange/trunk/testing/widgetDebugging/ WidgetDebugging
+
+svn update orange
+svn update orange\add-ons\Bioinformatics
+svn update WidgetDebugging
 
 cd WidgetDebugging
 debugWidgets.py -sendmail
