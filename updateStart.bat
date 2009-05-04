@@ -10,6 +10,6 @@ svn update orange\add-ons\Bioinformatics
 svn update WidgetDebugging
 
 cd WidgetDebugging
-debugWidgets.py -sendmail
+python debugWidgets.py -sendmail
 
 shutdown -s
