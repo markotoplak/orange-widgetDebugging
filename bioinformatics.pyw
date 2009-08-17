@@ -1,6 +1,4 @@
 #This file is automatically created by Orange Canvas and containing an Orange schema
-# contact: ales.erjavec@fri.uni-lj.si
-# useonly: brown-selected.tab
 
 import orngEnviron
 import orngDebugging
@@ -14,10 +12,8 @@ class GUIApplication(OWBaseWidget):
         self.widgets = {}
         self.loadSettings()
         
-        self.tabs = QTabWidget(self)
         self.setLayout(QVBoxLayout())
-        self.layout().addWidget(self.tabs)
-        self.resize(800,600)
+        self.box = OWGUI.widgetBox(self, 'Widgets')
 
         self.createWidget('OWFile', 'icons/File.png', 'File', 1, self.signalManager)
         self.createWidget('OWDisplayProfiles', 'icons/ExpressionProfiles.png', 'Data Profiles', 1, self.signalManager)
@@ -28,6 +24,9 @@ class GUIApplication(OWBaseWidget):
         self.createWidget('OWVulcanoPlot', 'icons/VulcanoPlot.png', 'Vulcano Plot', 1, self.signalManager)
         self.createWidget('OWDataTable', 'icons/DataTable.png', 'Data Table', 1, self.signalManager)
         
+        box2 = OWGUI.widgetBox(self, 1)
+        exitButton = OWGUI.button(box2, self, "Exit", callback = self.accept)
+        self.layout().addStretch(100)
         
         statusBar = QStatusBar(self)
         self.layout().addWidget(statusBar)
@@ -65,7 +64,7 @@ class GUIApplication(OWBaseWidget):
         widget.setWindowTitle(caption)
         self.signalManager.addWidget(widget)
         self.widgets[caption] = widget
-        if shown: OWGUI.createTabPage(self.tabs, caption, widget)
+        if shown: OWGUI.button(self.box, self, caption, callback = widget.reshow)
         for dlg in getattr(widget, "wdChildDialogs", []):
             dlg.setEventHandler(self.eventHandler)
             dlg.setProgressBarHandler(self.progressHandler)
