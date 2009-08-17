@@ -1,0 +1,14 @@
+(dp1
+S'SOM'
+p2
+S"(dp1\nS'radius1'\np2\nI5\nsS'alpha2'\np3\nF0.01\nsS'radius2'\np4\nI5\nsS'neighborhood'\np5\nI0\nsS'ydim'\np6\nI10\nsS'widgetHeight'\np7\nI457\nsS'initialization'\np8\nI0\nsS'widgetYPosition'\np9\nI116\nsS'iterations2'\np10\nI10000\nsS'iterations1'\np11\nI1000\nsS'eps'\np12\nF1.0000000000000001e-05\nsS'widgetShown'\np13\nNsS'alpha1'\np14\nF0.050000000000000003\nsS'widgetWidth'\np15\nI177\nsS'xdim'\np16\nI5\nsS'widgetXPosition'\np17\nI88\nsS'alphaType'\np18\nI0\nsS'topology'\np19\nI0\ns."
+p3
+sS'SOMVisualizer'
+p4
+S"(dp1\nS'scene.includeCodebook'\np2\nI01\nsS'widgetHeight'\np3\nI745\nsS'widgetXPosition'\np4\nI132\nsS'backgroundCheck'\np5\nI1\nsS'scene.objSize'\np6\nI25\nsS'widgetShown'\np7\nI0\nsS'scene.showToolTip'\np8\nI01\nsS'backgroundMode'\np9\nI0\nsS'widgetWidth'\np10\nI600\nsS'localContexts'\np11\n(lp12\nsS'localContextsVersion'\np13\n(I100\nI0\ntp14\nsS'scene.drawMode'\np15\nI1\nsS'widgetYPosition'\np16\nI174\nsS'commitOnChange'\np17\nI0\ns."
+p5
+sS'File'
+p6
+S"(dp1\nS'widgetHeight'\np2\nI409\nsS'widgetXPosition'\np3\nI0\nsS'widgetYPosition'\np4\nI481\nsS'widgetShown'\np5\nI0\nsS'showAdvanced'\np6\nI0\nsS'createNewOn'\np7\nI2\nsS'widgetWidth'\np8\nI447\nsS'localContextsVersion'\np9\n(I100\nI0\ntp10\nsS'localContexts'\np11\n(lp12\n(iOWContexts\nContext\np13\n(dp14\nS'symbolDK'\np15\nS''\nsS'symbolDC'\np16\nS''\nsS'time'\np17\nF1196689968.171\nsS'filename'\np18\nS'E:/Development/Orange Datasets/UCI/zoo.tab'\np19\nsba(iOWContexts\nContext\np20\n(dp21\nS'symbolDC'\np22\nS''\nsS'symbolDK'\np23\nS''\nsS'filename'\np24\nS'E:/Development/Orange Datasets/Blaz/05-cur-w-calc.tab'\np25\nsS'time'\np26\nF1196689758.171\nsbasS'recentFiles'\np27\n(lp28\ns."
+p7
+s.
