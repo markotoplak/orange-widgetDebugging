@@ -4,7 +4,7 @@ import orange, subprocess
 
 # options and settings
 nrOfThingsToChange = 2000   # how many random clicks do we want to simulate
-timeLimit = 30              # 30 minutes is the maximum time that we will spend in testing one schema
+timeLimit = 15              # 15 minutes is the maximum time that we will spend in testing one schema
 
 # possible command line parameters
 sendMailText = "-sendmail"      # do we want to send an email to authors after finishing
@@ -23,6 +23,10 @@ sendMail = sendMailText in sys.argv     # do we want to send status mail or not
 verbosity = 0
 if verbosity1Text in sys.argv: verbosity = 1
 if verbosity2Text in sys.argv: verbosity = 2
+
+#defaultaddrs = ["ales.erjavec@fri.uni-lj.si"]
+defaultaddrs = ["tomaz.curk@fri.uni-lj.si", "gregor.leban@fri.uni-lj.si", "ales.erjavec@fri.uni-lj.si"]
+
 
 guiApps = sys.argv
 if "debugWidgets.py" in guiApps[0]: guiApps.pop(0)
@@ -72,9 +76,9 @@ for guiApp in guiApps:
     if process.poll() == None:
         if sys.platform == "win32":
             import win32api
-            win32api.TerminateProcess(process.pid,0)
+            win32api.TerminateProcess(process._handle, 0)
         else:
-            os.kill(process.pid,9)
+            os.kill(process.pid, 9)
         successful = 0
 
 
@@ -99,11 +103,11 @@ for guiApp in guiApps:
 
         # if we found somebody to bug then send him an email
         search = re.search("contact:(?P<imena>.*)\n", script)
-        if (search) and sendMail == 1:
+        if sendMail == 1:
             fromaddr = "orange@fri.uni-lj.si"
-            toaddrs = search.group("imena")
-            toaddrs.replace(" ", ",")
-            msg = "From: %s\r\nTo: %s\r\nSubject: Exception in widgets - %s script\r\n\r\n" % (fromaddr, toaddrs, guiApp) + content
+            toaddrs = [addr for addr in (search.group("imena").split() if search else []) if addr not in defaultaddrs] + defaultaddrs
+#            toaddrs.replace(" ", ",")
+            msg = "From: %s\r\nTo: %s\r\nSubject: Exception in widgets - %s script\r\n\r\n" % (fromaddr, ", ".join(toaddrs), guiApp) + content
             server = smtplib.SMTP('212.235.188.18', 25)
             #server.set_debuglevel(0)
             server.sendmail(fromaddr, toaddrs, msg)
@@ -114,8 +118,8 @@ for guiApp in guiApps:
 
 if sendMail == 1:
     fromaddr = "orange@fri.uni-lj.si"
-    toaddrs = "tomaz.curk@fri.uni-lj.si, gregor.leban@fri.uni-lj.si, ales.erjavec@fri.uni-lj.si"
-    msg = "From: %s\r\nTo: %s\r\nSubject: Widget test status. Number of failed: %d \r\n\r\n" % (fromaddr, toaddrs, nrOfFailed) + widgetStatus
+    toaddrs = defaultaddrs
+    msg = "From: %s\r\nTo: %s\r\nSubject: Widget test status. Number of failed: %d \r\n\r\n" % (fromaddr, ", ".join(toaddrs), nrOfFailed) + widgetStatus
 
     server = smtplib.SMTP('212.235.188.18', 25)
     server.sendmail(fromaddr, toaddrs, msg)
