@@ -4,7 +4,7 @@ import orange, subprocess
 
 # options and settings
 nrOfThingsToChange = 2000   # how many random clicks do we want to simulate
-timeLimit = 15              # 15 minutes is the maximum time that we will spend in testing one schema
+timeLimit = 15             # 15 minutes is the maximum time that we will spend in testing one schema
 
 # possible command line parameters
 sendMailText = "-sendmail"      # do we want to send an email to authors after finishing
@@ -52,6 +52,8 @@ if len(guiApps) == 0:
 widgetStatus = ""
 nrOfFailed = 0
 
+groupedMsg = ""
+
 for guiApp in guiApps:
     if guiApp.lower() in ["debugwidgets.py", "debugone.py"]: 
         continue 
@@ -90,22 +92,26 @@ for guiApp in guiApps:
     f.close()
     if content.find("Unhandled exception") != -1 or content.find("Time limit (%d min) exceeded" % (timeLimit)) != -1 or not successful:
         if not successful:
-            widgetStatus += " TIMEOUT\n"
+            widgetStatus += guiApp + ": TIMEOUT\n"
             print "TIMEOUT"
         else:
-            widgetStatus += " FAILED\n"
+            widgetStatus += guiApp + ": FAILED\n"
             print "FAILED"
         nrOfFailed += 1
 
         f = open(guiApp)
         script = f.read()
         f.close()
-
+        
+        groupedMsg += "=" * 10 + "\n"
+        groupedMsg += "Exception in widgets - %s script\n\n" % guiApp if successful else "Time limit (%d min) exceeded in - %s script\n\n" % (timeLimit, guiApp)
+        groupedMsg += content
+        
         # if we found somebody to bug then send him an email
         search = re.search("contact:(?P<imena>.*)\n", script)
-        if sendMail == 1:
+        if sendMail == 1 and search:
             fromaddr = "orange@fri.uni-lj.si"
-            toaddrs = [addr for addr in (search.group("imena").split() if search else []) if addr not in defaultaddrs] + defaultaddrs
+            toaddrs = search.group("imena").split() #[addr for addr in (search.group("imena").split() if search else []) if addr not in defaultaddrs] + defaultaddrs
 #            toaddrs.replace(" ", ",")
             msg = "From: %s\r\nTo: %s\r\nSubject: Exception in widgets - %s script\r\n\r\n" % (fromaddr, ", ".join(toaddrs), guiApp) + content
             server = smtplib.SMTP('212.235.188.18', 25)
@@ -119,7 +125,7 @@ for guiApp in guiApps:
 if sendMail == 1:
     fromaddr = "orange@fri.uni-lj.si"
     toaddrs = defaultaddrs
-    msg = "From: %s\r\nTo: %s\r\nSubject: Widget test status. Number of failed: %d \r\n\r\n" % (fromaddr, ", ".join(toaddrs), nrOfFailed) + widgetStatus
+    msg = "From: %s\r\nTo: %s\r\nSubject: Widget test status. Number of failed: %d \r\n\r\n" % (fromaddr, ", ".join(toaddrs), nrOfFailed) + widgetStatus + groupedMsg
 
     server = smtplib.SMTP('212.235.188.18', 25)
     server.sendmail(fromaddr, toaddrs, msg)
