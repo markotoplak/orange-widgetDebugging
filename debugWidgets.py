@@ -119,7 +119,7 @@ for guiApp in guiApps:
             server.sendmail(fromaddr, toaddrs, msg)
             server.quit()
     else:
-        widgetStatus += " OK\n"
+        widgetStatus += guiApp + ": OK\n"
         print "OK"
 
 if sendMail == 1:
