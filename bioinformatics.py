@@ -1,5 +1,7 @@
 #This file is automatically created by Orange Canvas and containing an Orange schema
 # contact:ales.erjavec@fri.uni-lj.si
+# useonly: brown-selected.tab, brown-selected-noclass.tab
+
 import orngEnviron
 import orngDebugging
 import sys, os, cPickle, orange, orngSignalManager, OWGUI
