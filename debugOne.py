@@ -88,7 +88,8 @@ if initializationOK:
             fileWidgets.append(widget)
             widget.recentFiles = datasets
             #widget.selectFile(0)
-    random.seed(0)      # for each gui application reset the random generator
+#    random.seed(0)      # for each gui application reset the random generator
+    random = random.Random(0)
 
     # randomly change gui elements in widgets
     for i in range(nrOfThingsToChange):
@@ -191,13 +192,11 @@ if initializationOK:
                     if newValue != "":
                         widget.printEvent("Widget %s. %s" % (str(widget.windowTitle()), newValue), eventVerbosity = 1)
                     if callback:
-                        state = random.getstate() # In case the widget calls random.seed() (like the k-Means widget)
                         if type(callback) == list:
                             for c in callback:
                                 c()
                         else:
                             callback()
-                        random.setstate(state)
                 except:
                     excType, value, tracebackInfo = sys.exc_info()
                     if not widget.signalManager.exceptionSeen(type, value, tracebackInfo):
