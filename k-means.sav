@@ -1,0 +1,10 @@
+(dp1
+S'k-Means Clustering'
+p2
+S"(dp1\nS'widgetYPosition'\np2\nI111\nsS'distanceMeasure'\np3\nI0\nsS'classifySelected'\np4\nI1\nsS'K'\nI2\nsS'runAnyChange'\np5\nI00\nsS'classifyName'\np6\nS'Cluster'\np7\nsS'widgetShown'\np8\nI0\nsS'widgetWidth'\np9\nI600\nsS'widgetHeight'\np10\nI640\nsS'addIdAs'\np11\nI0\nsS'widgetXPosition'\np12\nI455\nsS'initializationType'\np13\nI0\ns."
+p3
+sS'File'
+p4
+S"(dp1\nS'widgetHeight'\np2\nI257\nsS'widgetXPosition'\np3\nI516\nsS'widgetYPosition'\np4\nI321\nsS'widgetShown'\np5\nI0\nsS'showAdvanced'\np6\nI0\nsS'createNewOn'\np7\nI1\nsS'widgetWidth'\np8\nI356\nsS'localContextsVersion'\np9\n(I100\nI0\ntp10\nsS'localContexts'\np11\n(lp12\n(iOWContexts\nContext\np13\n(dp14\nS'symbolDC'\np15\nS''\nsS'symbolDK'\np16\nS''\nsS'filename'\np17\nS'/Users/aleserjavec/Documents/workspace/orange/doc/datasets/iris.tab'\np18\nsS'time'\np19\nF1260827413.4908731\nsba(iOWContexts\nContext\np20\n(dp21\nS'symbolDC'\np22\nS''\nsS'symbolDK'\np23\nS''\nsS'filename'\np24\nS'/Users/aleserjavec/Documents/workspace/orange/doc/datasets/voting.tab'\np25\nsS'time'\np26\nF1260824994.146426\nsba(iOWContexts\nContext\np27\n(dp28\ng22\nS''\nsg23\nS''\nsg24\nS'/Users/aleserjavec/Documents/workspace/orange/doc/datasets/titanic.tab'\np29\nsg26\nF1260825020.9756169\nsba(iOWContexts\nContext\np30\n(dp31\nS'symbolDK'\np32\nS''\nsS'symbolDC'\np33\nS''\nsS'time'\np34\nF1260824628.0856819\nsS'filename'\np35\nS'/Users/aleserjavec/Documents/workspace/orange/doc/datasets/brown-selected.tab'\np36\nsbasS'recentFiles'\np37\n(lp38\ng18\naS'/Users/aleserjavec/Documents/workspace/orange/doc/datasets/voting.tab'\np39\naS'/Users/aleserjavec/Documents/workspace/orange/doc/datasets/titanic.tab'\np40\naS'/Users/aleserjavec/Documents/workspace/orange/doc/datasets/brown-selected.tab'\np41\nas."
+p5
+s.
