@@ -117,7 +117,7 @@ if initializationOK:
                 widget = instance.widgets.values()[random.randint(0, len(instance.widgets.values())-1)]
                 
                 if len(widget._guiElements) == 0: continue
-
+                
                 try:
                     newValue = ""
                     callback = None
@@ -130,7 +130,7 @@ if initializationOK:
                     else:
                         elementType, guiElement = widget._guiElements[index][0], widget._guiElements[index][1]
                         if not guiElement.isEnabled(): continue
-        
+                        
                     if elementType == "signalChange":
                         if len(widget.outputs) > 0:
                             output = widget.outputs[random.randint(0, len(widget.outputs)-1)][0]
@@ -191,11 +191,13 @@ if initializationOK:
                     if newValue != "":
                         widget.printEvent("Widget %s. %s" % (str(widget.windowTitle()), newValue), eventVerbosity = 1)
                     if callback:
+                        state = random.getstate() # In case the widget calls random.seed() (like the k-Means widget)
                         if type(callback) == list:
                             for c in callback:
                                 c()
                         else:
                             callback()
+                        random.setstate(state)
                 except:
                     excType, value, tracebackInfo = sys.exc_info()
                     if not widget.signalManager.exceptionSeen(type, value, tracebackInfo):
