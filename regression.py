@@ -1,4 +1,5 @@
 #This file is automatically created by Orange Canvas and containing an Orange schema
+# contact:ales.erjavec@fri.uni-lj.si
 
 import orngEnviron
 import orngDebugging
