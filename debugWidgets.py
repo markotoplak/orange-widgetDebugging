@@ -4,7 +4,7 @@ import orange, subprocess
 
 # options and settings
 nrOfThingsToChange = 2000   # how many random clicks do we want to simulate
-timeLimit = 20             # 20 minutes is the maximum time that we will spend in testing one schema
+timeLimit = 30             # 20 minutes is the maximum time that we will spend in testing one schema
 
 # possible command line parameters
 sendMailText = "-sendmail"      # do we want to send an email to authors after finishing
