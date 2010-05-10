@@ -8,7 +8,7 @@ from OWBaseWidget import *
 class GUIApplication(OWBaseWidget):
     def __init__(self,parent=None):
         self.signalManager = orngSignalManager.SignalManager()
-        OWBaseWidget.__init__(self, title = 'Evaluate', signalManager = self.signalManager)
+        OWBaseWidget.__init__(self, title = 'evaluate', signalManager = self.signalManager)
         self.widgets = {}
         self.loadSettings()
         
@@ -25,10 +25,10 @@ class GUIApplication(OWBaseWidget):
         self.createWidget('OWClassificationTree', 'icons/ClassificationTree.png', 'Classification Tree', 1, self.signalManager)
         self.createWidget('OWC45Tree', 'icons/C45.png', 'C4.5', 1, self.signalManager)
         self.createWidget('OWSVM', 'icons/BasicSVM.png', 'SVM', 1, self.signalManager)
-        self.createWidget('OWCN2', 'CN2.png', 'CN2', 1, self.signalManager)
+        self.createWidget('OWCN2', 'icons/CN2.png', 'CN2', 1, self.signalManager)
         self.createWidget('OWTestLearners', 'icons/TestLearners.png', 'Test Learners', 1, self.signalManager)
-        self.createWidget('OWROC', 'ROCAnalysis.png', 'ROC Analysis', 1, self.signalManager)
-        self.createWidget('OWLiftCurve', 'LiftCurve.png', 'Lift Curve', 1, self.signalManager)
+        self.createWidget('OWROC', 'icons/ROCAnalysis.png', 'ROC Analysis', 1, self.signalManager)
+        self.createWidget('OWLiftCurve', 'icons/LiftCurve.png', 'Lift Curve', 1, self.signalManager)
         
         box2 = OWGUI.widgetBox(self, 1)
         exitButton = OWGUI.button(box2, self, "Exit", callback = self.accept)
@@ -97,7 +97,7 @@ class GUIApplication(OWBaseWidget):
 
     def loadSettings(self):
         try:
-            file = open("Evaluate.sav", "r")
+            file = open("evaluate.sav", "r")
             self.strSettings = cPickle.load(file)
             file.close()
 
@@ -113,7 +113,7 @@ class GUIApplication(OWBaseWidget):
             widget.synchronizeContexts()
             strSettings[name] = widget.saveSettingsStr()
             widget.close()
-        file = open("Evaluate.sav", "w")
+        file = open("evaluate.sav", "w")
         cPickle.dump(strSettings, file)
         file.close()
 
