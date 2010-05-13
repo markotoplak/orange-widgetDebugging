@@ -12,11 +12,12 @@ debugDir = os.path.split(os.path.abspath(__file__))[0]
 
 os.chdir(debugDir)
 
-guiName = " ".join(sys.argv[1:-3])
+guiName = " ".join(sys.argv[1:-4])
     
-nrOfThingsToChange = int(sys.argv[-3])
-verbosity = int(sys.argv[-2])
-timeLimit = int(sys.argv[-1])
+nrOfThingsToChange = int(sys.argv[-4])
+verbosity = int(sys.argv[-3])
+timeLimit = int(sys.argv[-2])
+randomSeed = int(sys.argv[-1])
 
 orngDebugging.orngDebuggingEnabled = 1       # set debugging variable to 1 and prevent execution of code that requires user's intervention
 orngDebugging.orngDebuggingFileName = os.path.splitext(guiName)[0] + ".txt"
@@ -89,7 +90,7 @@ if initializationOK:
             widget.recentFiles = datasets
             #widget.selectFile(0)
 #    random.seed(0)      # for each gui application reset the random generator
-    random = random.Random(0)
+    random = random.Random(randomSeed)
 
     # randomly change gui elements in widgets
     for i in range(nrOfThingsToChange):
@@ -192,7 +193,7 @@ if initializationOK:
                     if newValue != "":
                         widget.printEvent("Widget %s. %s" % (str(widget.windowTitle()), newValue), eventVerbosity = 1)
                     if callback:
-                        if type(callback) == list:
+                        if type(callback) == list or hasattr(callback, "__iter__"):
                             for c in callback:
                                 c()
                         else:
@@ -217,4 +218,5 @@ if initializationOK:
 
     instance.signalManager.addEvent("Test finished", eventVerbosity = 0)
     instance.signalManager.closeDebugFile()
+    sys.exit(1)
 
