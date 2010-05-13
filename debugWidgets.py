@@ -26,8 +26,6 @@ parser.add_option("-s", "--Seed=", type=int, dest="randomSeed", default=seed, he
 
 options, args = parser.parse_args()
 
-print args
-
 # get gui applications to try
 
 #os.chdir(r"E:\Development\Orange-Qt4\WidgetDebugging")

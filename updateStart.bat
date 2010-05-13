@@ -17,6 +17,6 @@ svn update WidgetDebugging
 python orange\downloadPyd.py
 
 cd WidgetDebugging
-python debugWidgets.py --Sendmail
+python debugWidgets.py --sendmail
 
 shutdown -s
