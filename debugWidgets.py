@@ -13,7 +13,12 @@ sendMailText = "-sendmail"      # do we want to send an email to authors after f
 verbosity1Text = "-verbose"     # do we want to see a bit more output from widgets - prints a line for every change in the widget (checkboxes, buttons, comboboxes, ...)
 verbosity2Text = "-Verbose"     # do we want to see a lot of output from widgets - prints also passing and processing of signals
 changesText = "-changes="       # specify the number of random changes that you would like to do in each tested schema
-randomSeed = "-seed="
+
+
+# map old style arguments to new defined below
+oldToNewStyleArgs = {sendMailText: "--sendmail", verbosity1Text: "-v", verbosity2Text: "-V", changesText: "--Changes="}
+sys.argv = [oldToNewStyleArgs.get(arg, arg) for arg in sys.argv]
+
 debugOneText = "debugOne.py"
 
 parser = OptionParser()
@@ -38,7 +43,7 @@ if verbosity1Text in sys.argv or options.verbose: verbosity = 1
 if verbosity2Text in sys.argv or options.Verbose: verbosity = 2
 
 #defaultaddrs = ["ales.erjavec@fri.uni-lj.si"]
-defaultaddrs = ["tomaz.curk@fri.uni-lj.si", "gregor.leban@fri.uni-lj.si", "ales.erjavec@fri.uni-lj.si"]
+defaultaddrs = ["tomaz.curk@fri.uni-lj.si", "ales.erjavec@fri.uni-lj.si"]
 
 
 guiApps = sys.argv
