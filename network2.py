@@ -8,7 +8,7 @@ from OWBaseWidget import *
 class GUIApplication(OWBaseWidget):
     def __init__(self,parent=None):
         self.signalManager = orngSignalManager.SignalManager()
-        OWBaseWidget.__init__(self, title = 'network1', signalManager = self.signalManager)
+        OWBaseWidget.__init__(self, title = 'network2', signalManager = self.signalManager)
         self.widgets = {}
         self.loadSettings()
         
@@ -16,13 +16,12 @@ class GUIApplication(OWBaseWidget):
         self.box = OWGUI.widgetBox(self, 'Widgets')
 
         self.createWidget('OWFile', 'icons/File.png', 'File', 1, self.signalManager)
-        self.createWidget('OWDataSampler', 'icons/DataSampler.png', 'Data Sampler', 1, self.signalManager)
-        self.createWidget('OWExampleDistance', 'icons/ExampleDistance.png', 'Example Distance', 1, self.signalManager)
+        self.createWidget('OWAttributeDistance', 'icons/AttributeDistance.png', 'Attribute Distance', 1, self.signalManager)
         self.createWidget('OWNetworkFromDistances', 'icons/NetworkFromDistances.png', 'Network from Distances', 1, self.signalManager)
         self.createWidget('OWNetExplorer', 'icons/Network.png', 'Net Explorer', 1, self.signalManager)
+        self.createWidget('OWExampleDistance', 'icons/ExampleDistance.png', 'Example Distance', 1, self.signalManager)
+        self.createWidget('OWNetworkFromDistances', 'icons/NetworkFromDistances.png', 'Network from Distances (2)', 1, self.signalManager)
         self.createWidget('OWNetExplorer', 'icons/Network.png', 'Net Explorer (2)', 1, self.signalManager)
-        self.createWidget('OWDistanceMap', 'icons/DistanceMap.png', 'Distance Map', 1, self.signalManager)
-        self.createWidget('OWDataTable', 'icons/DataTable.png', 'Data Table', 1, self.signalManager)
         
         box2 = OWGUI.widgetBox(self, 1)
         exitButton = OWGUI.button(box2, self, "Exit", callback = self.accept)
@@ -42,18 +41,14 @@ class GUIApplication(OWBaseWidget):
 
         # add widget signals
         self.signalManager.setFreeze(1)
-        self.signalManager.addLink( self.widgets['File'], self.widgets['Data Sampler'], 'Examples', 'Data', 1)
-        self.signalManager.addLink( self.widgets['File'], self.widgets['Example Distance'], 'Examples', 'Examples', 1)
-        self.signalManager.addLink( self.widgets['Example Distance'], self.widgets['Network from Distances'], 'Distance Matrix', 'Distance Matrix', 1)
+        self.signalManager.addLink( self.widgets['Attribute Distance'], self.widgets['Network from Distances'], 'Distance Matrix', 'Distance Matrix', 1)
         self.signalManager.addLink( self.widgets['Network from Distances'], self.widgets['Net Explorer'], 'Network', 'Network', 1)
-        self.signalManager.addLink( self.widgets['Example Distance'], self.widgets['Net Explorer'], 'Distance Matrix', 'Vertex Distance', 1)
-        self.signalManager.addLink( self.widgets['File'], self.widgets['Net Explorer'], 'Examples', 'Items', 1)
-        self.signalManager.addLink( self.widgets['Data Sampler'], self.widgets['Net Explorer'], 'Sample', 'Items to Mark', 1)
-        self.signalManager.addLink( self.widgets['Net Explorer'], self.widgets['Net Explorer (2)'], 'Selected Network', 'Network', 1)
-        self.signalManager.addLink( self.widgets['Net Explorer'], self.widgets['Distance Map'], 'Selected Distance Matrix', 'Distance Matrix', 1)
-        self.signalManager.addLink( self.widgets['Net Explorer'], self.widgets['Data Table'], 'Selected Examples', 'Examples', 1)
-        self.signalManager.addLink( self.widgets['Net Explorer'], self.widgets['Data Table'], 'Unselected Examples', 'Examples', 1)
-        self.signalManager.addLink( self.widgets['Net Explorer'], self.widgets['Data Table'], 'Marked Examples', 'Examples', 1)
+        self.signalManager.addLink( self.widgets['File'], self.widgets['Attribute Distance'], 'Examples', 'Examples', 1)
+        self.signalManager.addLink( self.widgets['Attribute Distance'], self.widgets['Net Explorer'], 'Distance Matrix', 'Vertex Distance', 1)
+        self.signalManager.addLink( self.widgets['File'], self.widgets['Example Distance'], 'Examples', 'Examples', 1)
+        self.signalManager.addLink( self.widgets['Example Distance'], self.widgets['Network from Distances (2)'], 'Distance Matrix', 'Distance Matrix', 1)
+        self.signalManager.addLink( self.widgets['Network from Distances (2)'], self.widgets['Net Explorer (2)'], 'Network', 'Network', 1)
+        self.signalManager.addLink( self.widgets['Example Distance'], self.widgets['Net Explorer (2)'], 'Distance Matrix', 'Vertex Distance', 1)
         self.signalManager.setFreeze(0)
         
 
@@ -90,7 +85,7 @@ class GUIApplication(OWBaseWidget):
 
     def loadSettings(self):
         try:
-            file = open("network1.sav", "r")
+            file = open("network2.sav", "r")
             self.strSettings = cPickle.load(file)
             file.close()
 
@@ -106,7 +101,7 @@ class GUIApplication(OWBaseWidget):
             widget.synchronizeContexts()
             strSettings[name] = widget.saveSettingsStr()
             widget.close()
-        file = open("network1.sav", "w")
+        file = open("network2.sav", "w")
         cPickle.dump(strSettings, file)
         file.close()
 
