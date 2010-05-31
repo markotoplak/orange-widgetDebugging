@@ -5,7 +5,7 @@ import orange, subprocess
 from optparse import OptionParser
 # options and settings
 nrOfThingsToChange = 2000   # how many random clicks do we want to simulate
-timeLimit = 30             # 20 minutes is the maximum time that we will spend in testing one schema
+timeLimit = 15             # 15 minutes is the maximum time that we will spend in testing one schema
 seed = 0
 
 # possible command line parameters
@@ -27,6 +27,7 @@ parser.add_option("-v", "--verbose", action="store_true", dest="verbose", help="
 parser.add_option("-V", "--Verbose", action="store_true", dest="Verbose", help="Prints also passing and processing of signals")
 parser.add_option("-c", "--Changes=", type=int, dest="nrOfThingsToChange", default=nrOfThingsToChange, help="How many random clicks do we want to simulate")
 parser.add_option("-s", "--Seed=", type=int, dest="randomSeed", default=seed, help="Random seed")
+parser.add_option("--mouse", action="store_true", default=False, help="Simulate mouse interaction in view widgets")
 
 
 options, args = parser.parse_args()
@@ -92,7 +93,7 @@ for guiApp in guiApps:
 
     print guiApp
     startTime = time.time()
-    process = subprocess.Popen([sys.executable, "debugOne.py", guiApp, str(nrOfThingsToChange), str(verbosity), str(timeLimit), str(randomSeed)])
+    process = subprocess.Popen([sys.executable, "debugOne.py", guiApp, str(nrOfThingsToChange), str(verbosity), str(timeLimit), str(randomSeed), str(options.mouse)])
 
     while process.poll() == None and time.time() - startTime < timeLimit * 60 + 10:
          time.sleep(3)

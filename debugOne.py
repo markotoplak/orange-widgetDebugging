@@ -12,12 +12,13 @@ debugDir = os.path.split(os.path.abspath(__file__))[0]
 
 os.chdir(debugDir)
 
-guiName = " ".join(sys.argv[1:-4])
+guiName = " ".join(sys.argv[1:-5])
     
-nrOfThingsToChange = int(sys.argv[-4])
-verbosity = int(sys.argv[-3])
-timeLimit = int(sys.argv[-2])
-randomSeed = int(sys.argv[-1])
+nrOfThingsToChange = int(sys.argv[-5])
+verbosity = int(sys.argv[-4])
+timeLimit = int(sys.argv[-3])
+randomSeed = int(sys.argv[-2])
+viewInteraction = sys.argv[-1] == "True"
 
 orngDebugging.orngDebuggingEnabled = 1       # set debugging variable to 1 and prevent execution of code that requires user's intervention
 orngDebugging.orngDebuggingFileName = os.path.splitext(guiName)[0] + ".txt"
@@ -30,7 +31,7 @@ import OWFile       # we need to know the file widget so that we can remove it f
 datasets = []
 datapath = os.path.join(debugDir, "datasets")
 for name in os.listdir(datapath):
-    if os.path.isfile(os.path.join(datapath, name)):
+    if os.path.isfile(os.path.join(datapath, name)) and not name.startswith("."):
         datasets.append(os.path.join(datapath, name))
 
 datasets.append("(none)") # we add a blank dataset. This will be to test the none signal
@@ -112,8 +113,8 @@ if initializationOK:
                     else:
                         validChange = 1
 
-                instance.signalManager.addEvent("---- Setting data set: %s ----" % (str(os.path.split(datasetName)[1])), eventVerbosity = 0)
                 fileWidget = fileWidgets[random.randint(0, len(fileWidgets)-1)]
+                instance.signalManager.addEvent("---- Setting data set: %s (%s widget) ----" % (str(os.path.split(datasetName)[1]), fileWidget.windowTitle()), eventVerbosity = 0)
                 fileWidget.openFile(datasetName, 0, fileWidget.symbolDK, fileWidget.symbolDC)
             else:
                 widget = instance.widgets.values()[random.randint(0, len(instance.widgets.values())-1)]
@@ -125,13 +126,21 @@ if initializationOK:
                     callback = None
         
                     #index = random.randint(0, len(widget._guiElements)-1)
-                    index = random.randint(0, len(widget._guiElements))
+                    #index = random.randint(0, len(widget._guiElements))
+                    index = random.randint(0, len(widget._guiElements) + (1 if viewInteraction else 0))
+
                     if index == len(widget._guiElements):
                         elementType = "signalChange"
                         guiElement = None
-                    else:
+                    elif index < len(widget._guiElements):
                         elementType, guiElement = widget._guiElements[index][0], widget._guiElements[index][1]
                         if not guiElement.isEnabled(): continue
+                    else:
+                        guiElement = random.choice(orngDebugging.debug.candidateDebugWidgets(widget) or [None])
+                        if guiElement:
+                            elementType=type(guiElement)
+                        else:
+                            continue
                         
                     if elementType == "signalChange":
                         if len(widget.outputs) > 0:
@@ -162,6 +171,8 @@ if initializationOK:
                             callback = None
                     elif elementType == "radioButtonsInBox":
                         elementType, guiElement, value, callback = widget._guiElements[index]
+                        if not guiElement.buttons:
+                            continue
                         radioIndex = random.randint(0, len(guiElement.buttons)-1)
                         if guiElement.buttons[radioIndex].isEnabled():
                             newValue = "Set radio button %s to index %d" % (value, radioIndex)
@@ -190,6 +201,9 @@ if initializationOK:
                                 setattr(widget, value, pos)
                         else:
                             callback = None
+                    elif viewInteraction:
+                        orngDebugging.debug.interactWithOWWidget(widget)
+
                     if newValue != "":
                         widget.printEvent("Widget %s. %s" % (str(widget.windowTitle()), newValue), eventVerbosity = 1)
                     if callback:
