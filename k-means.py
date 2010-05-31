@@ -17,6 +17,8 @@ class GUIApplication(OWBaseWidget):
         self.box = OWGUI.widgetBox(self, 'Widgets')
 
         self.createWidget('OWFile', 'icons/File.png', 'File', 1, self.signalManager)
+        self.createWidget('OWDataDomain', 'icons/SelectAttributes.png', 'Select Attributes', 1, self.signalManager)
+        self.createWidget('OWDataSampler', 'icons/DataSampler.png', 'Data Sampler', 1, self.signalManager)
         self.createWidget('OWKMeans', 'icons/KMeans.png', 'k-Means Clustering', 1, self.signalManager)
         
         box2 = OWGUI.widgetBox(self, 1)
@@ -37,7 +39,9 @@ class GUIApplication(OWBaseWidget):
 
         # add widget signals
         self.signalManager.setFreeze(1)
-        self.signalManager.addLink( self.widgets['File'], self.widgets['k-Means Clustering'], 'Examples', 'Examples', 1)
+        self.signalManager.addLink( self.widgets['File'], self.widgets['Select Attributes'], 'Examples', 'Examples', 1)
+        self.signalManager.addLink( self.widgets['Select Attributes'], self.widgets['Data Sampler'], 'Examples', 'Data', 1)
+        self.signalManager.addLink( self.widgets['Data Sampler'], self.widgets['k-Means Clustering'], 'Sample', 'Examples', 1)
         self.signalManager.setFreeze(0)
         
 
