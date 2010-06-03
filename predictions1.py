@@ -1,5 +1,5 @@
 #This file is automatically created by Orange Canvas and containing an Orange schema
-
+#ignore:wine.tab
 import orngEnviron
 import orngDebugging
 import sys, os, cPickle, orange, orngSignalManager, OWGUI
@@ -23,6 +23,8 @@ class GUIApplication(OWBaseWidget):
         self.createWidget('OWClassificationTree', 'icons/ClassificationTree.png', 'Classification Tree', 1, self.signalManager)
         self.createWidget('OWSVM', 'icons/BasicSVM.png', 'SVM', 1, self.signalManager)
         self.createWidget('OWCN2', 'icons/CN2.png', 'CN2', 1, self.signalManager)
+        self.createWidget('OWMajority', 'icons/Majority.png', 'Majority', 1, self.signalManager)
+        self.createWidget('OWRandomForest', 'icons/RandomForest.png', 'Random Forest', 1, self.signalManager)
         self.createWidget('OWPredictions', 'icons/Predictions.png', 'Predictions', 1, self.signalManager)
         self.createWidget('OWDataTable', 'icons/DataTable.png', 'Data Table', 1, self.signalManager)
         
@@ -59,6 +61,10 @@ class GUIApplication(OWBaseWidget):
         self.signalManager.addLink( self.widgets['Classification Tree'], self.widgets['Predictions'], 'Classification Tree', 'Predictors', 1)
         self.signalManager.addLink( self.widgets['File'], self.widgets['Predictions'], 'Examples', 'Examples', 1)
         self.signalManager.addLink( self.widgets['Predictions'], self.widgets['Data Table'], 'Predictions', 'Examples', 1)
+        self.signalManager.addLink( self.widgets['Data Sampler'], self.widgets['Majority'], 'Sample', 'Examples', 1)
+        self.signalManager.addLink( self.widgets['Majority'], self.widgets['Predictions'], 'Classifier', 'Predictors', 1)
+        self.signalManager.addLink( self.widgets['Data Sampler'], self.widgets['Random Forest'], 'Sample', 'Examples', 1)
+        self.signalManager.addLink( self.widgets['Random Forest'], self.widgets['Predictions'], 'Random Forest Classifier', 'Predictors', 1)
         self.signalManager.setFreeze(0)
         
 
