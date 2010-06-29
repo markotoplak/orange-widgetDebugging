@@ -46,9 +46,8 @@ if verbosity1Text in sys.argv or options.verbose: verbosity = 1
 if verbosity2Text in sys.argv or options.Verbose: verbosity = 2
 
 #defaultaddrs = ["ales.erjavec@fri.uni-lj.si"]
-defaultaddrs = ["tomaz.curk@fri.uni-lj.si", "ales.erjavec@fri.uni-lj.si"] + (options.mailto.split(",") if options.mailto.strip() else [])
+defaultaddrs = ["ales.erjavec@fri.uni-lj.si"] + (options.mailto.split(",") if options.mailto.strip() else [])
 
-print defaultaddrs
 timeLimit = options.timeLimit
 
 guiApps = sys.argv
