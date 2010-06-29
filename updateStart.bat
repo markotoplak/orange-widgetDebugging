@@ -18,6 +18,8 @@ svn update --force WidgetDebugging
 
 python orange\downloadPyd.py
 
+python -c "import orngServerFiles; orngServerFiles.update_local_files();"
+
 cd WidgetDebugging
 python debugWidgets.py --sendmail
 
