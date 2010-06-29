@@ -23,10 +23,12 @@ debugOneText = "debugOne.py"
 
 parser = OptionParser()
 parser.add_option("-m", "--sendmail", action="store_true", help="Send mail to script maintainers")
+parser.add_option("--mailto", type=str, dest="mailto", default="", help="Mail the results to ... (comma seperated list)")
 parser.add_option("-v", "--verbose", action="store_true", dest="verbose", help="Prints a line for every change in the widget (checkboxes, buttons, comboboxes, ...)")
 parser.add_option("-V", "--Verbose", action="store_true", dest="Verbose", help="Prints also passing and processing of signals")
-parser.add_option("-c", "--Changes=", type=int, dest="nrOfThingsToChange", default=nrOfThingsToChange, help="How many random clicks do we want to simulate")
-parser.add_option("-s", "--Seed=", type=int, dest="randomSeed", default=seed, help="Random seed")
+parser.add_option("-c", "--Changes", type=int, dest="nrOfThingsToChange", default=nrOfThingsToChange, help="How many random clicks do we want to simulate")
+parser.add_option("-s", "--Seed", type=int, dest="randomSeed", default=seed, help="Random seed")
+parser.add_option("--timelimit", type=int, dest="timeLimit", default=timeLimit, help="Time limit for testing one schema (in minutes)")
 parser.add_option("--mouse", action="store_true", default=False, help="Simulate mouse interaction in view widgets")
 
 
@@ -44,8 +46,10 @@ if verbosity1Text in sys.argv or options.verbose: verbosity = 1
 if verbosity2Text in sys.argv or options.Verbose: verbosity = 2
 
 #defaultaddrs = ["ales.erjavec@fri.uni-lj.si"]
-defaultaddrs = ["tomaz.curk@fri.uni-lj.si", "ales.erjavec@fri.uni-lj.si"]
+defaultaddrs = ["tomaz.curk@fri.uni-lj.si", "ales.erjavec@fri.uni-lj.si"] + (options.mailto.split(",") if options.mailto.strip() else [])
 
+print defaultaddrs
+timeLimit = options.timeLimit
 
 guiApps = sys.argv
 if "debugWidgets.py" in guiApps[0]: guiApps.pop(0)
@@ -145,6 +149,9 @@ for guiApp in guiApps:
     else:
         widgetStatus += guiApp + ": OK\n"
         print "OK"
+
+f = open("widgetDebugging-%s-%s.log" %(sys.platform, sys.version[:3]), "wb")
+f.write(groupedMsg)
 
 if sendMail == 1:
     fromaddr = "orange@fri.uni-lj.si"
