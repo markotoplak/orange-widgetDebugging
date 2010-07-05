@@ -150,7 +150,7 @@ for guiApp in guiApps:
         print "OK"
 
 f = open("widgetDebugging-%s-%s.log" %(sys.platform, sys.version[:3]), "wb")
-f.write(groupedMsg)
+f.write(widgetStatus + groupedMsg)
 
 if sendMail == 1:
     fromaddr = "orange@fri.uni-lj.si"
