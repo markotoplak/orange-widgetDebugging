@@ -16,6 +16,9 @@ svn update --force orange\add-ons\Bioinformatics
 svn cleanup WidgetDebugging
 svn update --force WidgetDebugging
 
+C:\cygwin\bin\find.exe orange/ -name "*.pyc" -delete
+C:\cygwin\bin\find.exe WidgetDebugging/ -name "*.pyc" -delete
+
 python orange\downloadPyd.py
 
 python -c "import orngServerFiles; orngServerFiles.update_local_files();"
