@@ -5,7 +5,7 @@ import orange, subprocess
 from optparse import OptionParser
 # options and settings
 nrOfThingsToChange = 2000   # how many random clicks do we want to simulate
-timeLimit = 15             # 15 minutes is the maximum time that we will spend in testing one schema
+timeLimit = 25             # 25 minutes is the maximum time that we will spend in testing one schema
 seed = 0
 
 # possible command line parameters
