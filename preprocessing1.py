@@ -1,5 +1,5 @@
 #This file is automatically created by Orange Canvas and containing an Orange schema
-#ignore:breastcancer2004.tab
+
 import orngEnviron
 import orngDebugging
 import sys, os, cPickle, orange, orngSignalManager, OWGUI
@@ -17,14 +17,15 @@ class GUIApplication(OWBaseWidget):
 
         self.createWidget('OWFile', 'icons/File.png', 'File', 1, self.signalManager)
         self.createWidget('OWPreprocess', 'icons/Preprocess.png', 'Preprocess', 1, self.signalManager)
-        self.createWidget('OWNaiveBayes', 'icons/NaiveBayes.png', 'Naive Bayes', 1, self.signalManager)
+        self.createWidget('OWRandomForest', 'icons/RandomForest.png', 'Random Forest', 1, self.signalManager)
+        self.createWidget('OWSVM', 'icons/BasicSVM.png', 'SVM', 1, self.signalManager)
+        self.createWidget('OWTestLearners', 'icons/TestLearners.png', 'Test Learners', 1, self.signalManager)
+        self.createWidget('OWCN2', 'icons/CN2.png', 'CN2', 1, self.signalManager)
+        self.createWidget('OWClassificationTree', 'icons/ClassificationTree.png', 'Classification Tree', 1, self.signalManager)
+        self.createWidget('OWKNN', 'icons/kNearestNeighbours.png', 'k Nearest Neighbours', 1, self.signalManager)
         self.createWidget('OWLogisticRegression', 'icons/LogisticRegression.png', 'Logistic Regression', 1, self.signalManager)
         self.createWidget('OWMajority', 'icons/Majority.png', 'Majority', 1, self.signalManager)
-        self.createWidget('OWKNN', 'icons/kNearestNeighbours.png', 'k Nearest Neighbours', 1, self.signalManager)
-        self.createWidget('OWClassificationTree', 'icons/ClassificationTree.png', 'Classification Tree', 1, self.signalManager)
-        self.createWidget('OWSVM', 'icons/BasicSVM.png', 'SVM', 1, self.signalManager)
-        self.createWidget('OWCN2', 'icons/CN2.png', 'CN2', 1, self.signalManager)
-        self.createWidget('OWRandomForest', 'icons/RandomForest.png', 'Random Forest', 1, self.signalManager)
+        self.createWidget('OWNaiveBayes', 'icons/NaiveBayes.png', 'Naive Bayes', 1, self.signalManager)
         self.createWidget('OWTestLearners', 'icons/TestLearners.png', 'Test Learners', 1, self.signalManager)
         
         box2 = OWGUI.widgetBox(self, 1)
@@ -46,14 +47,6 @@ class GUIApplication(OWBaseWidget):
         # add widget signals
         self.signalManager.setFreeze(1)
         self.signalManager.addLink( self.widgets['File'], self.widgets['Test Learners'], 'Examples', 'Data', 1)
-        self.signalManager.addLink( self.widgets['Preprocess'], self.widgets['Naive Bayes'], 'Preprocessing', 'Preprocessing', 1)
-        self.signalManager.addLink( self.widgets['Preprocess'], self.widgets['Logistic Regression'], 'Preprocessing', 'Preprocessing', 1)
-        self.signalManager.addLink( self.widgets['Preprocess'], self.widgets['Majority'], 'Preprocessing', 'Preprocessing', 1)
-        self.signalManager.addLink( self.widgets['Preprocess'], self.widgets['k Nearest Neighbours'], 'Preprocessing', 'Preprocessing', 1)
-        self.signalManager.addLink( self.widgets['Preprocess'], self.widgets['Classification Tree'], 'Preprocessing', 'Preprocessing', 1)
-        self.signalManager.addLink( self.widgets['Preprocess'], self.widgets['CN2'], 'Preprocessing', 'Preprocessing', 1)
-        self.signalManager.addLink( self.widgets['Preprocess'], self.widgets['SVM'], 'Preprocessing', 'Preprocessing', 1)
-        self.signalManager.addLink( self.widgets['Preprocess'], self.widgets['Random Forest'], 'Preprocessing', 'Preprocessing', 1)
         self.signalManager.addLink( self.widgets['Naive Bayes'], self.widgets['Test Learners'], 'Learner', 'Learner', 1)
         self.signalManager.addLink( self.widgets['Majority'], self.widgets['Test Learners'], 'Learner', 'Learner', 1)
         self.signalManager.addLink( self.widgets['Logistic Regression'], self.widgets['Test Learners'], 'Learner', 'Learner', 1)
@@ -62,6 +55,14 @@ class GUIApplication(OWBaseWidget):
         self.signalManager.addLink( self.widgets['CN2'], self.widgets['Test Learners'], 'Learner', 'Learner', 1)
         self.signalManager.addLink( self.widgets['SVM'], self.widgets['Test Learners'], 'Learner', 'Learner', 1)
         self.signalManager.addLink( self.widgets['Random Forest'], self.widgets['Test Learners'], 'Learner', 'Learner', 1)
+        self.signalManager.addLink( self.widgets['Preprocess'], self.widgets['Naive Bayes'], 'Preprocess', 'Preprocess', 1)
+        self.signalManager.addLink( self.widgets['Preprocess'], self.widgets['Logistic Regression'], 'Preprocess', 'Preprocess', 1)
+        self.signalManager.addLink( self.widgets['Preprocess'], self.widgets['Majority'], 'Preprocess', 'Preprocess', 1)
+        self.signalManager.addLink( self.widgets['Preprocess'], self.widgets['k Nearest Neighbours'], 'Preprocess', 'Preprocess', 1)
+        self.signalManager.addLink( self.widgets['Preprocess'], self.widgets['CN2'], 'Preprocess', 'Preprocess', 1)
+        self.signalManager.addLink( self.widgets['Preprocess'], self.widgets['Classification Tree'], 'Preprocess', 'Preprocess', 1)
+        self.signalManager.addLink( self.widgets['Preprocess'], self.widgets['SVM'], 'Preprocess', 'Preprocess', 1)
+        self.signalManager.addLink( self.widgets['Preprocess'], self.widgets['Random Forest'], 'Preprocess', 'Preprocess', 1)
         self.signalManager.setFreeze(0)
         
 
