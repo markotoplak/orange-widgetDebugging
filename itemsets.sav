@@ -1,0 +1,14 @@
+(dp1
+S'Itemsets Explorer'
+p2
+S"(dp1\nS'autoSend'\np2\nI01\nsS'widgetHeight'\np3\nI434\nsS'widgetXPosition'\np4\nI360\nsS'widgetYPosition'\np5\nI270\nsS'widgetShown'\np6\nI0\nsS'savedWidgetGeometry'\np7\nS'\\x01\\xd9\\xd0\\xcb\\x00\\x01\\x00\\x00\\x00\\x00\\x01h\\x00\\x00\\x01\\x0e\\x00\\x00\\x03y\\x00\\x00\\x02\\xd5\\x00\\x00\\x01h\\x00\\x00\\x01$\\x00\\x00\\x03y\\x00\\x00\\x02\\xd5\\x00\\x00\\x00\\x00\\x00\\x00'\np8\nsS'purgeClasses'\np9\nI01\nsS'widgetWidth'\np10\nI530\nsS'treeDepth'\np11\nI2\nsS'showWholeItemsets'\np12\nI1\nsS'purgeAttributes'\np13\nI01\ns."
+p3
+sS'Itemsets'
+p4
+S"(dp1\nS'widgetHeight'\np2\nI241\nsS'widgetXPosition'\np3\nI360\nsS'widgetYPosition'\np4\nI270\nsS'widgetShown'\np5\nI0\nsS'savedWidgetGeometry'\np6\nS'\\x01\\xd9\\xd0\\xcb\\x00\\x01\\x00\\x00\\x00\\x00\\x01h\\x00\\x00\\x01\\x0e\\x00\\x00\\x02^\\x00\\x00\\x02\\x14\\x00\\x00\\x01h\\x00\\x00\\x01$\\x00\\x00\\x02^\\x00\\x00\\x02\\x14\\x00\\x00\\x00\\x00\\x00\\x00'\np7\nsS'maxRules'\np8\nI10000\nsS'widgetWidth'\np9\nI247\nsS'useSparseAlgorithm'\np10\nI00\nsS'minSupport'\np11\nI60\ns."
+p5
+sS'File'
+p6
+S"(dp1\nS'widgetHeight'\np2\nI486\nsS'widgetXPosition'\np3\nI152\nsS'widgetYPosition'\np4\nI207\nsS'savedWidgetGeometry'\np5\nS'\\x01\\xd9\\xd0\\xcb\\x00\\x01\\x00\\x00\\x00\\x00\\x00\\x98\\x00\\x00\\x00\\xcf\\x00\\x00\\x029\\x00\\x00\\x02\\xca\\x00\\x00\\x00\\x98\\x00\\x00\\x00\\xe5\\x00\\x00\\x029\\x00\\x00\\x02\\xca\\x00\\x00\\x00\\x00\\x00\\x00'\np6\nsS'widgetShown'\np7\nI0\nsS'showAdvanced'\np8\nI0\nsS'createNewOn'\np9\nI2\nsS'widgetWidth'\np10\nI418\nsS'localContextsVersion'\np11\n(I100\nI0\ntp12\nsS'localContexts'\np13\n(lp14\n(iOWContexts\nContext\np15\n(dp16\nS'symbolDC'\np17\nS''\nsS'symbolDK'\np18\nS''\nsS'filename'\np19\nS'/Users/aleserjavec/Documents/workspace/widgetDebugging/datasets/lenses_two_class.tab'\np20\nsS'time'\np21\nF1296820920.5167739\nsba(iOWContexts\nContext\np22\n(dp23\nS'symbolDK'\np24\nS''\nsS'symbolDC'\np25\nS''\nsS'time'\np26\nF1296817325.391125\nsS'filename'\np27\nS'/Users/aleserjavec/Documents/workspace/widgetDebugging/datasets/two_valued_attribute___continuous.tab'\np28\nsba(iOWContexts\nContext\np29\n(dp30\ng24\nS''\nsg25\nS''\nsg26\nF1273755036.0459321\nsg27\nS''\nsba(iOWContexts\nContext\np31\n(dp32\nS'symbolDC'\np33\nS''\nsS'symbolDK'\np34\nS''\nsS'filename'\np35\nS'/Users/aleserjavec/Documents/workspace/orange/doc/datasets/brown-selected.tab'\np36\nsS'time'\np37\nF1273483403.8679171\nsba(iOWContexts\nContext\np38\n(dp39\nS'symbolDK'\np40\nS''\nsS'symbolDC'\np41\nS''\nsS'time'\np42\nF1196689968.171\nsS'filename'\np43\nS'E:/Development/Orange Datasets/UCI/zoo.tab'\np44\nsba(iOWContexts\nContext\np45\n(dp46\nS'symbolDC'\np47\nS''\nsS'symbolDK'\np48\nS''\nsS'filename'\np49\nS'E:/Development/Orange Datasets/Blaz/05-cur-w-calc.tab'\np50\nsS'time'\np51\nF1196689758.171\nsbasS'recentFiles'\np52\n(lp53\ng20\nag28\nas."
+p7
+s.

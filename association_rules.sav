@@ -1,0 +1,18 @@
+(dp1
+S'Association Rules'
+p2
+S"(dp1\nS'classificationRules'\np2\nI0\nsS'minConfidence'\np3\nI20\nsS'widgetXPosition'\np4\nI360\nsS'widgetYPosition'\np5\nI270\nsS'widgetShown'\np6\nI0\nsS'savedWidgetGeometry'\np7\nS'\\x01\\xd9\\xd0\\xcb\\x00\\x01\\x00\\x00\\x00\\x00\\x01h\\x00\\x00\\x01\\x0e\\x00\\x00\\x02^\\x00\\x00\\x02\\x8d\\x00\\x00\\x01h\\x00\\x00\\x01$\\x00\\x00\\x02^\\x00\\x00\\x02\\x8d\\x00\\x00\\x00\\x00\\x00\\x00'\np8\nsS'maxRules'\np9\nI10000\nsS'widgetWidth'\np10\nI247\nsS'useSparseAlgorithm'\np11\nI0\nsS'widgetHeight'\np12\nI362\nsS'minSupport'\np13\nI40\ns."
+p3
+sS'Association Rules Filter'
+p4
+S"(dp1\nS'confidence'\np2\nI01\nsS'autoSend'\np3\nI01\nsS'leverage'\np4\nI00\nsS'widgetHeight'\np5\nI512\nsS'support'\np6\nI01\nsS'widgetYPosition'\np7\nI270\nsS'sortedBy'\np8\nI0\nsS'widgetShown'\np9\nI0\nsS'savedWidgetGeometry'\np10\nS'\\x01\\xd9\\xd0\\xcb\\x00\\x01\\x00\\x00\\x00\\x00\\x01h\\x00\\x00\\x01\\x0e\\x00\\x00\\x05O\\x00\\x00\\x03#\\x00\\x00\\x01h\\x00\\x00\\x01$\\x00\\x00\\x05O\\x00\\x00\\x03#\\x00\\x00\\x00\\x00\\x00\\x00'\np11\nsS'lift'\np12\nI00\nsS'widgetWidth'\np13\nI1000\nsS'coverage'\np14\nI00\nsS'widgetXPosition'\np15\nI360\nsS'strength'\np16\nI00\ns."
+p5
+sS'File'
+p6
+S"(dp1\nS'widgetHeight'\np2\nI486\nsS'widgetXPosition'\np3\nI152\nsS'widgetYPosition'\np4\nI207\nsS'savedWidgetGeometry'\np5\nS'\\x01\\xd9\\xd0\\xcb\\x00\\x01\\x00\\x00\\x00\\x00\\x00\\x98\\x00\\x00\\x00\\xcf\\x00\\x00\\x029\\x00\\x00\\x02\\xca\\x00\\x00\\x00\\x98\\x00\\x00\\x00\\xe5\\x00\\x00\\x029\\x00\\x00\\x02\\xca\\x00\\x00\\x00\\x00\\x00\\x00'\np6\nsS'widgetShown'\np7\nI0\nsS'showAdvanced'\np8\nI0\nsS'createNewOn'\np9\nI2\nsS'widgetWidth'\np10\nI418\nsS'localContextsVersion'\np11\n(I100\nI0\ntp12\nsS'localContexts'\np13\n(lp14\n(iOWContexts\nContext\np15\n(dp16\nS'symbolDK'\np17\nS''\nsS'symbolDC'\np18\nS''\nsS'time'\np19\nF1296820797.2185841\nsS'filename'\np20\nS'/Users/aleserjavec/Documents/workspace/widgetDebugging/datasets/lenses_two_class.tab'\np21\nsba(iOWContexts\nContext\np22\n(dp23\nS'symbolDC'\np24\nS''\nsS'symbolDK'\np25\nS''\nsS'filename'\np26\nS'/Users/aleserjavec/Documents/workspace/widgetDebugging/datasets/two_valued_attribute___continuous.tab'\np27\nsS'time'\np28\nF1296817325.391125\nsba(iOWContexts\nContext\np29\n(dp30\ng24\nS''\nsg25\nS''\nsg26\nS''\nsg28\nF1273755036.0459321\nsba(iOWContexts\nContext\np31\n(dp32\nS'symbolDK'\np33\nS''\nsS'symbolDC'\np34\nS''\nsS'time'\np35\nF1273483403.8679171\nsS'filename'\np36\nS'/Users/aleserjavec/Documents/workspace/orange/doc/datasets/brown-selected.tab'\np37\nsba(iOWContexts\nContext\np38\n(dp39\nS'symbolDC'\np40\nS''\nsS'symbolDK'\np41\nS''\nsS'filename'\np42\nS'E:/Development/Orange Datasets/UCI/zoo.tab'\np43\nsS'time'\np44\nF1196689968.171\nsba(iOWContexts\nContext\np45\n(dp46\nS'symbolDK'\np47\nS''\nsS'symbolDC'\np48\nS''\nsS'time'\np49\nF1196689758.171\nsS'filename'\np50\nS'E:/Development/Orange Datasets/Blaz/05-cur-w-calc.tab'\np51\nsbasS'recentFiles'\np52\n(lp53\ng21\nag27\nas."
+p7
+sS'Association Rules Explorer'
+p8
+S"(dp1\nS'showlift'\np2\nI0\nsS'autoSend'\np3\nI01\nsS'showcoverage'\np4\nI0\nsS'showstrength'\np5\nI0\nsS'widgetHeight'\np6\nI433\nsS'widgetXPosition'\np7\nI360\nsS'widgetYPosition'\np8\nI270\nsS'showleverage'\np9\nI0\nsS'showsupport'\np10\nI1\nsS'widgetShown'\np11\nI0\nsS'showconfidence'\np12\nI1\nsS'savedWidgetGeometry'\np13\nS'\\x01\\xd9\\xd0\\xcb\\x00\\x01\\x00\\x00\\x00\\x00\\x01h\\x00\\x00\\x01\\x0e\\x00\\x00\\x05\\x12\\x00\\x00\\x02\\xd4\\x00\\x00\\x01h\\x00\\x00\\x01$\\x00\\x00\\x05\\x12\\x00\\x00\\x02\\xd4\\x00\\x00\\x00\\x00\\x00\\x00'\np14\nsS'showWholeRules'\np15\nI1\nsS'widgetWidth'\np16\nI939\nsS'treeDepth'\np17\nI2\nsS'purgeAttributes'\np18\nI01\nsS'purgeClasses'\np19\nI01\ns."
+p9
+s.
