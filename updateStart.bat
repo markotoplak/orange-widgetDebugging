@@ -1,11 +1,11 @@
 c:
 cd \Python25\Lib\site-packages
 
-net use o: \\www.ailab.si\download
+rem net use o: \\www.ailab.si\download
 
-rem svn co --force http://www.ailab.si/svn/orange/trunk/orange/ orange
-rem svn co --force http://www.ailab.si/svn/orange/trunk/add-ons/Bioinformatics/ orange\add-ons\Bioinformatics
-rem svn co --force http://www.ailab.si/svn/orange/trunk/testing/widgetDebugging/ WidgetDebugging
+rem svn co --force http://orange.biolab.si/svn/orange/trunk/orange/ orange
+rem svn co --force http://orange.biolab.si/svn/orange/trunk/add-ons/Bioinformatics/ orange\add-ons\Bioinformatics
+rem svn co --force http://orange.biolab.si/svn/orange/trunk/testing/widgetDebugging/ WidgetDebugging
 
 svn cleanup orange
 svn update --force orange
@@ -26,6 +26,6 @@ python -c "import orngServerFiles; orngServerFiles.update_local_files();"
 cd WidgetDebugging
 python debugWidgets.py --sendmail
 
-cp widgetDebugging*.log o:\widgetDebuggingLogs\winxp
+cp widgetDebugging*.log Z:\Volumes\download\widgetDebuggingLogs\winxp
 
 shutdown -s
