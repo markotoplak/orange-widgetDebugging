@@ -1,5 +1,5 @@
 #This file is automatically created by Orange Canvas and containing an Orange schema
-#ignore:breastcancer2004.tab
+#ignore: breastcancer2004.tab, wine.tab, wine-noclass.tab
 
 import orngEnviron
 import orngDebugging
