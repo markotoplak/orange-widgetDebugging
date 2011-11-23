@@ -135,11 +135,12 @@ if initializationOK:
                         guiElement = None
                     elif index < len(widget._guiElements):
                         elementType, guiElement = widget._guiElements[index][0], widget._guiElements[index][1]
-                        if not guiElement.isEnabled(): continue
+                        if not guiElement.isEnabled():
+                            continue
                     else:
                         guiElement = random.choice(orngDebugging.debug.candidateDebugWidgets(widget) or [None])
                         if guiElement:
-                            elementType=type(guiElement)
+                            elementType = type(guiElement)
                         else:
                             continue
                         
@@ -202,9 +203,25 @@ if initializationOK:
                                 setattr(widget, value, pos)
                         else:
                             callback = None
+                            
+                    elif elementType == QListView:
+                        model = guiElement.model()
+                        if not model:
+                            continue
+                        count = model.rowCount()
+                        mode = guiElement.selectionMode()
+                        selmodel = guiElement.selectionModel()
+                        
+                        if mode != QListView.NoSelection and count:
+                            row =  random.randint(0, count - 1)
+                            mindex = guiElement.model().index(row, 0)
+                            selmodel.select(mindex, QItemSelectionModel.Toggle)
+                            newValue = "Changed list view selection of item %d to %s" % \
+                                    (row, selmodel.isRowSelected(row, QModelIndex()))
+                        
                     elif viewInteraction:
                         orngDebugging.debug.interactWithOWWidget(widget)
-
+                    
                     if newValue != "":
                         widget.printEvent("Widget %s. %s" % (str(widget.windowTitle()), newValue), eventVerbosity = 1)
                     if callback:
