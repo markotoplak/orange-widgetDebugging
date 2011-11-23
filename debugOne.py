@@ -4,6 +4,7 @@ from PyQt4.QtCore import *
 from PyQt4.QtGui import *
 import orange, orngSignalManager, orngRegistry
 import orngDebugging
+import logging
 
 changeDatasetClicks = 100   # after how many random clicks do we want to change the dataset file
 debugDir = os.path.split(os.path.abspath(__file__))[0]
@@ -221,7 +222,7 @@ if initializationOK:
                         sys.excepthook(excType, value, tracebackInfo)  # print the exception
                         sys.stderr.write("Widget settings are:\n")
                         for i, setting in enumerate(getattr(widget, "settingsList", [])):
-                            if setting in ["widgetWidth", "widgetHeight", "widgetXPosition", "widgetYPosition", "widgetShown"]:
+                            if setting in ["widgetWidth", "widgetHeight", "widgetXPosition", "widgetYPosition", "widgetShown", "savedWidgetGeometry"]:
                                 continue
                             sys.stderr.write("%30s: %7s\n" % (setting, str(widget.getdeepattr(setting))))
                         
@@ -232,5 +233,6 @@ if initializationOK:
 
     instance.signalManager.addEvent("Test finished", eventVerbosity = 0)
     instance.signalManager.closeDebugFile()
+    logging.shutdown()
     sys.exit(1)
 
