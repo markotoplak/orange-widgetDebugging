@@ -15,12 +15,12 @@ class GUIApplication(OWBaseWidget):
         self.setLayout(QVBoxLayout())
         self.box = OWGUI.widgetBox(self, 'Widgets')
 
-        self.createWidget('OWFile', 'icons/File.png', 'File', 1, self.signalManager)
+        self.createWidget('OWNxFile', 'icons/File.png', 'File', 1, self.signalManager)
         self.createWidget('OWDataSampler', 'icons/DataSampler.png', 'Data Sampler', 1, self.signalManager)
         self.createWidget('OWExampleDistance', 'icons/ExampleDistance.png', 'Example Distance', 1, self.signalManager)
-        self.createWidget('OWNetworkFromDistances', 'icons/NetworkFromDistances.png', 'Network from Distances', 1, self.signalManager)
-        self.createWidget('OWNetExplorer', 'icons/Network.png', 'Net Explorer', 1, self.signalManager)
-        self.createWidget('OWNetExplorer', 'icons/Network.png', 'Net Explorer (2)', 1, self.signalManager)
+        self.createWidget('OWNxFromDistances', 'icons/NetworkFromDistances.png', 'Network from Distances', 1, self.signalManager)
+        self.createWidget('OWNxExplorer', 'icons/Network.png', 'Net Explorer', 1, self.signalManager)
+        self.createWidget('OWNxExplorer', 'icons/Network.png', 'Net Explorer (2)', 1, self.signalManager)
         self.createWidget('OWDistanceMap', 'icons/DistanceMap.png', 'Distance Map', 1, self.signalManager)
         self.createWidget('OWDataTable', 'icons/DataTable.png', 'Data Table', 1, self.signalManager)
         
@@ -42,18 +42,18 @@ class GUIApplication(OWBaseWidget):
 
         # add widget signals
         self.signalManager.setFreeze(1)
-        self.signalManager.addLink( self.widgets['File'], self.widgets['Data Sampler'], 'Examples', 'Data', 1)
-        self.signalManager.addLink( self.widgets['File'], self.widgets['Example Distance'], 'Examples', 'Examples', 1)
+        self.signalManager.addLink( self.widgets['File'], self.widgets['Data Sampler'], 'Items', 'Data', 1)
+        self.signalManager.addLink( self.widgets['File'], self.widgets['Example Distance'], 'Items', 'Examples', 1)
         self.signalManager.addLink( self.widgets['Example Distance'], self.widgets['Network from Distances'], 'Distance Matrix', 'Distance Matrix', 1)
         self.signalManager.addLink( self.widgets['Network from Distances'], self.widgets['Net Explorer'], 'Network', 'Network', 1)
-        self.signalManager.addLink( self.widgets['Example Distance'], self.widgets['Net Explorer'], 'Distance Matrix', 'Vertex Distance', 1)
-        self.signalManager.addLink( self.widgets['File'], self.widgets['Net Explorer'], 'Examples', 'Items', 1)
+        self.signalManager.addLink( self.widgets['Example Distance'], self.widgets['Net Explorer'], 'Distance Matrix', 'Items Distance Matrix', 1)
+        self.signalManager.addLink( self.widgets['File'], self.widgets['Net Explorer'], 'Items', 'Items', 1)
         self.signalManager.addLink( self.widgets['Data Sampler'], self.widgets['Net Explorer'], 'Sample', 'Items to Mark', 1)
         self.signalManager.addLink( self.widgets['Net Explorer'], self.widgets['Net Explorer (2)'], 'Selected Network', 'Network', 1)
-        self.signalManager.addLink( self.widgets['Net Explorer'], self.widgets['Distance Map'], 'Selected Distance Matrix', 'Distance Matrix', 1)
-        self.signalManager.addLink( self.widgets['Net Explorer'], self.widgets['Data Table'], 'Selected Examples', 'Examples', 1)
-        self.signalManager.addLink( self.widgets['Net Explorer'], self.widgets['Data Table'], 'Unselected Examples', 'Examples', 1)
-        self.signalManager.addLink( self.widgets['Net Explorer'], self.widgets['Data Table'], 'Marked Examples', 'Examples', 1)
+        self.signalManager.addLink( self.widgets['Net Explorer'], self.widgets['Distance Map'], 'Selected Items Distance Matrix', 'Distance Matrix', 1)
+        self.signalManager.addLink( self.widgets['Net Explorer'], self.widgets['Data Table'], 'Selected Items', 'Examples', 1)
+        self.signalManager.addLink( self.widgets['Net Explorer'], self.widgets['Data Table'], 'Unselected Items', 'Examples', 1)
+        self.signalManager.addLink( self.widgets['Net Explorer'], self.widgets['Data Table'], 'Marked Items', 'Examples', 1)
         self.signalManager.setFreeze(0)
         
 
